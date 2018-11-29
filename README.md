@@ -20,15 +20,13 @@ yarn global add koop-cli
 
 Once installed, the command `koop` will be available at the console:
 
-### Example
-
 ``` bash
 koop new provider koop-provider-github
 ```
 
-## command
+## Command
 
-* **new**
+### new
 
 The `new` command creates a new koop project from the template at the current location.
 
@@ -40,7 +38,7 @@ The user can create different types of koop projects from templates:
 * `provider` from [koop-cli-new-provider](https://github.com/haoliangyu/koop-cli-new-provider)
 * `app` from [koop-cli-new-app](https://github.com/haoliangyu/koop-cli-new-app)
 
-### Example
+#### Example
 
 Create a koop app project named `my-koop-project`
 
@@ -48,7 +46,7 @@ Create a koop app project named `my-koop-project`
 koop new app my-koop-project
 ```
 
-* **serve**
+### serve
 
 The `serve` command starts a test server for the current provider project, or starts the current koop app.
 
@@ -56,7 +54,7 @@ The `serve` command starts a test server for the current provider project, or st
 koop serve
 ```
 
-* **add**
+### add
 
 The `add` command adds a koop plugin to the current koop app.
 
@@ -64,7 +62,7 @@ The `add` command adds a koop plugin to the current koop app.
 koop add [plugin-type] [plugin-name]
 ```
 
-### Example
+#### Example
 
 Add a koop provider [koop-provider-zillow](https://www.npmjs.com/package/koop-provider-zillow) to the current app
 
