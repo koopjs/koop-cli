@@ -10,6 +10,12 @@ module.exports = yargs
     commands.new.options,
     commands.new.handler
   )
+  .command(
+    'test',
+    'run tests in the current project',
+    commands.test.options,
+    commands.test.handler
+  )
   .demandCommand()
   .showHelpOnFail(true)
   .help('help').argv

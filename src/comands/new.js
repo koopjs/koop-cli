@@ -1,5 +1,4 @@
-const fs = require('fs');
-const shell = require('shelljs');
+const shell = require('shelljs')
 
 exports.options = (yargs) => {
   yargs
@@ -15,15 +14,15 @@ exports.options = (yargs) => {
 }
 
 exports.handler = (argv) => {
-  const projectType = argv.type;
-  const projectName = argv.name;
-  const templatePath = `${__dirname}/../templates/${projectType}`;
-  const destPath = `${process.cwd()}/${projectName}`;
+  const projectType = argv.type
+  const projectName = argv.name
+  const templatePath = `${__dirname}/../templates/${projectType}`
+  const destPath = `${process.cwd()}/${projectName}`
 
   // copy template
-  shell.cp('-rf', templatePath, destPath);
+  shell.cp('-rf', templatePath, destPath)
 
   // install dependencies
-  shell.cd(destPath);
-  shell.exec('npm i', { slient: true });
+  shell.cd(destPath)
+  shell.exec('npm i')
 }
