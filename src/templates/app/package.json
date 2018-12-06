@@ -1,0 +1,34 @@
+{
+  "name": "koop-cli-new-app",
+  "description": "Opinionated app template for koop-cli",
+  "version": "3.0.0",
+  "author": "Haoliang Yu",
+  "bugs": {
+    "url": "https://github.com/haoliangyu/koop-cli-new-app/issues"
+  },
+  "dependencies": {
+    "koop": "^3.10.1"
+  },
+  "devDependencies": {
+    "standard": "^12.0.1",
+    "tap-spec": "^5.0.0",
+    "tape": "^4.9.1"
+  },
+  "homepage": "https://github.com/haoliangyu/koop-cli-new-app",
+  "keywords": [
+    "koop",
+    "cli",
+    "app",
+    "template",
+    "boilerplate"
+  ],
+  "license": "Apache-2.0",
+  "main": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com:haoliangyu/koop-cli-new-app.git"
+  },
+  "scripts": {
+    "test": "standard && tape test/*.js | tap-spec"
+  }
+}

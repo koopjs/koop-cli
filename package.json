@@ -1,0 +1,29 @@
+{
+  "name": "koop-cli",
+  "version": "3.0.0",
+  "description": "CLI took for koopjs",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/haoliangyu/koop-cli.git"
+  },
+  "keywords": [
+    "koop",
+    "cli"
+  ],
+  "author": "Haoliang Yu",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/haoliangyu/koop-cli/issues"
+  },
+  "homepage": "https://github.com/haoliangyu/koop-cli#readme",
+  "dependencies": {
+    "yargs": "^12.0.5"
+  },
+  "bin": {
+   "koop": "node ./src/index.js"
+ }
+}
