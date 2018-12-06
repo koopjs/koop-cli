@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "standard && tape test/*.js | tap-spec"
+    "test": "tape test/*.js | tap-spec"
   },
   "dependencies": {
     "dotenv": "^6.1.0",
@@ -18,7 +18,6 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "nock": "^10.0.3",
-    "standard": "^12.0.1",
     "tap-spec": "^5.0.0",
     "tape": "^4.6.3"
   },
