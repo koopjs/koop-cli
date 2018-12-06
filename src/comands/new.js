@@ -1,4 +1,5 @@
 const fs = require('fs');
+const shell = require('shelljs');
 
 exports.options = (yargs) => {
   yargs
@@ -17,29 +18,12 @@ exports.handler = (argv) => {
   const projectType = argv.type;
   const projectName = argv.name;
   const templatePath = `${__dirname}/../templates/${projectType}`;
+  const destPath = `${process.cwd()}/${projectName}`;
 
-  fs.mkdirSync(`${process.cwd()}/${projectName}`);
-  createDirectoryContents(templatePath, projectName);
-}
+  // copy template
+  shell.cp('-rf', templatePath, destPath);
 
-function createDirectoryContents (templatePath, newProjectPath) {
-  const filesToCreate = fs.readdirSync(templatePath);
-
-  filesToCreate.forEach(file => {
-    const origFilePath = `${templatePath}/${file}`;
-
-    // get stats about the current file
-    const stats = fs.statSync(origFilePath);
-
-    if (stats.isFile()) {
-      const contents = fs.readFileSync(origFilePath, 'utf8');
-      const writePath = `${process.cwd()}/${newProjectPath}/${file}`;
-      fs.writeFileSync(writePath, contents, 'utf8');
-    } else if (stats.isDirectory()) {
-      fs.mkdirSync(`${process.cwd()}/${newProjectPath}/${file}`);
-
-      // recursive call
-      createDirectoryContents(`${templatePath}/${file}`, `${newProjectPath}/${file}`);
-    }
-  });
+  // install dependencies
+  shell.cd(destPath);
+  shell.exec('npm i', { slient: true });
 }
