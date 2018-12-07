@@ -1,3 +1,4 @@
+const path = require('path')
 const shell = require('shelljs')
 
 exports.options = (yargs) => {
@@ -16,8 +17,8 @@ exports.options = (yargs) => {
 exports.handler = (argv) => {
   const projectType = argv.type
   const projectName = argv.name
-  const templatePath = `${__dirname}/../templates/${projectType}`
-  const destPath = `${process.cwd()}/${projectName}`
+  const templatePath = path.join(__dirname, '..', 'templates', projectType)
+  const destPath = path.join(process.cwd(), projectName)
 
   // copy template
   shell.cp('-rf', templatePath, destPath)
