@@ -16,6 +16,12 @@ module.exports = yargs
     commands.test.options,
     commands.test.handler
   )
+  .command(
+    'serve',
+    'run a koop server for the current project',
+    commands.serve.options,
+    commands.serve.handler
+  )
   .demandCommand()
   .showHelpOnFail(true)
   .help('help').argv
