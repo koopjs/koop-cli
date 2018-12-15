@@ -7,6 +7,7 @@
     "url": "https://github.com/haoliangyu/koop-cli-new-app/issues"
   },
   "dependencies": {
+    "config": "^3.0.0",
     "koop": "^3.10.1"
   },
   "devDependencies": {

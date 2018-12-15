@@ -1,3 +1,4 @@
+const config = require('config')
 const Koop = require('koop')
 
 // initiate a koop app
@@ -14,7 +15,7 @@ koop.server.get('/', (req, res) => {
   res.status(200).send(welcomeMessage)
 })
 
-const port = process.env.PORT || 8080
+const port = config.get('port')
 
 // start the server
 koop.server.listen(port, () => koop.log.info(`Koop server listening at ${port}`))

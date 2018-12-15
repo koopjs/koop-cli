@@ -11,6 +11,12 @@ module.exports = yargs
     commands.new.handler
   )
   .command(
+    'add [component]',
+    'add a new component to the current project',
+    commands.add.options,
+    commands.add.handler
+  )
+  .command(
     'test',
     'run tests in the current project',
     commands.test.options,

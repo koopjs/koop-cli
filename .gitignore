@@ -59,3 +59,10 @@ typings/
 
 # next.js build output
 .next
+
+# lock file
+templates/**/yarn.lock
+template/**/package-lock.json
+
+# test temp folder
+temp

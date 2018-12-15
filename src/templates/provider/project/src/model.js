@@ -6,6 +6,7 @@
   Documentation: http://koopjs.github.io/docs/specs/provider/
 */
 
+const config = require('config')
 const fetch = require('node-fetch')
 
 function Model (koop) {}
@@ -22,7 +23,7 @@ function Model (koop) {}
 // req.params.layer
 // req.params.method
 Model.prototype.getData = function (req, callback) {
-  const url = 'https://example.com/data'
+  const url = config.get('koop-cli-new-provider.url');
 
   // Call the remote API with our developer key
   fetch(url)

@@ -1,10 +1,11 @@
 {
   "name": "koop-cli",
   "version": "3.0.0",
-  "description": "CLI took for koopjs",
+  "description": "CLI tool for koopjs",
   "main": "src/index.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "pre-commit": "lint-staged"
   },
   "repository": {
     "type": "git",
@@ -21,7 +22,9 @@
   },
   "homepage": "https://github.com/haoliangyu/koop-cli#readme",
   "dependencies": {
+    "fs-extra": "^7.0.1",
     "koop": "^3.10.1",
+    "recast": "^0.16.1",
     "shelljs": "^0.8.3",
     "yargs": "^12.0.5"
   },
@@ -29,13 +32,10 @@
     "koop": "node ./src/index.js"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
     "lint-staged": "^8.1.0",
+    "mocha": "^5.2.0",
     "standard": "^12.0.1"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   },
   "lint-staged": {
     "*.js": [

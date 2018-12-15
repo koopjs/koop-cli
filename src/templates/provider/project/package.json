@@ -10,7 +10,7 @@
     "test": "tape test/*.js | tap-spec"
   },
   "dependencies": {
-    "dotenv": "^6.1.0",
+    "config": "^3.0.0",
     "koop": "^3.10.1",
     "node-fetch": "^2.3.0"
   },
