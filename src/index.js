@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const yargs = require('yargs')
-const commands = require('./comands')
+const commands = require('./commands')
 
 module.exports = yargs
   .command(
@@ -9,12 +9,6 @@ module.exports = yargs
     'create a new koop project',
     commands.new.options,
     commands.new.handler
-  )
-  .command(
-    'add [component]',
-    'add a new component to the current project',
-    commands.add.options,
-    commands.add.handler
   )
   .command(
     'test',

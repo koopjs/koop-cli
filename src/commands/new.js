@@ -33,6 +33,10 @@ exports.handler = (argv) => {
 
   customizeProject(info)
 
+  if (argv.skipInstall) {
+    return
+  }
+
   // install dependencies
   shell.exec('npm i')
 }
@@ -44,7 +48,7 @@ function customizeProject (info) {
   if (info.type === 'app') {
     customizeApp(info)
   } else if (info.type === 'provider') {
-    customizeProject(info)
+    customizeProvider(info)
   }
 }
 
@@ -55,19 +59,12 @@ function customizePackage (info) {
   fs.writeJsonSync(packagePath, packageInfo)
 }
 
-function customizeKoop (info) {
-  const koopConfigPath = path.join(info.path, 'koop.json')
-  const koopConfig = fs.readJsonSync(koopConfigPath)
-  koopConfig.name = info.name
-  fs.writeJsonSync(koopConfigPath, koopConfig)
-}
-
 function customizeApp (info) {
 
 }
 
 function customizeProvider (info) {
-  const configPath = path.join(info.path, ,'config' 'default.json')
+  const configPath = path.join(info.path, 'config', 'default.json')
   const config = fs.readJsonSync(configPath)
 
   config[info.name] = config['koop-cli-new-provider']
