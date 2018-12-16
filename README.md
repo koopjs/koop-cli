@@ -1,5 +1,7 @@
 # koop-cli
 
+[![Build Status](https://travis-ci.org/haoliangyu/koop-cli.svg?branch=master)](https://travis-ci.org/haoliangyu/koop-cli)
+
 A CLI tool to build [Koop](https://github.com/koopjs/koop) providers and apps
 
 ## Install
