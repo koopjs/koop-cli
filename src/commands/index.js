@@ -1,3 +1,5 @@
 module.exports = {
-  new: require('./new')
+  new: require('./new'),
+  serve: require('./serve'),
+  test: require('./test')
 }

@@ -11,7 +11,7 @@ exports.options = (yargs) => {
     })
 }
 
-exports.handler = (argv) =>
+exports.handler = (argv) => {
   const koopConfig = require(path.join(process.cwd(), 'koop.json'))
 
   if (koopConfig.type === 'provider') {
@@ -39,7 +39,7 @@ function serveProvider (port) {
   } else {
     const koop = new Koop()
 
-    const provider = require(packageInfo.main)
+    const provider = require(path.join(process.cwd(), packageInfo.main))
     koop.register(provider)
     koop.server.listen(port || 8080)
   }

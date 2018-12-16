@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+process.env.SUPPRESS_NO_CONFIG_WARNING = true
+
 const yargs = require('yargs')
 const commands = require('./commands')
 
@@ -24,4 +26,5 @@ module.exports = yargs
   )
   .demandCommand()
   .showHelpOnFail(true)
-  .help('help').argv
+  .help('help')
+  .argv
