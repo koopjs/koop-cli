@@ -5,8 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "test": "mocha 'test/**/*.test.js'",
-    "pre-push": "npm test",
-    "pre-commit": "lint-staged"
+    "prepush": "npm test",
+    "precommit": "lint-staged"
   },
   "repository": {
     "type": "git",
