@@ -1,6 +1,6 @@
 module.exports = [
   {
-    method: 'get',
+    method: 'GET',
     path: '/',
     controller: (req, res) => {
       res.status(200).send('Welcome to Koop!')

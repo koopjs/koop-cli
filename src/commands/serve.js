@@ -12,7 +12,7 @@ exports.options = (yargs) => {
     })
 }
 
-exports.handler = (argv) => {
+exports.handler = (argv = {}) => {
   const koopConfig = fs.readJsonSync(path.join(process.cwd(), 'koop.json'))
 
   if (koopConfig.type === 'provider') {

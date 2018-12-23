@@ -29,6 +29,7 @@
     "url": "https://github.com:haoliangyu/koop-cli-new-app.git"
   },
   "scripts": {
+    "start": "node src/index.js",
     "test": "tape test/*.js | tap-spec"
   }
 }

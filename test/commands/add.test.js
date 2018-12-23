@@ -12,7 +12,7 @@ const expect = chai.expect
 const temp = path.join(__dirname, 'temp')
 const app = path.join(temp, 'test')
 
-describe('new command', () => {
+describe('add command', () => {
   before(() => {
     shell.mkdir('-p', temp)
   })

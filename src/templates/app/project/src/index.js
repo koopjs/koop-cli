@@ -10,7 +10,7 @@ const koop = new Koop()
 plugins.forEach((plugin) => koop.register(plugin))
 
 // add additional routes
-routes.forEach((route) => koop.server[route.method](route.path, route.controller))
+routes.forEach((route) => koop.server[route.method.toLowerCase()](route.path, route.controller))
 
 // start the server
 const port = config.get('port')
