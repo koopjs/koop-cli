@@ -6,6 +6,7 @@ const path = require('path')
 const fs = require('fs-extra')
 const newCommand = require('../../src/commands/new')
 const addCommand = require('../../src/commands/add')
+const os = require('os')
 
 const expect = chai.expect
 const temp = path.join(__dirname, 'temp')
@@ -34,10 +35,15 @@ describe('new command', () => {
     newCommand.handler({ name: 'test', type: 'app', skipInstall: true })
     shell.cd(app)
 
-    addCommand.handler({ name: 'test-provider', type: 'provider', skipInstall: true })
+    addCommand.handler({ name: 'test-provider', skipInstall: true })
 
-    const server = await fs.readFile(path.join(app, 'src', 'index.js'), 'utf-8')
-    expect(server).to.includes("const testProvider = require('test-provider')")
-    expect(server).to.includes('koop.register(testProvider)')
+    const plugins = await fs.readFile(path.join(app, 'src', 'plugins.js'), 'utf-8')
+    const expected = [
+      "const testProvider = require('test-provider')",
+      'module.exports = [',
+      '  testProvider',
+      ']'
+    ].join(os.EOL)
+    expect(plugins).to.includes(expected)
   })
 })

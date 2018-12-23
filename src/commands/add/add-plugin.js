@@ -14,15 +14,15 @@ module.exports = (workDirectory, name, options = {}) => {
     }
   }
 
-  const serverFilePath = path.join(workDirectory, 'src', 'index.js')
-  const server = fs.readFileSync(serverFilePath, 'utf-8')
-  const lines = splitLines(server)
+  const pluginsFilePath = path.join(workDirectory, 'src', 'plugins.js')
+  const plugins = fs.readFileSync(pluginsFilePath, 'utf-8')
+  const lines = splitLines(plugins.trim())
   const moduleName = _.camelCase(name)
 
   lines.unshift(`const ${moduleName} = require('${name}')`)
 
-  const i = lines.indexOf('// register koop providers (placeholder)')
-  lines.splice(i + 1, 0, `koop.register(${moduleName})`)
+  const i = lines.indexOf(']')
+  lines.splice(i, 0, `  ${moduleName}`)
 
-  fs.writeFileSync(serverFilePath, lines.join(os.EOL))
+  fs.writeFileSync(pluginsFilePath, lines.join(os.EOL))
 }
