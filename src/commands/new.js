@@ -21,9 +21,15 @@ exports.handler = (argv) => {
   const templatePath = path.join(__dirname, '..', 'templates', projectType, 'project')
   const destPath = path.join(process.cwd(), projectName)
 
+  // create project folder
+  shell.mkdir('-p', destPath)
+
+  if (!argv.skipGit) {
+    shell.exec(`git init ${destPath}`)
+  }
+
   // copy template
-  shell.cp('-rf', templatePath, destPath)
-  shell.cd(destPath)
+  shell.cp('-rf', path.join(templatePath, '*'), destPath)
 
   const info = {
     name: projectName,
@@ -33,12 +39,10 @@ exports.handler = (argv) => {
 
   customizeProject(info)
 
-  if (argv.skipInstall) {
-    return
+  if (!argv.skipInstall) {
+    // install dependencies
+    shell.exec('npm i')
   }
-
-  // install dependencies
-  shell.exec('npm i')
 }
 
 function customizeProject (info) {

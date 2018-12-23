@@ -30,7 +30,12 @@ describe('new command', () => {
   })
 
   it('should create an app project from the template', async () => {
-    handler({ name: 'test', type: 'app', skipInstall: true })
+    handler({
+      name: 'test',
+      type: 'app',
+      skipGit: true,
+      skipInstall: true
+    })
     expect(shell.test('-e', app)).to.equal(true)
 
     const packageInfo = await fs.readJson(path.join(app, 'package.json'))
@@ -41,7 +46,12 @@ describe('new command', () => {
   })
 
   it('should create a provider project from the template', async () => {
-    handler({ name: 'test', type: 'provider', skipInstall: true })
+    handler({
+      name: 'test',
+      type: 'provider',
+      skipGit: true,
+      skipInstall: true
+    })
     expect(shell.test('-e', app)).to.equal(true)
 
     const packageInfo = await fs.readJson(path.join(app, 'package.json'))

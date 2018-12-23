@@ -37,8 +37,8 @@ koop new [project-type] [project-name]
 ```
 
 The user can create different types of koop projects from templates:
-* `provider` from [koop-cli-new-provider](https://github.com/haoliangyu/koop-cli-new-provider)
-* `app` from [koop-cli-new-app](https://github.com/haoliangyu/koop-cli-new-app)
+* **provider** from [koop-cli-new-provider](./templates/provider/project)
+* **app** from [koop-cli-new-app](./templates/provider/provider)
 
 #### Example
 
@@ -61,7 +61,7 @@ koop serve
 The `add` command adds a koop plugin to the current koop app.
 
 ``` bash
-koop add [plugin-type] [plugin-name]
+koop add [plugin-name]
 ```
 
 #### Example
@@ -69,5 +69,5 @@ koop add [plugin-type] [plugin-name]
 Add a koop provider [koop-provider-zillow](https://www.npmjs.com/package/koop-provider-zillow) to the current app
 
 ``` bash
-koop add provider koop-provider-zillow
+koop add koop-provider-zillow
 ```

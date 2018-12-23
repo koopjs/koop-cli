@@ -32,7 +32,12 @@ describe('add command', () => {
   })
 
   it('should add a provider to an app project', async () => {
-    newCommand.handler({ name: 'test', type: 'app', skipInstall: true })
+    newCommand.handler({
+      name: 'test',
+      type: 'app',
+      skipInstall: true,
+      skipGit: true
+    })
     shell.cd(app)
 
     addCommand.handler({ name: 'test-provider', skipInstall: true })
