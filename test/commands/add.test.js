@@ -41,7 +41,7 @@ describe('new command', () => {
     const expected = [
       "const testProvider = require('test-provider')",
       'module.exports = [',
-      '  testProvider',
+      '  testProvider,',
       ']'
     ].join(os.EOL)
     expect(plugins).to.includes(expected)

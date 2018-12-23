@@ -22,7 +22,7 @@ module.exports = (workDirectory, name, options = {}) => {
   lines.unshift(`const ${moduleName} = require('${name}')`)
 
   const i = lines.indexOf(']')
-  lines.splice(i, 0, `  ${moduleName}`)
+  lines.splice(i, 0, `  ${moduleName},`)
 
   fs.writeFileSync(pluginsFilePath, lines.join(os.EOL))
 }
