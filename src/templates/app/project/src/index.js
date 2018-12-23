@@ -1,21 +1,15 @@
 const config = require('config')
 const Koop = require('koop')
+const routes = require('./routes')
 
 // initiate a koop app
 const koop = new Koop()
 
-const welcomeMessage = `
-Welcome to Koop!
+// register koop providers (placeholder)
 
-Installed Providers:
-`
-
-// This is how you implement additional arbitrary routes on the Koop server
-koop.server.get('/', (req, res) => {
-  res.status(200).send(welcomeMessage)
-})
-
-const port = config.get('port')
+// add additional routes
+routes.forEach((route) => koop.server[route.method](route.path, route.controller))
 
 // start the server
+const port = config.get('port')
 koop.server.listen(port, () => koop.log.info(`Koop server listening at ${port}`))

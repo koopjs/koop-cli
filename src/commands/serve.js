@@ -1,5 +1,6 @@
 const path = require('path')
 const shell = require('shelljs')
+const fs = require('fs-extra')
 const Koop = require('koop')
 
 exports.options = (yargs) => {
@@ -12,7 +13,7 @@ exports.options = (yargs) => {
 }
 
 exports.handler = (argv) => {
-  const koopConfig = require(path.join(process.cwd(), 'koop.json'))
+  const koopConfig = fs.readJsonSync(path.join(process.cwd(), 'koop.json'))
 
   if (koopConfig.type === 'provider') {
     serveProvider(argv.port)
@@ -22,7 +23,7 @@ exports.handler = (argv) => {
 }
 
 function serveApp () {
-  const packageInfo = require(path.join(process.cwd(), 'package.json'))
+  const packageInfo = fs.readJsonSync(path.join(process.cwd(), 'package.json'))
 
   if (packageInfo.scripts.start) {
     shell.exec('npm run start')
@@ -32,14 +33,14 @@ function serveApp () {
 }
 
 function serveProvider (port) {
-  const packageInfo = require(path.join(process.cwd(), 'package.json'))
+  const packageInfo = fs.readJsonSync(path.join(process.cwd(), 'package.json'))
 
   if (packageInfo.scripts.start) {
     shell.exec('npm run start')
   } else {
     const koop = new Koop()
 
-    const provider = require(path.join(process.cwd(), packageInfo.main))
+    const provider = fs.readJsonSync(path.join(process.cwd(), packageInfo.main))
     koop.register(provider)
     koop.server.listen(port || 8080)
   }
