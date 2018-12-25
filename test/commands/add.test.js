@@ -10,7 +10,6 @@ const os = require('os')
 
 const expect = chai.expect
 const temp = path.join(__dirname, 'temp')
-const app = path.join(temp, 'test')
 
 describe('add command', () => {
   before(() => {
@@ -21,19 +20,12 @@ describe('add command', () => {
     shell.cd(temp)
   })
 
-  afterEach(() => {
-    if (shell.test('-e', app)) {
-      shell.rm('-rf', app)
-    }
-  })
-
-  after(() => {
-    shell.rm('-rf', temp)
-  })
-
   it('should add a provider to an app project', async () => {
+    const appName = 'add-test-1'
+    const app = path.join(temp, appName)
+
     newCommand.handler({
-      name: 'test',
+      name: appName,
       type: 'app',
       skipInstall: true,
       skipGit: true
@@ -50,5 +42,9 @@ describe('add command', () => {
       ']'
     ].join(os.EOL)
     expect(plugins).to.includes(expected)
+
+    if (shell.test('-e', app)) {
+      shell.rm('-rf', app)
+    }
   })
 })
