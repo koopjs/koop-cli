@@ -15,7 +15,7 @@ exports.options = (yargs) => {
     })
 }
 
-exports.handler = (argv) => {
+exports.handler = async (argv) => {
   const projectType = argv.type
   const projectName = argv.name
   const templatePath = path.join(__dirname, '..', 'templates', projectType, 'project')
@@ -37,7 +37,7 @@ exports.handler = (argv) => {
     path: destPath
   }
 
-  customizeProject(info)
+  await customizeProject(info)
 
   if (!argv.skipInstall) {
     // install dependencies
@@ -45,34 +45,38 @@ exports.handler = (argv) => {
   }
 }
 
-function customizeProject (info) {
+async function customizeProject (info) {
+  const processes = []
+
   // modify package.json
-  customizePackage(info)
+  processes.push(customizePackage(info))
 
   if (info.type === 'app') {
-    customizeApp(info)
+    processes.push(customizeApp(info))
   } else if (info.type === 'provider') {
-    customizeProvider(info)
+    processes.push(customizeProvider(info))
   }
+
+  return Promise.all(processes)
 }
 
-function customizePackage (info) {
+async function customizePackage (info) {
   const packagePath = path.join(info.path, 'package.json')
-  const packageInfo = fs.readJsonSync(packagePath)
+  const packageInfo = await fs.readJson(packagePath)
   packageInfo.name = info.name
-  fs.writeJsonSync(packagePath, packageInfo)
+  return fs.writeJson(packagePath, packageInfo)
 }
 
-function customizeApp (info) {
+async function customizeApp (info) {
 
 }
 
-function customizeProvider (info) {
+async function customizeProvider (info) {
   const configPath = path.join(info.path, 'config', 'default.json')
-  const config = fs.readJsonSync(configPath)
+  const config = await fs.readJson(configPath)
 
   config[info.name] = config['koop-cli-new-provider']
   delete config['koop-cli-new-provider']
 
-  fs.writeJsonSync(configPath, config)
+  return fs.writeJson(configPath, config)
 }

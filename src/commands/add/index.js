@@ -12,14 +12,14 @@ exports.options = (yargs) => {
     })
 }
 
-exports.handler = (argv) => {
+exports.handler = async (argv) => {
   const name = argv.name
 
   const workDirectory = process.cwd()
-  const koopConfig = fs.readJsonSync(path.join(workDirectory, 'koop.json'))
+  const koopConfig = await fs.readJson(path.join(workDirectory, 'koop.json'))
 
   if (koopConfig.type === 'app') {
-    addPlugin(workDirectory, name, {
+    return addPlugin(workDirectory, name, {
       skipInstall: argv.skipInstall
     })
   }

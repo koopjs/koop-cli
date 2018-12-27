@@ -30,7 +30,7 @@ describe('new command', () => {
   })
 
   it('should create an app project from the template', async () => {
-    handler({
+    await handler({
       name: 'test',
       type: 'app',
       skipGit: true,
@@ -46,7 +46,7 @@ describe('new command', () => {
   })
 
   it('should create a provider project from the template', async () => {
-    handler({
+    await handler({
       name: 'test',
       type: 'provider',
       skipGit: true,

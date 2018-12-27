@@ -32,7 +32,7 @@ describe('add command', () => {
   })
 
   it('should add a provider to an app project', async () => {
-    newCommand.handler({
+    await newCommand.handler({
       name: 'test',
       type: 'app',
       skipInstall: true,
@@ -40,7 +40,7 @@ describe('add command', () => {
     })
     shell.cd(app)
 
-    addCommand.handler({ name: 'test-provider', skipInstall: true })
+    await addCommand.handler({ name: 'test-provider', skipInstall: true })
 
     const plugins = await fs.readFile(path.join(app, 'src', 'plugins.js'), 'utf-8')
     const expected = [

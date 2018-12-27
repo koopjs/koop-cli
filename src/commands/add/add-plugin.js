@@ -5,7 +5,7 @@ const path = require('path')
 const splitLines = require('split-lines')
 const _ = require('lodash')
 
-module.exports = (workDirectory, name, options = {}) => {
+module.exports = async (workDirectory, name, options = {}) => {
   if (!options.skipInstall) {
     const result = shell.exec(`npm install ${name}`)
 
@@ -15,7 +15,7 @@ module.exports = (workDirectory, name, options = {}) => {
   }
 
   const pluginsFilePath = path.join(workDirectory, 'src', 'plugins.js')
-  const plugins = fs.readFileSync(pluginsFilePath, 'utf-8')
+  const plugins = await fs.readFile(pluginsFilePath, 'utf-8')
   const lines = splitLines(plugins.trim())
   const moduleName = _.camelCase(name)
 
@@ -24,5 +24,5 @@ module.exports = (workDirectory, name, options = {}) => {
   const i = lines.indexOf(']')
   lines.splice(i, 0, `  ${moduleName},`)
 
-  fs.writeFileSync(pluginsFilePath, lines.join(os.EOL))
+  return fs.writeFile(pluginsFilePath, lines.join(os.EOL))
 }
