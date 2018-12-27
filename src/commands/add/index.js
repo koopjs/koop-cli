@@ -7,8 +7,17 @@ const addPlugin = require('./add-plugin')
 exports.options = (yargs) => {
   yargs
     .positional('name', {
-      describe: 'plugin name',
+      description: 'plugin name',
       type: 'string'
+    })
+    .option('config', {
+      description: 'plugin configuration in JSON',
+      type: 'string'
+    })
+    .option('append-to-root', {
+      description: 'whether to append the plugin configuration into the app root configuration',
+      type: 'boolean',
+      default: false
     })
 }
 
@@ -20,6 +29,8 @@ exports.handler = async (argv) => {
 
   if (koopConfig.type === 'app') {
     return addPlugin(workDirectory, name, {
+      config: argv.config,
+      appendToRoot: argv.appendToRoot,
       skipInstall: argv.skipInstall
     })
   }

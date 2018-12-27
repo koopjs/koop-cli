@@ -10,7 +10,6 @@ const os = require('os')
 
 const expect = chai.expect
 const temp = path.join(__dirname, 'temp')
-const app = path.join(temp, 'test')
 
 describe('add command', () => {
   before(() => {
@@ -21,19 +20,12 @@ describe('add command', () => {
     shell.cd(temp)
   })
 
-  afterEach(() => {
-    if (shell.test('-e', app)) {
-      shell.rm('-rf', app)
-    }
-  })
-
-  after(() => {
-    shell.rm('-rf', temp)
-  })
-
   it('should add a provider to an app project', async () => {
+    const appName = 'add-test-1'
+    const app = path.join(temp, appName)
+
     await newCommand.handler({
-      name: 'test',
+      name: appName,
       type: 'app',
       skipInstall: true,
       skipGit: true
@@ -50,5 +42,90 @@ describe('add command', () => {
       ']'
     ].join(os.EOL)
     expect(plugins).to.includes(expected)
+
+    shell.rm('-rf', app)
+  })
+
+  it('should add plugin config if provided', async () => {
+    const appName = 'add-test-2'
+    const app = path.join(temp, appName)
+
+    await newCommand.handler({
+      name: appName,
+      type: 'app',
+      skipInstall: true,
+      skipGit: true
+    })
+    shell.cd(app)
+
+    await addCommand.handler({
+      name: 'test-provider',
+      config: {
+        api: 'api url'
+      },
+      skipInstall: true
+    })
+
+    const appConfig = await fs.readJson(path.join(app, 'config', 'default.json'))
+    expect(appConfig['test-provider']).to.deep.equal({
+      api: 'api url'
+    })
+
+    shell.rm('-rf', app)
+  })
+
+  it('should add string plugin config if provided', async () => {
+    const appName = 'add-test-2'
+    const app = path.join(temp, appName)
+
+    await newCommand.handler({
+      name: appName,
+      type: 'app',
+      skipInstall: true,
+      skipGit: true
+    })
+    shell.cd(app)
+
+    await addCommand.handler({
+      name: 'test-provider',
+      config: JSON.stringify({
+        api: 'api url'
+      }),
+      skipInstall: true
+    })
+
+    const appConfig = await fs.readJson(path.join(app, 'config', 'default.json'))
+    expect(appConfig['test-provider']).to.deep.equal({
+      api: 'api url'
+    })
+
+    shell.rm('-rf', app)
+  })
+
+  it('should append the plugin config to the app config if specified', async () => {
+    const appName = 'add-test-2'
+    const app = path.join(temp, appName)
+
+    await newCommand.handler({
+      name: appName,
+      type: 'app',
+      skipInstall: true,
+      skipGit: true
+    })
+    shell.cd(app)
+
+    await addCommand.handler({
+      name: 'test-provider',
+      config: {
+        api: 'api url'
+      },
+      appendToRoot: true,
+      skipInstall: true
+    })
+
+    const appConfig = await fs.readJson(path.join(app, 'config', 'default.json'))
+    expect(appConfig.api).to.equal('api url')
+
+    shell.rm('-rf', app)
   })
 })

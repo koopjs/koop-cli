@@ -14,6 +14,31 @@ module.exports = async (workDirectory, name, options = {}) => {
     }
   }
 
+  if (options.config) {
+    const config = typeof options.config === 'string'
+      ? JSON.parse(options.config)
+      : options.config
+
+    await updateConfig(workDirectory, name, config, options.appendToRoot)
+  }
+
+  await updateJS(workDirectory, name)
+}
+
+async function updateConfig (workDirectory, name, config, appendToRoot) {
+  const configPath = path.join(workDirectory, 'config', 'default.json')
+  let appConfig = await fs.readJson(configPath)
+
+  if (appendToRoot) {
+    appConfig = Object.assign(appConfig, config)
+  } else {
+    appConfig[name] = config
+  }
+
+  return fs.writeJson(configPath, appConfig)
+}
+
+async function updateJS (workDirectory, name) {
   const pluginsFilePath = path.join(workDirectory, 'src', 'plugins.js')
   const plugins = await fs.readFile(pluginsFilePath, 'utf-8')
   const lines = splitLines(plugins.trim())

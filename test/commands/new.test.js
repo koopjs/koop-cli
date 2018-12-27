@@ -8,7 +8,6 @@ const { handler } = require('../../src/commands/new')
 
 const expect = chai.expect
 const temp = path.join(__dirname, 'temp')
-const app = path.join(temp, 'test')
 
 describe('new command', () => {
   before(() => {
@@ -19,19 +18,12 @@ describe('new command', () => {
     shell.cd(temp)
   })
 
-  afterEach(() => {
-    if (shell.test('-e', app)) {
-      shell.rm('-rf', app)
-    }
-  })
-
-  after(() => {
-    shell.rm('-rf', temp)
-  })
-
   it('should create an app project from the template', async () => {
+    const appName = 'new-test-1'
+    const app = path.join(temp, appName)
+
     await handler({
-      name: 'test',
+      name: appName,
       type: 'app',
       skipGit: true,
       skipInstall: true
@@ -39,15 +31,20 @@ describe('new command', () => {
     expect(shell.test('-e', app)).to.equal(true)
 
     const packageInfo = await fs.readJson(path.join(app, 'package.json'))
-    expect(packageInfo.name).to.equal('test')
+    expect(packageInfo.name).to.equal(appName)
 
     const koopConfig = await fs.readJson(path.join(app, 'koop.json'))
     expect(koopConfig.type).to.equal('app')
+
+    shell.rm('-rf', app)
   })
 
   it('should create a provider project from the template', async () => {
+    const appName = 'new-test-2'
+    const app = path.join(temp, appName)
+
     await handler({
-      name: 'test',
+      name: appName,
       type: 'provider',
       skipGit: true,
       skipInstall: true
@@ -55,9 +52,11 @@ describe('new command', () => {
     expect(shell.test('-e', app)).to.equal(true)
 
     const packageInfo = await fs.readJson(path.join(app, 'package.json'))
-    expect(packageInfo.name).to.equal('test')
+    expect(packageInfo.name).to.equal(appName)
 
     const koopConfig = await fs.readJson(path.join(app, 'koop.json'))
     expect(koopConfig.type).to.equal('provider')
+
+    shell.rm('-rf', app)
   })
 })
