@@ -31,7 +31,7 @@
     "yargs": "^12.0.5"
   },
   "bin": {
-    "koop": "node ./src/index.js"
+    "koop": "src/index.js"
   },
   "devDependencies": {
     "chai": "^4.2.0",
