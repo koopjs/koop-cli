@@ -1,7 +1,6 @@
 const path = require('path')
 const shell = require('shelljs')
 const fs = require('fs-extra')
-const Koop = require('koop')
 
 exports.options = (yargs) => {
   yargs
@@ -38,6 +37,7 @@ function serveProvider (port) {
   if (packageInfo.scripts.start) {
     shell.exec('npm run start')
   } else {
+    const Koop = require('koop')
     const koop = new Koop()
 
     const provider = fs.readJsonSync(path.join(process.cwd(), packageInfo.main))

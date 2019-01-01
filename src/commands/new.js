@@ -31,6 +31,19 @@ exports.handler = async (argv) => {
   // copy template
   shell.cp('-rf', path.join(templatePath, '*'), destPath)
 
+  // cd to the work directory
+  shell.cd(destPath)
+
+  // rename the npmignore file to gitignore before the original gitignore file
+  // is renamed during the npm global install
+  // see: https://medium.com/northcoders/creating-a-project-generator-with-node-29e13b3cd309
+  if (
+    shell.test('-e', '.npmignore') &&
+    !shell.test('-e', '.gitignore')
+  ) {
+    shell.mv('.npmignore', '.gitignore')
+  }
+
   const info = {
     name: projectName,
     type: projectType,
@@ -40,8 +53,6 @@ exports.handler = async (argv) => {
   await customizeProject(info)
 
   if (!argv.skipInstall) {
-    shell.cd(destPath)
-
     // install dependencies
     shell.exec('npm i')
   }
