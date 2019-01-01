@@ -71,3 +71,11 @@ Add a koop provider [koop-provider-zillow](https://www.npmjs.com/package/koop-pr
 ``` bash
 koop add koop-provider-zillow
 ```
+
+### test
+
+The `test` command run tests in the current koop project.
+
+``` bash
+koop test
+```
