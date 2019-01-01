@@ -12,7 +12,6 @@ exports.options = (yargs) => {
 }
 
 exports.handler = (argv = {}) => {
-  console.log('cwd', process.cwd())
   const koopConfig = fs.readJsonSync(path.join(process.cwd(), 'koop.json'))
 
   if (koopConfig.type === 'provider') {
@@ -41,7 +40,7 @@ function serveProvider (port) {
     const Koop = require('koop')
     const koop = new Koop()
 
-    const provider = fs.readJsonSync(path.join(process.cwd(), packageInfo.main))
+    const provider = fs.require(path.join(process.cwd(), packageInfo.main))
     koop.register(provider)
     koop.server.listen(port || 8080)
   }
