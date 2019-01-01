@@ -37,8 +37,8 @@ koop new [project-type] [project-name]
 ```
 
 The user can create different types of koop projects from templates:
-* **provider** from [koop-cli-new-provider](./templates/provider/project)
-* **app** from [koop-cli-new-app](./templates/provider/provider)
+* **provider** from [koop-cli-new-provider](https://github.com/haoliangyu/koop-cli/tree/master/src/templates/provider/project)
+* **app** from [koop-cli-new-app](https://github.com/haoliangyu/koop-cli/tree/master/src/templates/app/project)
 
 #### Example
 
