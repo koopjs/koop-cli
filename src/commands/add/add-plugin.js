@@ -42,7 +42,7 @@ async function updateJS (workDirectory, name) {
   const pluginsFilePath = path.join(workDirectory, 'src', 'plugins.js')
   const plugins = await fs.readFile(pluginsFilePath, 'utf-8')
   const lines = splitLines(plugins.trim())
-  const moduleName = _.camelCase(name)
+  const moduleName = _.camelCase(name.match(/(@.+\/)?(.+)/)[2])
 
   lines.unshift(`const ${moduleName} = require('${name}')`)
 
