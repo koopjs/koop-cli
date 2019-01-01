@@ -40,7 +40,7 @@ function serveProvider (port) {
     const Koop = require('koop')
     const koop = new Koop()
 
-    const provider = fs.require(path.join(process.cwd(), packageInfo.main))
+    const provider = require(path.join(process.cwd(), packageInfo.main))
     koop.register(provider)
     koop.server.listen(port || 8080)
   }
