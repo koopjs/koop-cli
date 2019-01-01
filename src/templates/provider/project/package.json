@@ -1,11 +1,9 @@
 {
   "name": "koop-cli-new-provider",
+  "private": true,
   "version": "3.0.0",
   "description": "An opinionated provider template for koop-cli",
   "main": "src/index.js",
-  "directories": {
-    "test": "test"
-  },
   "scripts": {
     "test": "tape test/*.js | tap-spec"
   },
@@ -14,26 +12,16 @@
     "koop": "^3.10.1",
     "node-fetch": "^2.3.0"
   },
-  "author": "Haoliang Yu",
-  "license": "Apache-2.0",
+  "author": "",
+  "license": "MIT",
   "devDependencies": {
     "nock": "^10.0.3",
     "tap-spec": "^5.0.0",
     "tape": "^4.6.3"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com:haoliangyu/koop-cli-new-provider.git"
-  },
-  "bugs": {
-    "url": "https://github.com/haoliangyu/koop-cli-new-provider/issues"
-  },
-  "homepage": "https://github.com/haoliangyu/koop-cli-new-provider",
+  "repository": "",
   "keywords": [
     "koop",
-    "cli",
-    "provider",
-    "template",
-    "boilerplate"
+    "provider"
   ]
 }

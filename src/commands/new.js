@@ -40,6 +40,8 @@ exports.handler = async (argv) => {
   await customizeProject(info)
 
   if (!argv.skipInstall) {
+    shell.cd(destPath)
+
     // install dependencies
     shell.exec('npm i')
   }
