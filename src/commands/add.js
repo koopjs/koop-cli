@@ -1,8 +1,4 @@
-const path = require('path')
-const fs = require('fs-extra')
-
-// add helper functions
-const addPlugin = require('./add-plugin')
+const addPlugin = require('../utils/add-plugin')
 
 exports.options = (yargs) => {
   yargs
@@ -23,15 +19,11 @@ exports.options = (yargs) => {
 
 exports.handler = async (argv) => {
   const name = argv.name
+  const cwd = process.cwd()
 
-  const workDirectory = process.cwd()
-  const koopConfig = await fs.readJson(path.join(workDirectory, 'koop.json'))
-
-  if (koopConfig.type === 'app') {
-    return addPlugin(workDirectory, name, {
-      config: argv.config,
-      appendToRoot: argv.appendToRoot,
-      skipInstall: argv.skipInstall
-    })
-  }
+  return addPlugin(cwd, name, {
+    config: argv.config,
+    appendToRoot: argv.appendToRoot,
+    skipInstall: argv.skipInstall
+  })
 }

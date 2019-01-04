@@ -18,15 +18,17 @@ Use yarn
 yarn global add koop-cli
 ```
 
-## Use
+## APIs
 
-Once installed, the command `koop` will be available at the console:
+
+
+## Commands
+
+Once installed, the command `koop` will be available：
 
 ``` bash
 koop new provider koop-provider-github
 ```
-
-## Command
 
 ### new
 
