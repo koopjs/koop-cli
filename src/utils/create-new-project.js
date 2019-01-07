@@ -14,7 +14,7 @@ module.exports = async (cwd, type, name, options = {}) => {
 
     // add gitignore
     shell.cp(
-      path.join(__dirname, 'data/node.gitignore'),
+      path.join(__dirname, '../data/node.gitignore'),
       path.join(destPath, '.gitignore')
     )
   }
