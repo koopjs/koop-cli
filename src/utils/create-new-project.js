@@ -25,7 +25,7 @@ module.exports = async (cwd, type, name, options = {}) => {
   // cd to the work directory
   shell.cd(destPath)
 
-  await customizeProject(destPath, type, name)
+  await customizeProject(destPath, type, name, options)
 
   if (!options.skipInstall) {
     // install dependencies
@@ -33,25 +33,31 @@ module.exports = async (cwd, type, name, options = {}) => {
   }
 }
 
-async function customizeProject (path, type, name) {
+async function customizeProject (path, type, name, options) {
   const processes = []
 
   // modify package.json
-  processes.push(customizePackage(path, type, name))
+  processes.push(customizePackage(path, type, name, options))
 
   if (type === 'app') {
-    processes.push(customizeApp(path, type, name))
+    processes.push(customizeApp(path, type, name, options))
   } else if (type === 'provider') {
-    processes.push(customizeProvider(path, type, name))
+    processes.push(customizeProvider(path, type, name, options))
   }
 
   return Promise.all(processes)
 }
 
-async function customizePackage (projectPath, type, name) {
+async function customizePackage (projectPath, type, name, options = {}) {
   const packagePath = path.join(projectPath, 'package.json')
   const packageInfo = await fs.readJson(packagePath)
   packageInfo.name = name
+
+  // add npm script "start" if the provider project has a server option
+  if (type === 'provider' && options.addServer) {
+    packageInfo.scripts.start = 'node src/server.js'
+  }
+
   return fs.writeJson(packagePath, packageInfo)
 }
 
@@ -59,12 +65,19 @@ async function customizeApp (projectPath, type, name) {
 
 }
 
-async function customizeProvider (projectPath, type, name) {
-  const configPath = path.join(projectPath, 'config', 'default.json')
+async function customizeProvider (projectPath, type, name, options = {}) {
+  const configPath = path.join(projectPath, 'config/default.json')
   const config = await fs.readJson(configPath)
 
   config[name] = config['koop-cli-new-provider']
   delete config['koop-cli-new-provider']
 
-  return fs.writeJson(configPath, config)
+  await fs.writeJson(configPath, config)
+
+  // add a server file to the koop provider project so the user does not have to
+  // publish the provider and use it without koop-cli
+  if (options.addServer) {
+    const serverPath = path.join(__dirname, '../templates', type, 'components/server.js')
+    shell.cp(serverPath, path.join(projectPath, 'src/server.js'))
+  }
 }

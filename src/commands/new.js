@@ -11,6 +11,11 @@ exports.options = (yargs) => {
       describe: 'project name',
       type: 'string'
     })
+    .option('add-server', {
+      description: 'add a server file to the new koop provider project',
+      type: 'boolean',
+      default: false
+    })
 }
 
 exports.handler = async (argv) => {
@@ -18,5 +23,5 @@ exports.handler = async (argv) => {
   const name = argv.name
   const cwd = process.cwd()
 
-  return createNewProject(cwd, type, name)
+  return createNewProject(cwd, type, name, argv)
 }

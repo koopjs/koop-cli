@@ -14,12 +14,16 @@ describe('new command', () => {
     shell.mkdir('-p', temp)
   })
 
+  after(() => {
+    shell.rm('-rf', temp)
+  })
+
   beforeEach(() => {
     shell.cd(temp)
   })
 
   it('should create an app project from the template', async () => {
-    const appName = 'new-test-1'
+    const appName = `new-test-${Date.now()}`
     const appPath = path.join(temp, appName)
 
     await createNewProject(
@@ -38,12 +42,10 @@ describe('new command', () => {
 
     const koopConfig = await fs.readJson(path.join(appPath, 'koop.json'))
     expect(koopConfig.type).to.equal('app')
-
-    shell.rm('-rf', appPath)
   })
 
   it('should create a provider project from the template', async () => {
-    const appName = 'new-test-2'
+    const appName = `new-test-${Date.now()}`
     const appPath = path.join(temp, appName)
 
     await createNewProject(
@@ -62,7 +64,31 @@ describe('new command', () => {
 
     const koopConfig = await fs.readJson(path.join(appPath, 'koop.json'))
     expect(koopConfig.type).to.equal('provider')
+  })
 
-    shell.rm('-rf', appPath)
+  it('should add a server file to the new provider project if specified', async () => {
+    const appName = `new-test-${Date.now()}`
+    const appPath = path.join(temp, appName)
+
+    await createNewProject(
+      temp,
+      'provider',
+      appName,
+      {
+        skipGit: true,
+        skipInstall: true,
+        addServer: true
+      }
+    )
+
+    expect(shell.test('-e', appPath)).to.equal(true)
+    expect(shell.test('-e', path.join(appPath, 'src/server.js'))).to.equal(true)
+
+    const packageInfo = await fs.readJson(path.join(appPath, 'package.json'))
+    expect(packageInfo.name).to.equal(appName)
+    expect(packageInfo.scripts.start).to.equal('node src/server.js')
+
+    const koopConfig = await fs.readJson(path.join(appPath, 'koop.json'))
+    expect(koopConfig.type).to.equal('provider')
   })
 })
