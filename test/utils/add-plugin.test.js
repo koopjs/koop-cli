@@ -13,7 +13,7 @@ const temp = path.join(__dirname, 'temp')
 
 let appName
 
-describe('add command', () => {
+describe('utils/add-plugin', () => {
   before(() => {
     shell.mkdir('-p', temp)
   })

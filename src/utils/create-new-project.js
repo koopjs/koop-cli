@@ -2,38 +2,29 @@ const path = require('path')
 const shell = require('shelljs')
 const fs = require('fs-extra')
 const addConfig = require('./add-config')
+const setupGit = require('./setup-git')
 
 module.exports = async (cwd, type, name, options = {}) => {
   const templatePath = path.join(__dirname, '..', 'templates', type, 'project')
-  const destPath = path.join(cwd, name)
+  const projectPath = path.join(cwd, name)
 
   // create project folder
-  shell.mkdir('-p', destPath)
+  shell.mkdir('-p', projectPath)
 
   if (!options.skipGit) {
-    shell.exec(`git init ${destPath}`)
-
-    // add gitignore
-    shell.cp(
-      path.join(__dirname, '../data/node.gitignore'),
-      path.join(destPath, '.gitignore')
-    )
+    await setupGit(projectPath)
   }
 
   // copy template
-  shell.cp('-rf', path.join(templatePath, '*'), destPath)
+  shell.cp('-rf', path.join(templatePath, '*'), projectPath)
 
   // cd to the work directory
-  shell.cd(destPath)
+  shell.cd(projectPath)
 
-  await customizeProject(destPath, type, name, options)
+  await customizeProject(projectPath, type, name, options)
 
   if (options.config) {
-    options.config = typeof options.config === 'string'
-      ? JSON.parse(options.config)
-      : options.config
-
-    await addConfig(destPath, options.config)
+    await addConfig(projectPath, options.config)
   }
 
   if (!options.skipInstall) {

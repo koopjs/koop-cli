@@ -11,6 +11,10 @@ module.exports = async (cwd, newConfig, options = {}) => {
     config = await fs.readJson(configPath)
   }
 
+  if (typeof newConfig === 'string') {
+    newConfig = JSON.parse(newConfig)
+  }
+
   config = Object.assign(config, newConfig)
 
   return fs.writeJson(configPath, config)

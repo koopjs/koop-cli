@@ -22,10 +22,6 @@ module.exports = async (cwd, name, options = {}) => {
   }
 
   if (options.config) {
-    options.config = typeof options.config === 'string'
-      ? JSON.parse(options.config)
-      : options.config
-
     await updateConfig(cwd, name, options)
   }
 
@@ -35,10 +31,14 @@ module.exports = async (cwd, name, options = {}) => {
 async function updateConfig (cwd, name, options) {
   let config = {}
 
+  const pluginConfig = typeof options.config === 'string'
+    ? JSON.parse(options.config)
+    : options.config
+
   if (options.addToRoot) {
-    config = options.config
+    config = pluginConfig
   } else {
-    config[name] = options.config
+    config[name] = pluginConfig
   }
 
   return addConfig(cwd, config)
