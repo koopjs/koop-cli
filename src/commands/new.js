@@ -11,6 +11,10 @@ exports.options = (yargs) => {
       describe: 'project name',
       type: 'string'
     })
+    .option('config', {
+      description: 'specify the project configuration in JSON',
+      type: 'string'
+    })
     .option('add-server', {
       description: 'add a server file to the new koop provider project',
       type: 'boolean',

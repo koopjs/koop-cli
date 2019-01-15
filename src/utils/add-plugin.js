@@ -4,6 +4,7 @@ const os = require('os')
 const path = require('path')
 const splitLines = require('split-lines')
 const _ = require('lodash')
+const addConfig = require('./add-config')
 
 module.exports = async (cwd, name, options = {}) => {
   const koopConfig = await fs.readJson(path.join(cwd, 'koop.json'))
@@ -21,10 +22,9 @@ module.exports = async (cwd, name, options = {}) => {
   }
 
   if (options.config) {
-    const parsedConfig = typeof options.config === 'string'
+    options.config = typeof options.config === 'string'
       ? JSON.parse(options.config)
       : options.config
-    options.config = parsedConfig
 
     await updateConfig(cwd, name, options)
   }
@@ -33,16 +33,15 @@ module.exports = async (cwd, name, options = {}) => {
 }
 
 async function updateConfig (cwd, name, options) {
-  const configPath = path.join(cwd, 'config', 'default.json')
-  let appConfig = await fs.readJson(configPath)
+  let config = {}
 
-  if (options.appendToRoot) {
-    appConfig = Object.assign(appConfig, options.config)
+  if (options.addToRoot) {
+    config = options.config
   } else {
-    appConfig[name] = options.config
+    config[name] = options.config
   }
 
-  return fs.writeJson(configPath, appConfig)
+  return addConfig(cwd, config)
 }
 
 async function updateJS (cwd, name) {

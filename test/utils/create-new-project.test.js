@@ -91,4 +91,26 @@ describe('new command', () => {
     const koopConfig = await fs.readJson(path.join(appPath, 'koop.json'))
     expect(koopConfig.type).to.equal('provider')
   })
+
+  it('should update the config file if specified', async () => {
+    const appName = `new-test-${Date.now()}`
+    const appPath = path.join(temp, appName)
+
+    await createNewProject(
+      temp,
+      'app',
+      appName,
+      {
+        skipGit: true,
+        skipInstall: true,
+        config: JSON.stringify({ port: 3000 })
+      }
+    )
+
+    const configPath = path.join(appPath, 'config/default.json')
+    expect(shell.test('-e', configPath)).to.equal(true)
+
+    const config = await fs.readJson(configPath)
+    expect(config.port).to.equal(3000)
+  })
 })

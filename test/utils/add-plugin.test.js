@@ -168,7 +168,7 @@ describe('add command', () => {
       'test-provider',
       {
         config: { api: 'api url' },
-        appendToRoot: true,
+        addToRoot: true,
         skipInstall: true
       }
     )

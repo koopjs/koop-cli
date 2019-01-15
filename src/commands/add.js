@@ -7,11 +7,11 @@ exports.options = (yargs) => {
       type: 'string'
     })
     .option('config', {
-      description: 'plugin configuration in JSON',
+      description: 'specify the plugin configuration in JSON',
       type: 'string'
     })
-    .option('append-to-root', {
-      description: 'whether to append the plugin configuration into the app root configuration',
+    .option('add-to-root', {
+      description: 'add the given configuration to the app root configuration',
       type: 'boolean',
       default: false
     })

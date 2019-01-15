@@ -1,6 +1,7 @@
 const path = require('path')
 const shell = require('shelljs')
 const fs = require('fs-extra')
+const addConfig = require('./add-config')
 
 module.exports = async (cwd, type, name, options = {}) => {
   const templatePath = path.join(__dirname, '..', 'templates', type, 'project')
@@ -26,6 +27,14 @@ module.exports = async (cwd, type, name, options = {}) => {
   shell.cd(destPath)
 
   await customizeProject(destPath, type, name, options)
+
+  if (options.config) {
+    options.config = typeof options.config === 'string'
+      ? JSON.parse(options.config)
+      : options.config
+
+    await addConfig(destPath, options.config)
+  }
 
   if (!options.skipInstall) {
     // install dependencies
