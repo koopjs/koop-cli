@@ -24,8 +24,11 @@ describe('utils/add-plugin', () => {
     appPath = path.join(temp, appName)
   })
 
-  after(() => {
-    shell.rm('-rf', temp)
+  after((done) => {
+    setTimeout(() => {
+      shell.rm('-rf', temp)
+      done()
+    }, 1000)
   })
 
   it('should add a plugin to an app project', async () => {
