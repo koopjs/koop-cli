@@ -6,7 +6,7 @@ const path = require('path')
 const setupGit = require('../../src/utils/setup-git')
 
 const expect = chai.expect
-const temp = path.join(__dirname, 'test-setup-git')
+const temp = path.join(__dirname, 'temp-setup-git')
 
 let appName, appPath
 

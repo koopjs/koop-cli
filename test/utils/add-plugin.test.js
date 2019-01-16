@@ -9,9 +9,9 @@ const createNewProject = require('../../src/utils/create-new-project')
 const addPlugin = require('../../src/utils/add-plugin')
 
 const expect = chai.expect
-const temp = path.join(__dirname, 'temp')
+const temp = path.join(__dirname, 'temp-add-plugin')
 
-let appName
+let appName, appPath
 
 describe('utils/add-plugin', () => {
   before(() => {
@@ -21,11 +21,14 @@ describe('utils/add-plugin', () => {
   beforeEach(() => {
     shell.cd(temp)
     appName = `add-command-test-${Date.now()}`
+    appPath = path.join(temp, appName)
+  })
+
+  after(() => {
+    shell.rm('-rf', temp)
   })
 
   it('should add a plugin to an app project', async () => {
-    const appPath = path.join(temp, appName)
-
     await createNewProject(
       temp,
       'app',
@@ -51,8 +54,6 @@ describe('utils/add-plugin', () => {
       ']'
     ].join(os.EOL)
     expect(plugins).to.includes(expected)
-
-    shell.rm('-rf', appPath)
   })
 
   it('should add a plugin published as a scoped module', async () => {
@@ -83,8 +84,6 @@ describe('utils/add-plugin', () => {
       ']'
     ].join(os.EOL)
     expect(plugins).to.includes(expected)
-
-    shell.rm('-rf', appPath)
   })
 
   it('should add plugin config if provided', async () => {
@@ -114,8 +113,6 @@ describe('utils/add-plugin', () => {
     expect(appConfig['test-provider']).to.deep.equal({
       api: 'api url'
     })
-
-    shell.rm('-rf', appPath)
   })
 
   it('should add string plugin config if provided', async () => {
@@ -145,8 +142,6 @@ describe('utils/add-plugin', () => {
     expect(appConfig['test-provider']).to.deep.equal({
       api: 'api url'
     })
-
-    shell.rm('-rf', appPath)
   })
 
   it('should append the plugin config to the app config if specified', async () => {
@@ -175,7 +170,5 @@ describe('utils/add-plugin', () => {
 
     const appConfig = await fs.readJson(path.join(appPath, 'config', 'default.json'))
     expect(appConfig.api).to.equal('api url')
-
-    shell.rm('-rf', appPath)
   })
 })

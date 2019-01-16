@@ -7,7 +7,7 @@ const fs = require('fs-extra')
 const createNewProject = require('../../src/utils/create-new-project')
 
 const expect = chai.expect
-const temp = path.join(__dirname, 'test-create-new-project')
+const temp = path.join(__dirname, 'temp-create-new-project')
 
 let appName, appPath
 
