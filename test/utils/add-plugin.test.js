@@ -9,23 +9,15 @@ const createNewProject = require('../../src/utils/create-new-project')
 const addPlugin = require('../../src/utils/add-plugin')
 
 const expect = chai.expect
-const temp = path.join(__dirname, 'temp-add-plugin')
+const temp = os.tmpdir()
 
 let appName, appPath
 
 describe('utils/add-plugin', () => {
-  before(() => {
-    shell.mkdir('-p', temp)
-  })
-
   beforeEach(() => {
     shell.cd(temp)
     appName = `add-command-test-${Date.now()}`
     appPath = path.join(temp, appName)
-  })
-
-  after(() => {
-    shell.rm('-rf', temp)
   })
 
   it('should add a plugin to an app project', async () => {

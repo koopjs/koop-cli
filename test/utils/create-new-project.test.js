@@ -4,22 +4,15 @@ const chai = require('chai')
 const shell = require('shelljs')
 const path = require('path')
 const fs = require('fs-extra')
+const os = require('os')
 const createNewProject = require('../../src/utils/create-new-project')
 
 const expect = chai.expect
-const temp = path.join(__dirname, 'temp-create-new-project')
+const temp = os.tmpdir()
 
 let appName, appPath
 
 describe('utils/create-new-project', () => {
-  before(() => {
-    shell.mkdir('-p', temp)
-  })
-
-  after(() => {
-    shell.rm('-rf', temp)
-  })
-
   beforeEach(() => {
     shell.cd(temp)
 
