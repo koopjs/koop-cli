@@ -15,7 +15,10 @@
     "koop",
     "cli"
   ],
-  "author": "Haoliang Yu",
+  "author": {
+    "name": "Haoliang Yu",
+    "email": "hyu@esri.com"
+  },
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/haoliangyu/koop-cli/issues"
