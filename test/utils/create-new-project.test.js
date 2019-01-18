@@ -76,6 +76,7 @@ describe('utils/create-new-project', () => {
     const packageInfo = await fs.readJson(path.join(appPath, 'package.json'))
     expect(packageInfo.name).to.equal(appName)
     expect(packageInfo.scripts.start).to.equal('node src/server.js')
+    expect(packageInfo.dependencies.koop).to.be.a('string')
 
     const koopConfig = await fs.readJson(path.join(appPath, 'koop.json'))
     expect(koopConfig.type).to.equal('provider')
