@@ -11,6 +11,12 @@ const addPlugin = require('../../src/utils/add-plugin')
 const expect = chai.expect
 const temp = os.tmpdir()
 
+const defaultOptions = {
+  skipGit: true,
+  skipInstall: true,
+  quiet: true
+}
+
 let appName, appPath
 
 describe('utils/add-plugin', () => {
@@ -21,22 +27,10 @@ describe('utils/add-plugin', () => {
   })
 
   it('should add a plugin to an app project', async () => {
-    await createNewProject(
-      temp,
-      'app',
-      appName,
-      {
-        skipInstall: true,
-        skipGit: true
-      }
-    )
+    await createNewProject(temp, 'app', appName, defaultOptions)
     shell.cd(appPath)
 
-    await addPlugin(
-      appPath,
-      'test-provider',
-      { skipInstall: true }
-    )
+    await addPlugin(appPath, 'test-provider', defaultOptions)
 
     const plugins = await fs.readFile(path.join(appPath, 'src', 'plugins.js'), 'utf-8')
     const expected = [
@@ -51,22 +45,10 @@ describe('utils/add-plugin', () => {
   it('should add a plugin published as a scoped module', async () => {
     const appPath = path.join(temp, appName)
 
-    await createNewProject(
-      temp,
-      'app',
-      appName,
-      {
-        skipInstall: true,
-        skipGit: true
-      }
-    )
+    await createNewProject(temp, 'app', appName, defaultOptions)
     shell.cd(appPath)
 
-    await addPlugin(
-      appPath,
-      '@koop/test-provider',
-      { skipInstall: true }
-    )
+    await addPlugin(appPath, '@koop/test-provider', defaultOptions)
 
     const plugins = await fs.readFile(path.join(appPath, 'src', 'plugins.js'), 'utf-8')
     const expected = [
@@ -81,15 +63,7 @@ describe('utils/add-plugin', () => {
   it('should add plugin config if provided', async () => {
     const appPath = path.join(temp, appName)
 
-    await createNewProject(
-      temp,
-      'app',
-      appName,
-      {
-        skipInstall: true,
-        skipGit: true
-      }
-    )
+    await createNewProject(temp, 'app', appName, defaultOptions)
     shell.cd(appPath)
 
     await addPlugin(
@@ -97,36 +71,7 @@ describe('utils/add-plugin', () => {
       'test-provider',
       {
         config: { api: 'api url' },
-        skipInstall: true
-      }
-    )
-
-    const appConfig = await fs.readJson(path.join(appPath, 'config', 'default.json'))
-    expect(appConfig['test-provider']).to.deep.equal({
-      api: 'api url'
-    })
-  })
-
-  it('should add string plugin config if provided', async () => {
-    const appPath = path.join(temp, appName)
-
-    await createNewProject(
-      temp,
-      'app',
-      appName,
-      {
-        skipInstall: true,
-        skipGit: true
-      }
-    )
-    shell.cd(appPath)
-
-    await addPlugin(
-      appPath,
-      'test-provider',
-      {
-        config: JSON.stringify({ api: 'api url' }),
-        skipInstall: true
+        ...defaultOptions
       }
     )
 
@@ -139,15 +84,7 @@ describe('utils/add-plugin', () => {
   it('should append the plugin config to the app config if specified', async () => {
     const appPath = path.join(temp, appName)
 
-    await createNewProject(
-      temp,
-      'app',
-      appName,
-      {
-        skipInstall: true,
-        skipGit: true
-      }
-    )
+    await createNewProject(temp, 'app', appName, defaultOptions)
     shell.cd(appPath)
 
     await addPlugin(
@@ -156,7 +93,7 @@ describe('utils/add-plugin', () => {
       {
         config: { api: 'api url' },
         addToRoot: true,
-        skipInstall: true
+        ...defaultOptions
       }
     )
 

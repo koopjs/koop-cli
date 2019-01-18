@@ -5,6 +5,7 @@ const path = require('path')
 const splitLines = require('split-lines')
 const _ = require('lodash')
 const addConfig = require('./add-config')
+const log = require('./log')
 
 module.exports = async (cwd, name, options = {}) => {
   const koopConfig = await fs.readJson(path.join(cwd, 'koop.json'))
@@ -14,37 +15,39 @@ module.exports = async (cwd, name, options = {}) => {
   }
 
   if (!options.skipInstall) {
-    const result = shell.exec(`npm install ${name}`)
+    const result = shell.exec(`npm install --silent ${name}`)
 
     if (result.code !== 0) {
       throw new Error()
     }
+
+    log(`\u2713 installed ${name}`, 'info', options)
   }
 
   if (options.config) {
     await updateConfig(cwd, name, options)
+    log('\u2713 added plugin configuration', 'info', options)
   }
 
-  await updateJS(cwd, name)
+  await registerPlugin(cwd, name)
+
+  log(`\u2713 registered ${name}`, 'info', options)
+  log('\u2713 done', 'info', options)
 }
 
 async function updateConfig (cwd, name, options) {
   let config = {}
 
-  const pluginConfig = typeof options.config === 'string'
-    ? JSON.parse(options.config)
-    : options.config
-
   if (options.addToRoot) {
-    config = pluginConfig
+    config = options.config
   } else {
-    config[name] = pluginConfig
+    config[name] = options.config
   }
 
   return addConfig(cwd, config)
 }
 
-async function updateJS (cwd, name) {
+async function registerPlugin (cwd, name) {
   const pluginsFilePath = path.join(cwd, 'src', 'plugins.js')
   const plugins = await fs.readFile(pluginsFilePath, 'utf-8')
   const lines = splitLines(plugins.trim())

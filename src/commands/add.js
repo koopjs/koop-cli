@@ -15,15 +15,16 @@ exports.options = (yargs) => {
       type: 'boolean',
       default: false
     })
+    .option('quiet', {
+      description: 'supress all console messages except errors',
+      type: 'boolean',
+      default: false
+    })
 }
 
 exports.handler = async (argv) => {
   const name = argv.name
   const cwd = process.cwd()
 
-  return addPlugin(cwd, name, {
-    config: argv.config,
-    appendToRoot: argv.appendToRoot,
-    skipInstall: argv.skipInstall
-  })
+  return addPlugin(cwd, name, argv)
 }

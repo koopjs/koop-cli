@@ -20,6 +20,11 @@ exports.options = (yargs) => {
       type: 'boolean',
       default: false
     })
+    .option('quiet', {
+      description: 'supress all console messages except errors',
+      type: 'boolean',
+      default: false
+    })
 }
 
 exports.handler = async (argv) => {

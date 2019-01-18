@@ -10,6 +10,12 @@ const createNewProject = require('../../src/utils/create-new-project')
 const expect = chai.expect
 const temp = os.tmpdir()
 
+const defaultOptions = {
+  skipGit: true,
+  skipInstall: true,
+  quiet: true
+}
+
 let appName, appPath
 
 describe('utils/create-new-project', () => {
@@ -21,15 +27,7 @@ describe('utils/create-new-project', () => {
   })
 
   it('should create an app project from the template', async () => {
-    await createNewProject(
-      temp,
-      'app',
-      appName,
-      {
-        skipGit: true,
-        skipInstall: true
-      }
-    )
+    await createNewProject(temp, 'app', appName, defaultOptions)
     expect(shell.test('-e', appPath)).to.equal(true)
 
     const packageInfo = await fs.readJson(path.join(appPath, 'package.json'))
@@ -40,15 +38,7 @@ describe('utils/create-new-project', () => {
   })
 
   it('should create a provider project from the template', async () => {
-    await createNewProject(
-      temp,
-      'provider',
-      appName,
-      {
-        skipGit: true,
-        skipInstall: true
-      }
-    )
+    await createNewProject(temp, 'provider', appName, defaultOptions)
     expect(shell.test('-e', appPath)).to.equal(true)
 
     const packageInfo = await fs.readJson(path.join(appPath, 'package.json'))
@@ -64,8 +54,7 @@ describe('utils/create-new-project', () => {
       'provider',
       appName,
       {
-        skipGit: true,
-        skipInstall: true,
+        ...defaultOptions,
         addServer: true
       }
     )
@@ -82,33 +71,13 @@ describe('utils/create-new-project', () => {
     expect(koopConfig.type).to.equal('provider')
   })
 
-  it('should update the config file if the config is specified with a JSON string', async () => {
-    await createNewProject(
-      temp,
-      'app',
-      appName,
-      {
-        skipGit: true,
-        skipInstall: true,
-        config: JSON.stringify({ port: 3000 })
-      }
-    )
-
-    const configPath = path.join(appPath, 'config/default.json')
-    expect(shell.test('-e', configPath)).to.equal(true)
-
-    const config = await fs.readJson(configPath)
-    expect(config.port).to.equal(3000)
-  })
-
   it('should update the config file if the config is specified with a JSON', async () => {
     await createNewProject(
       temp,
       'app',
       appName,
       {
-        skipGit: true,
-        skipInstall: true,
+        ...defaultOptions,
         config: { port: 3000 }
       }
     )
