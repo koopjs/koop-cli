@@ -63,6 +63,3 @@ typings/
 # lock file
 templates/**/yarn.lock
 templates/**/package-lock.json
-
-# test temp folder
-temp-*

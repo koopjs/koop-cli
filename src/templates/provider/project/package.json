@@ -1,7 +1,7 @@
 {
   "name": "koop-cli-new-provider",
   "private": true,
-  "version": "3.0.0",
+  "version": "1.0.0",
   "description": "An opinionated provider template for koop-cli",
   "main": "src/index.js",
   "scripts": {
@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "config": "^3.0.0",
-    "koop": "^3.10.1",
     "node-fetch": "^2.3.0"
   },
   "author": "",

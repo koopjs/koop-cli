@@ -2,7 +2,7 @@
   "name": "koop-cli-new-app",
   "private": true,
   "description": "Opinionated app template for koop-cli",
-  "version": "3.0.0",
+  "version": "1.0.0",
   "author": "",
   "dependencies": {
     "config": "^3.0.0",

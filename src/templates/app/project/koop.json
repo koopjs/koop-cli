@@ -1,3 +1,5 @@
 {
-  "type": "app"
+  "version": 1,
+  "type": "app",
+  "koopCompatibility": ">=3"
 }

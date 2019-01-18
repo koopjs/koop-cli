@@ -50,15 +50,20 @@ async function customizeProject (path, type, name, options) {
 
 async function customizePackage (projectPath, type, name, options = {}) {
   const packagePath = path.join(projectPath, 'package.json')
-  const packageInfo = await fs.readJson(packagePath)
-  packageInfo.name = name
+  const packageConfig = await fs.readJson(packagePath)
+  packageConfig.name = name
 
   // add npm script "start" if the provider project has a server option
   if (type === 'provider' && options.addServer) {
-    packageInfo.scripts.start = 'node src/server.js'
+    packageConfig.scripts.start = 'node src/server.js'
+
+    // add koop as a dependency since the original provider template does not
+    // include it
+    const koopConfig = await fs.readJson(path.join(projectPath, 'koop.json'))
+    packageConfig.dependencies.koop = koopConfig.koopCompatibility
   }
 
-  return fs.writeJson(packagePath, packageInfo)
+  return fs.writeJson(packagePath, packageConfig)
 }
 
 async function customizeApp (projectPath, type, name) {
