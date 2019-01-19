@@ -60,6 +60,24 @@ describe('utils/add-plugin', () => {
     expect(plugins).to.includes(expected)
   })
 
+  it('should add a plugin published with a version number', async () => {
+    const appPath = path.join(temp, appName)
+
+    await createNewProject(temp, 'app', appName, defaultOptions)
+    shell.cd(appPath)
+
+    await addPlugin(appPath, '@koop/test-provider@^3.2.0', defaultOptions)
+
+    const plugins = await fs.readFile(path.join(appPath, 'src', 'plugins.js'), 'utf-8')
+    const expected = [
+      "const testProvider = require('@koop/test-provider')",
+      'module.exports = [',
+      '  testProvider,',
+      ']'
+    ].join(os.EOL)
+    expect(plugins).to.includes(expected)
+  })
+
   it('should add plugin config if provided', async () => {
     const appPath = path.join(temp, appName)
 

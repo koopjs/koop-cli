@@ -51,12 +51,13 @@ async function registerPlugin (cwd, name) {
   const pluginsFilePath = path.join(cwd, 'src', 'plugins.js')
   const plugins = await fs.readFile(pluginsFilePath, 'utf-8')
   const lines = splitLines(plugins.trim())
-  const moduleName = _.camelCase(name.match(/(@.+\/)?(.+)/)[2])
+  const moduleName = name.match(/^((@.+\/)?[a-zA-Z0-9._-]+)(@.+)?$/)[1]
+  const pluginName = _.camelCase(name.match(/^(@.+\/)?([a-zA-Z0-9._-]+)(@.+)?$/)[2])
 
-  lines.unshift(`const ${moduleName} = require('${name}')`)
+  lines.unshift(`const ${pluginName} = require('${moduleName}')`)
 
   const i = lines.indexOf(']')
-  lines.splice(i, 0, `  ${moduleName},`)
+  lines.splice(i, 0, `  ${pluginName},`)
 
   return fs.writeFile(pluginsFilePath, lines.join(os.EOL))
 }
