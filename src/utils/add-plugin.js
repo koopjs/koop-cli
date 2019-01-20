@@ -1,4 +1,3 @@
-const shell = require('shelljs')
 const fs = require('fs-extra')
 const os = require('os')
 const path = require('path')
@@ -6,6 +5,7 @@ const splitLines = require('split-lines')
 const _ = require('lodash')
 const addConfig = require('./add-config')
 const log = require('./log')
+const exec = require('./exec')
 
 module.exports = async (cwd, name, options = {}) => {
   const koopConfig = await fs.readJson(path.join(cwd, 'koop.json'))
@@ -15,24 +15,19 @@ module.exports = async (cwd, name, options = {}) => {
   }
 
   if (!options.skipInstall) {
-    const result = shell.exec(`npm install --silent ${name}`)
-
-    if (result.code !== 0) {
-      throw new Error()
-    }
-
-    log(`\u2713 installed ${name}`, 'info', options)
+    exec(`npm install --silent ${name}`, 'failed to install the plugin')
+    log(`\u2611 installed ${name}`, 'info', options)
   }
 
   if (options.config) {
     await updateConfig(cwd, name, options)
-    log('\u2713 added plugin configuration', 'info', options)
+    log('\u2611 added plugin configuration', 'info', options)
   }
 
   await registerPlugin(cwd, name)
 
-  log(`\u2713 registered ${name}`, 'info', options)
-  log('\u2713 done', 'info', options)
+  log(`\u2611 registered ${name}`, 'info', options)
+  log('\u2611 done', 'info', options)
 }
 
 async function updateConfig (cwd, name, options) {

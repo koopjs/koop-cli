@@ -4,7 +4,7 @@ process.env.SUPPRESS_NO_CONFIG_WARNING = true
 
 const yargs = require('yargs')
 const commands = require('./commands')
-const parseConfig = require('./utils/parse-parse-config')
+const parseConfig = require('./utils/parse-config')
 
 module.exports = yargs
   .command(

@@ -4,6 +4,7 @@ const fs = require('fs-extra')
 const addConfig = require('./add-config')
 const setupGit = require('./setup-git')
 const log = require('./log')
+const exec = require('./exec')
 
 module.exports = async (cwd, type, name, options = {}) => {
   const templatePath = path.join(__dirname, '..', 'templates', type, 'project')
@@ -12,11 +13,11 @@ module.exports = async (cwd, type, name, options = {}) => {
   // create project folder
   shell.mkdir('-p', projectPath)
 
-  log('\u2713 created project folder', 'info', options)
+  log('\u2611 created project folder', 'info', options)
 
   if (!options.skipGit) {
     await setupGit(projectPath)
-    log('\u2713 initialized Git', 'info', options)
+    log('\u2611 initialized Git', 'info', options)
   }
 
   // copy template
@@ -27,20 +28,20 @@ module.exports = async (cwd, type, name, options = {}) => {
 
   await customizeProject(projectPath, type, name, options)
 
-  log(`\u2713 added ${type} template`, 'info', options)
+  log(`\u2611 added ${type} template`, 'info', options)
 
   if (options.config) {
     await addConfig(projectPath, options.config)
-    log(`\u2713 added ${type} configuration`, 'info', options)
+    log(`\u2611 added ${type} configuration`, 'info', options)
   }
 
   if (!options.skipInstall) {
     // install dependencies
-    shell.exec('npm i --silent')
-    log('\u2713 installed dependencies', 'info', options)
+    exec('npm i --silent', 'failed to install dependencies')
+    log('\u2611 installed dependencies', 'info', options)
   }
 
-  log('\u2713 done', 'info', options)
+  log('\u2611 done', 'info', options)
 }
 
 async function customizeProject (path, type, name, options) {
