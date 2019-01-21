@@ -7,6 +7,15 @@ const addConfig = require('./add-config')
 const log = require('./log')
 const exec = require('./exec')
 
+/**
+ * Add a plugin to the current koop project.
+ * @param  {string}  cwd          koop project directory
+ * @param  {string}  name         plugin name
+ * @param  {Object}  [options={}] options
+ * @param  {Object}  [options.config] plugin configuration
+ * @param  {boolean} [options.addToRoot]  add plugin configuration to the app root configuration
+ * @return {Promise}              a promise
+ */
 module.exports = async (cwd, name, options = {}) => {
   const koopConfig = await fs.readJson(path.join(cwd, 'koop.json'))
 

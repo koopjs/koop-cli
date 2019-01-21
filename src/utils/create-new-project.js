@@ -5,6 +5,16 @@ const setupGit = require('./setup-git')
 const log = require('./log')
 const exec = require('./exec')
 
+/**
+ * Creat a new koop project.
+ * @param  {string}  cwd          work directory
+ * @param  {string}  type         project type
+ * @param  {string}  name         project name
+ * @param  {Object}  [options={}] options
+ * @param  {Object}  [options.config] configuration
+ * @param  {boolean} [options.addServer]  add a server file for the provider project
+ * @return {Promise}              a promise
+ */
 module.exports = async (cwd, type, name, options = {}) => {
   const templatePath = path.join(__dirname, '..', 'templates', type, 'project')
   const projectPath = path.join(cwd, name)
