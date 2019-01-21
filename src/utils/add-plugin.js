@@ -15,19 +15,19 @@ module.exports = async (cwd, name, options = {}) => {
   }
 
   if (!options.skipInstall) {
-    exec(`npm install --silent ${name}`, 'failed to install the plugin')
-    log(`\u2611 installed ${name}`, 'info', options)
+    exec(cwd, `npm install --silent ${name}`, 'failed to install the plugin')
+    log(`\u2713 installed ${name}`, 'info', options)
   }
 
   if (options.config) {
     await updateConfig(cwd, name, options)
-    log('\u2611 added plugin configuration', 'info', options)
+    log('\u2713 added configuration', 'info', options)
   }
 
   await registerPlugin(cwd, name)
 
-  log(`\u2611 registered ${name}`, 'info', options)
-  log('\u2611 done', 'info', options)
+  log(`\u2713 registered ${name}`, 'info', options)
+  log('\u2713 done', 'info', options)
 }
 
 async function updateConfig (cwd, name, options) {

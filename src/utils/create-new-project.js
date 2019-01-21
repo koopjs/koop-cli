@@ -13,35 +13,32 @@ module.exports = async (cwd, type, name, options = {}) => {
   // create project folder
   shell.mkdir('-p', projectPath)
 
-  log('\u2611 created project folder', 'info', options)
+  log('\u2713 created project folder', 'info', options)
 
   if (!options.skipGit) {
     await setupGit(projectPath)
-    log('\u2611 initialized Git', 'info', options)
+    log('\u2713 initialized Git', 'info', options)
   }
 
   // copy template
   shell.cp('-rf', path.join(templatePath, '*'), projectPath)
 
-  // cd to the work directory
-  shell.cd(projectPath)
-
   await customizeProject(projectPath, type, name, options)
 
-  log(`\u2611 added ${type} template`, 'info', options)
+  log(`\u2713 added ${type} template`, 'info', options)
 
   if (options.config) {
     await addConfig(projectPath, options.config)
-    log(`\u2611 added ${type} configuration`, 'info', options)
+    log(`\u2713 added ${type} configuration`, 'info', options)
   }
 
   if (!options.skipInstall) {
     // install dependencies
-    exec('npm i --silent', 'failed to install dependencies')
-    log('\u2611 installed dependencies', 'info', options)
+    exec(projectPath, 'npm i --silent', 'failed to install dependencies')
+    log('\u2713 installed dependencies', 'info', options)
   }
 
-  log('\u2611 done', 'info', options)
+  log('\u2713 done', 'info', options)
 }
 
 async function customizeProject (path, type, name, options) {
