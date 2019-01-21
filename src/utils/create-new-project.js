@@ -1,5 +1,4 @@
 const path = require('path')
-const shell = require('shelljs')
 const fs = require('fs-extra')
 const addConfig = require('./add-config')
 const setupGit = require('./setup-git')
@@ -11,7 +10,7 @@ module.exports = async (cwd, type, name, options = {}) => {
   const projectPath = path.join(cwd, name)
 
   // create project folder
-  shell.mkdir('-p', projectPath)
+  await fs.ensureDir(projectPath)
 
   log('\u2713 created project folder', 'info', options)
 
@@ -20,8 +19,8 @@ module.exports = async (cwd, type, name, options = {}) => {
     log('\u2713 initialized Git', 'info', options)
   }
 
-  // copy template
-  shell.cp('-rf', path.join(templatePath, '*'), projectPath)
+  // copy project template
+  await fs.copy(templatePath, projectPath)
 
   await customizeProject(projectPath, type, name, options)
 
@@ -91,6 +90,6 @@ async function customizeProvider (projectPath, type, name, options = {}) {
   // publish the provider and use it without koop-cli
   if (options.addServer) {
     const serverPath = path.join(__dirname, '../templates', type, 'components/server.js')
-    shell.cp(serverPath, path.join(projectPath, 'src/server.js'))
+    await fs.copy(serverPath, path.join(projectPath, 'src/server.js'))
   }
 }
