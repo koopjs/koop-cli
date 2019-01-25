@@ -1,28 +1,30 @@
-# koop-cli
+# @koopjs/cli
 
-[![Build Status](https://travis-ci.org/haoliangyu/koop-cli.svg?branch=master)](https://travis-ci.org/haoliangyu/koop-cli) ![license](https://img.shields.io/github/license/haoliangyu/koop-cli.svg)
+[![Build Status](https://travis-ci.org/koopjs/koop-cli.svg?branch=master)](https://travis-ci.org/koopjs/koop-cli) ![license](https://img.shields.io/github/license/koopjs/koop-cli.svg)
 
-A CLI tool to build [Koop](https://github.com/koopjs/koop) providers and apps
+A cross-platform CLI tool to build [Koop](https://github.com/koopjs/koop) projects
 
 ## Install
 
+This library is not published but can be installed via GitHub URL.
+
 Use npm
 
-``` bash
-npm install -g koop-cli
+```
+npm install -g @koopjs/cli
 ```
 
 Use yarn
 
-``` bash
-yarn global add koop-cli
+```
+yarn global add @koopjs/cli
 ```
 
 ## Commands
 
 Once installed the `koop` command is available.
 
-``` bash
+```
 koop <command>
 
 Commands:
@@ -34,9 +36,9 @@ Commands:
 
 ### new
 
-The `new` command creates a new koop project from the template at the current location.
+The `new` command creates a new Koop project from the template at the current location.
 
-``` bash
+```
 koop new [type] [name]
 
 Positionals:
@@ -51,15 +53,17 @@ Options:
                                                       [boolean] [default: false]
 ```
 
-You can create different types of koop projects from templates:
-* **provider** from [koop-cli-new-provider](https://github.com/haoliangyu/koop-cli/tree/master/src/templates/provider/project)
-* **app** from [koop-cli-new-app](https://github.com/haoliangyu/koop-cli/tree/master/src/templates/app/project)
+You can create different types of Koop projects from templates:
+* **provider** from [koop-cli-new-provider](https://github.com/koopjs/koop-cli/tree/master/src/templates/provider/project)
+* **app** from [koop-cli-new-app](https://github.com/koopjs/koop-cli/tree/master/src/templates/app/project)
+
+For more details on the project templates, please take a look at the Koop [specification](https://koopjs.github.io/docs/usage/koop-core) and [samples](https://github.com/koopjs?utf8=%E2%9C%93&q=sample).
 
 ### add
 
-The `add` command adds a koop plugin to the current koop app.
+The `add` command adds a Koop plugin to the current Koop app.
 
-``` bash
+```
 koop add [name]
 
 Positionals:
@@ -75,9 +79,9 @@ Options:
 
 ### serve
 
-The `serve` command starts a test server for the current provider project, or starts the current koop app.
+The `serve` command starts a test server for the current provider project, or starts the current Koop app.
 
-``` bash
+```
 koop serve
 
 Options:
@@ -88,7 +92,7 @@ Options:
 
 The `test` command run tests in the current koop project.
 
-``` bash
+```
 koop test
 ```
 
@@ -97,7 +101,7 @@ koop test
 This tool can be also used as a library.
 
 ``` javascript
-const cli = require('koop-cli')
+const cli = require('@koopjs/cli')
 
 // create a koop app project at /Documents
 cli.new('/Documents', 'app', 'my-app', {
@@ -109,7 +113,7 @@ cli.new('/Documents', 'app', 'my-app', {
 
 ### new(cwd, type, name, \[options\])
 
-Create a koop project at the given directory.
+Create a Koop project at the given directory.
 
 * `cwd`: current work directory
 * `type`: project type
@@ -117,7 +121,7 @@ Create a koop project at the given directory.
 
 ### add(cwd, name, \[options\])
 
-Add a plugin to the given koop project
+Add a plugin to the given Koop app
 
-* `cwd`: koop project directory
-* `name`: koop plugin name
+* `cwd`: Koop app directory
+* `name`: Koop plugin name

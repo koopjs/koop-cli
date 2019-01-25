@@ -1,7 +1,7 @@
 {
-  "name": "koop-cli",
+  "name": "@koopjs/cli",
   "version": "3.0.0",
-  "description": "CLI tool for koopjs",
+  "description": "CLI tool to build Koop projects",
   "main": "src/index.js",
   "scripts": {
     "test": "mocha \"test/**/*.test.js\"",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/haoliangyu/koop-cli.git"
+    "url": "git+https://github.com/koopjs/koop-cli.git"
   },
   "keywords": [
     "koop",
@@ -22,9 +22,9 @@
   },
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/haoliangyu/koop-cli/issues"
+    "url": "https://github.com/koopjs/koop-cli/issues"
   },
-  "homepage": "https://github.com/haoliangyu/koop-cli#readme",
+  "homepage": "https://github.com/koopjs/koop-cli#readme",
   "dependencies": {
     "fs-extra": "^7.0.1",
     "koop": "^3.10.1",
