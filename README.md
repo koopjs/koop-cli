@@ -1,6 +1,6 @@
 # @koopjs/cli
 
-[![Build Status](https://travis-ci.org/koopjs/koop-cli.svg?branch=master)](https://travis-ci.org/koopjs/koop-cli) ![license](https://img.shields.io/github/license/koopjs/koop-cli.svg)
+[![Build Status](https://travis-ci.org/koopjs/koop-cli.svg?branch=master)](https://travis-ci.org/koopjs/koop-cli)
 
 A cross-platform CLI tool to build [Koop](https://github.com/koopjs/koop) projects
 
@@ -11,13 +11,13 @@ This library is not published but can be installed via GitHub URL.
 Use npm
 
 ```
-npm install -g @koopjs/cli
+npm install -g https://github.com/koopjs/koop-cli.git
 ```
 
 Use yarn
 
 ```
-yarn global add @koopjs/cli
+yarn global add https://github.com/koopjs/koop-cli.git
 ```
 
 ## Commands
