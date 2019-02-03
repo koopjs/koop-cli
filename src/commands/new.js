@@ -18,12 +18,8 @@ exports.options = (yargs) => {
     .option('add-server', {
       description: 'add a server file to the new koop provider project',
       type: 'boolean',
-      default: false
-    })
-    .option('quiet', {
-      description: 'supress all console messages except errors',
-      type: 'boolean',
-      default: false
+      default: false,
+      group: 'Provider Options:'
     })
 }
 

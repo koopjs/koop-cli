@@ -1,6 +1,6 @@
 # @koopjs/cli
 
-[![Build Status](https://travis-ci.org/koopjs/koop-cli.svg?branch=master)](https://travis-ci.org/koopjs/koop-cli) ![license](https://img.shields.io/github/license/koopjs/koop-cli.svg)
+[![Build Status](https://travis-ci.org/koopjs/koop-cli.svg?branch=master)](https://travis-ci.org/koopjs/koop-cli)
 
 A cross-platform CLI tool to build [Koop](https://github.com/koopjs/koop) projects
 

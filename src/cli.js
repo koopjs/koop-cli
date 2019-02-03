@@ -14,7 +14,7 @@ module.exports = yargs
     commands.new.handler
   )
   .command(
-    'add [name]',
+    'add [type] [name]',
     'add a new plugin to the current app',
     commands.add.options,
     commands.add.handler
@@ -31,6 +31,11 @@ module.exports = yargs
     commands.serve.options,
     commands.serve.handler
   )
+  .option('quiet', {
+    description: 'supress all console messages except errors',
+    type: 'boolean',
+    default: false
+  })
   .middleware([parseConfig])
   .demandCommand()
   .showHelpOnFail(true)

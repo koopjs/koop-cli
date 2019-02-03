@@ -1,8 +1,8 @@
-const shell = require('shelljs')
+const execa = require('execa')
 
 exports.options = (yargs) => {
 }
 
 exports.handler = (argv) => {
-  shell.exec('npm run test')
+  execa('npm test').stdout.pipe(process.stdout)
 }
