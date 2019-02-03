@@ -45,12 +45,16 @@ Positionals:
   type  project type                       [string] [choices: "app", "provider"]
   name  project name                                                    [string]
 
-Options:
-  --config      specify the project configuration in JSON               [string]
+Provider Options:
   --add-server  add a server file to the new koop provider project
                                                       [boolean] [default: false]
-  --quiet       supress all console messages except errors
+
+Options:
+  --version  Show version number                                       [boolean]
+  --quiet    supress all console messages except errors
                                                       [boolean] [default: false]
+  --help     Show help                                                 [boolean]
+  --config   specify the project configuration in JSON                  [string]
 ```
 
 You can create different types of Koop projects from templates:
@@ -64,16 +68,23 @@ For more details on the project templates, please take a look at the Koop [speci
 The `add` command adds a Koop plugin to the current Koop app.
 
 ```
-koop add [name]
+koop add [type] [name]
 
 Positionals:
+  type  plugin type    [string] [choices: "output", "provider", "cache", "auth"]
   name  plugin name                                                     [string]
 
+Provider Options:
+  --route-prefix  add a prefix to all of a registered provider’s routes [string]
+
 Options:
+  --version      Show version number                                   [boolean]
+
+  --quiet        supress all console messages except errors
+                                                      [boolean] [default: false]
+  --help         Show help                                             [boolean]
   --config       specify the plugin configuration in JSON               [string]
   --add-to-root  add the given configuration to the app root configuration
-                                                      [boolean] [default: false]
-  --quiet        supress all console messages except errors
                                                       [boolean] [default: false]
 ```
 
@@ -119,9 +130,14 @@ Create a Koop project at the given directory.
 * `type`: project type
 * `name`: project name
 
-### add(cwd, name, \[options\])
+Return a promise.
+
+### add(cwd, type, name, \[options\])
 
 Add a plugin to the given Koop app
 
 * `cwd`: Koop app directory
+* `type`: project type
 * `name`: Koop plugin name
+
+Return a promise.
