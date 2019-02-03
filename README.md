@@ -11,13 +11,13 @@ This library is not published but can be installed via GitHub URL.
 Use npm
 
 ```
-npm install -g @koopjs/cli
+npm install -g https://github.com/koopjs/koop-cli.git
 ```
 
 Use yarn
 
 ```
-yarn global add @koopjs/cli
+yarn global add https://github.com/koopjs/koop-cli.git
 ```
 
 ## Commands
