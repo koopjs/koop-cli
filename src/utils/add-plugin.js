@@ -28,9 +28,7 @@ module.exports = async (cwd, type, name, options = {}) => {
   }
 
   if (!options.skipInstall) {
-    const script = options.quickInstall
-      ? scripts.NPM_INSTALL_QUICK
-      : scripts.NPM_INSTALL
+    const script = scripts.NPM_INSTALL
     await execa.shell(`${script} name`, { cwd })
     log(`\u2713 installed ${name}`, 'info', options)
   }
