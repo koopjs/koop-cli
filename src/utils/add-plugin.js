@@ -1,5 +1,6 @@
 const fs = require('fs-extra')
 const path = require('path')
+const os = require('os')
 const _ = require('lodash')
 const recast = require('recast')
 const execa = require('execa')
@@ -87,7 +88,9 @@ async function registerPlugin (cwd, type, name, options = {}) {
   pluginList.declarations[0].init.elements.push(pluginObject)
 
   const output = recast.prettyPrint(ast, { tabWidth: 2, quote: 'single' }).code
-  return fs.writeFile(pluginsFilePath, output.replace(/\n\n/g, '\n'))
+
+  // recast adds extra newline before and after the multi-lines object
+  return fs.writeFile(pluginsFilePath, output.replace(/\r?\n\r?\n/g, os.EOL))
 }
 
 function createPluginObject (type, name, options = {}) {
