@@ -105,6 +105,19 @@ async function registerPlugin (cwd, type, name, options = {}) {
   return fs.writeFile(pluginsFilePath, output)
 }
 
+/**
+ * Create a plugin object.
+ * @param  {string} type         plugin type
+ * @param  {string} name         plugin variable name
+ * @param  {Object} [options={}] options
+ * @return {Object}              plugin object in AST
+ *
+ * @example plugin object
+ *  {
+ *    "instance": plugin,
+ *    "options": {}
+ *  }
+ */
 function createPluginObject (type, name, options = {}) {
   const astProperties = [
     b.property('init', b.identifier('instance'), b.identifier(name))
@@ -113,19 +126,28 @@ function createPluginObject (type, name, options = {}) {
   const pluginOptions = createPluginOptions(type, options)
 
   if (pluginOptions) {
+    // only add the options key if there is any option
     astProperties.push(b.property('init', b.identifier('options'), pluginOptions))
   }
 
   return b.objectExpression(astProperties)
 }
 
+/**
+ * Create option object.
+ * @param  {string} type         plugin type
+ * @param  {Object} [options={}] options
+ * @return {Object}              plugin object in AST, if there is no option, returns null
+ */
 function createPluginOptions (type, options = {}) {
   const pluginOptions = {}
 
+  // recongize any option for the given plugin type
   if (type === 'provider' && typeof options.routePrefix === 'string') {
     pluginOptions.routePrefix = options.routePrefix
   }
 
+  // exit if no option is found
   if (_.isEmpty(pluginOptions)) {
     return null
   }
