@@ -1,8 +1,8 @@
-const execa = require('execa')
+const exec = require('../utils/exec-realtime')
 
 exports.options = (yargs) => {
 }
 
 exports.handler = (argv) => {
-  execa('npm test').stdout.pipe(process.stdout)
+  exec('npm test')
 }

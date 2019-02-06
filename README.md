@@ -32,6 +32,10 @@ Commands:
   koop add [name]         add a new plugin to the current app
   koop test               run tests in the current project
   koop serve              run a koop server for the current project
+
+Options:
+  --quiet    supress all console messages except errors
+                                                      [boolean] [default: false]
 ```
 
 ### new
@@ -50,10 +54,6 @@ Provider Options:
                                                       [boolean] [default: false]
 
 Options:
-  --version  Show version number                                       [boolean]
-  --quiet    supress all console messages except errors
-                                                      [boolean] [default: false]
-  --help     Show help                                                 [boolean]
   --config   specify the project configuration in JSON                  [string]
 ```
 
@@ -75,14 +75,9 @@ Positionals:
   name  plugin name                                                     [string]
 
 Provider Options:
-  --route-prefix  add a prefix to all of a registered provider’s routes [string]
+  --route-prefix  add a prefix to all of a registered routes            [string]
 
 Options:
-  --version      Show version number                                   [boolean]
-
-  --quiet        supress all console messages except errors
-                                                      [boolean] [default: false]
-  --help         Show help                                             [boolean]
   --config       specify the plugin configuration in JSON               [string]
   --add-to-root  add the given configuration to the app root configuration
                                                       [boolean] [default: false]

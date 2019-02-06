@@ -8,6 +8,7 @@ const addConfig = require('./add-config')
 const log = require('./log')
 const scripts = require('./scripts')
 
+// AST builder
 const b = recast.types.builders
 
 /**
@@ -30,7 +31,7 @@ module.exports = async (cwd, type, name, options = {}) => {
 
   if (!options.skipInstall) {
     const script = scripts.NPM_INSTALL
-    await execa.shell(`${script} name`, { cwd })
+    await execa.shell(`${script} ${name}`, { cwd })
     log(`\u2713 installed ${name}`, 'info', options)
   }
 
@@ -63,13 +64,15 @@ async function registerPlugin (cwd, type, name, options = {}) {
   const ast = recast.parse(pluginsFile)
 
   /**
-   * Add the plugin to the AST
+   * Add the plugin using the AST
    */
   const matched = name.match(/^((@.+\/)?([a-zA-Z0-9._-]+))(@.+)?$/)
+  // full module name with the scope
   const fullName = matched[1]
+  // module name with no scope
   const shortName = _.camelCase(matched[3])
 
-  // import the plugin library
+  // add the code to import the library
   const importPlugin = b.variableDeclaration('const', [
     b.variableDeclarator(b.identifier(shortName), b.callExpression(
       b.identifier('require'),
@@ -78,19 +81,28 @@ async function registerPlugin (cwd, type, name, options = {}) {
   ])
   ast.program.body.unshift(importPlugin)
 
-  // add the plugin to the right list
+  // add the code to put the plugin library into the plugin list
+  const pluginObject = createPluginObject(type, shortName, options)
   const listId = type === 'output' ? 'outputs' : 'plugins'
+  // find the correct plugin list based on the plugin type
   const pluginList = ast.program.body.find((line) => {
     return line.type === 'VariableDeclaration' &&
       line.declarations[0].id.name === listId
   })
-  const pluginObject = createPluginObject(type, shortName, options)
   pluginList.declarations[0].init.elements.push(pluginObject)
 
-  const output = recast.prettyPrint(ast, { tabWidth: 2, quote: 'single' }).code
+  // print the code from the AST
+  const output = recast
+    // @NOTE should not hard code the coding style, but the new lines follow
+    // a pattern favored by the writer and the user should handle it later
+    .prettyPrint(ast, { tabWidth: 2, quote: 'single' })
+    .code
+    // recast has an issue(?) to add extra line breaks when printing the code:
+    // https://github.com/benjamn/recast/issues/534
+    .replace(/\r?\n\r?\n/g, os.EOL)
 
-  // recast adds extra newline before and after the multi-lines object
-  return fs.writeFile(pluginsFilePath, output.replace(/\r?\n\r?\n/g, os.EOL))
+  // overwrite the original file with the new code
+  return fs.writeFile(pluginsFilePath, output)
 }
 
 function createPluginObject (type, name, options = {}) {

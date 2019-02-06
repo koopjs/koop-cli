@@ -4,4 +4,7 @@ const scripts = Object.freeze({
   GIT_INIT: 'git init --quiet'
 })
 
+/**
+ * a collection of scripts
+ */
 module.exports = scripts

@@ -1,6 +1,6 @@
 const path = require('path')
-const execa = require('execa')
 const fs = require('fs-extra')
+const exec = require('../utils/exec-realtime')
 
 exports.options = (yargs) => {
   yargs
@@ -27,14 +27,14 @@ function serveApp () {
     ? 'npm run start'
     : `node ${packageInfo.main}`
 
-  execa(command).stdout.pipe(process.stdout)
+  exec(command)
 }
 
 function serveProvider (port) {
   const packageInfo = fs.readJsonSync(path.join(process.cwd(), 'package.json'))
 
   if (packageInfo.scripts.start) {
-    execa('npm run start').stdout.pipe(process.stdout)
+    exec('npm run start')
   } else {
     const Koop = require('koop')
     const koop = new Koop()
