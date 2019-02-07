@@ -7,7 +7,9 @@ const plugins = require('./plugins')
 const koop = new Koop()
 
 // register koop plugins
-plugins.forEach((plugin) => koop.register(plugin))
+plugins.forEach((plugin) => {
+  koop.register(plugin.instance, plugin.options)
+})
 
 // add additional routes
 routes.forEach((route) => koop.server[route.method.toLowerCase()](route.path, route.controller))

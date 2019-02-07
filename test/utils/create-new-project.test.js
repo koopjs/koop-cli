@@ -1,7 +1,6 @@
 /* eslint-env mocha */
 
 const chai = require('chai')
-const shell = require('shelljs')
 const path = require('path')
 const fs = require('fs-extra')
 const os = require('os')
@@ -20,15 +19,13 @@ let appName, appPath
 
 describe('utils/create-new-project', () => {
   beforeEach(() => {
-    shell.cd(temp)
-
     appName = `test-${Date.now()}`
     appPath = path.join(temp, appName)
   })
 
   it('should create an app project from the template', async () => {
     await createNewProject(temp, 'app', appName, defaultOptions)
-    expect(shell.test('-e', appPath)).to.equal(true)
+    expect(await fs.pathExists(appPath)).to.equal(true)
 
     const packageInfo = await fs.readJson(path.join(appPath, 'package.json'))
     expect(packageInfo.name).to.equal(appName)
@@ -39,7 +36,7 @@ describe('utils/create-new-project', () => {
 
   it('should create a provider project from the template', async () => {
     await createNewProject(temp, 'provider', appName, defaultOptions)
-    expect(shell.test('-e', appPath)).to.equal(true)
+    expect(await fs.pathExists(appPath)).to.equal(true)
 
     const packageInfo = await fs.readJson(path.join(appPath, 'package.json'))
     expect(packageInfo.name).to.equal(appName)
@@ -59,8 +56,8 @@ describe('utils/create-new-project', () => {
       }
     )
 
-    expect(shell.test('-e', appPath)).to.equal(true)
-    expect(shell.test('-e', path.join(appPath, 'src/server.js'))).to.equal(true)
+    expect(await fs.pathExists(appPath)).to.equal(true)
+    expect(await fs.pathExists(path.join(appPath, 'src/server.js'))).to.equal(true)
 
     const packageInfo = await fs.readJson(path.join(appPath, 'package.json'))
     expect(packageInfo.name).to.equal(appName)
@@ -83,7 +80,7 @@ describe('utils/create-new-project', () => {
     )
 
     const configPath = path.join(appPath, 'config/default.json')
-    expect(shell.test('-e', configPath)).to.equal(true)
+    expect(await fs.pathExists(configPath)).to.equal(true)
 
     const config = await fs.readJson(configPath)
     expect(config.port).to.equal(3000)

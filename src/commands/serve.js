@@ -1,6 +1,6 @@
 const path = require('path')
-const shell = require('shelljs')
 const fs = require('fs-extra')
+const exec = require('../utils/exec-realtime')
 
 exports.options = (yargs) => {
   yargs
@@ -23,19 +23,18 @@ exports.handler = (argv = {}) => {
 
 function serveApp () {
   const packageInfo = fs.readJsonSync(path.join(process.cwd(), 'package.json'))
+  const command = packageInfo.scripts.start
+    ? 'npm run start'
+    : `node ${packageInfo.main}`
 
-  if (packageInfo.scripts.start) {
-    shell.exec('npm run start')
-  } else {
-    shell.exec(`node ${packageInfo.main}`)
-  }
+  exec(command)
 }
 
 function serveProvider (port) {
   const packageInfo = fs.readJsonSync(path.join(process.cwd(), 'package.json'))
 
   if (packageInfo.scripts.start) {
-    shell.exec('npm run start')
+    exec('npm run start')
   } else {
     const Koop = require('koop')
     const koop = new Koop()

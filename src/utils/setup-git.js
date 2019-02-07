@@ -1,10 +1,11 @@
 const fetch = require('node-fetch')
 const fs = require('fs-extra')
 const path = require('path')
-const exec = require('./exec')
+const execa = require('execa')
+const scripts = require('./scripts')
 
 module.exports = async (cwd) => {
-  exec(cwd, `git init --quiet ${cwd}`, 'failed to initialize Git')
+  await execa.shell(scripts.GIT_INIT, { cwd })
 
   // add gitignore
   const res = await fetch('https://rawcdn.githack.com/github/gitignore/master/Node.gitignore')

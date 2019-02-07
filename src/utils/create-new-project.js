@@ -1,9 +1,10 @@
 const path = require('path')
 const fs = require('fs-extra')
+const execa = require('execa')
 const addConfig = require('./add-config')
 const setupGit = require('./setup-git')
 const log = require('./log')
-const exec = require('./exec')
+const scripts = require('./scripts')
 
 /**
  * Creat a new koop project.
@@ -42,8 +43,9 @@ module.exports = async (cwd, type, name, options = {}) => {
   }
 
   if (!options.skipInstall) {
+    const script = scripts.NPM_INSTALL
     // install dependencies
-    exec(projectPath, 'npm i --silent', 'failed to install dependencies')
+    await execa.shell(script, { cwd: projectPath })
     log('\u2713 installed dependencies', 'info', options)
   }
 

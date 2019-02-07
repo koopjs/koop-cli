@@ -1,8 +1,8 @@
-const shell = require('shelljs')
+const exec = require('../utils/exec-realtime')
 
 exports.options = (yargs) => {
 }
 
 exports.handler = (argv) => {
-  shell.exec('npm run test')
+  exec('npm test')
 }
