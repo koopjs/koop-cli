@@ -8,8 +8,8 @@ const addConfig = require('./add-config')
 const log = require('./log')
 const scripts = require('./scripts')
 
-// AST builder
-const b = recast.types.builders
+// AST builders
+const astBuilders = recast.types.builders
 
 /**
  * Add a plugin to the current koop project.
@@ -63,32 +63,58 @@ async function registerPlugin (cwd, type, name, options = {}) {
   const pluginsFile = await fs.readFile(pluginsFilePath, 'utf-8')
   const ast = recast.parse(pluginsFile)
 
-  /**
-   * Add the plugin using the AST
-   */
   const matched = name.match(/^((@.+\/)?([a-zA-Z0-9._-]+))(@.+)?$/)
   // full module name with the scope
   const fullName = matched[1]
   // module name with no scope
   const shortName = _.camelCase(matched[3])
 
-  // add the code to import the library
-  const importPlugin = b.variableDeclaration('const', [
-    b.variableDeclarator(b.identifier(shortName), b.callExpression(
-      b.identifier('require'),
-      [b.literal(fullName)]
-    ))
+  /**
+   * Update the AST to import the plugin library:
+   * 1. create an AST representation of "const plugin = require('pluginLib')"
+   * 2. push it to the first line of the source code
+   */
+
+  // use "const" to declare a variable
+  const importPlugin = astBuilders.variableDeclaration('const', [
+    astBuilders.variableDeclarator(
+      // the variable name is the module name without any scope
+      astBuilders.identifier(shortName),
+      // the object comes from a function call
+      astBuilders.callExpression(
+        // function name is "require"
+        astBuilders.identifier('require'),
+        // function parameter is the full plugin module name
+        [astBuilders.literal(fullName)]
+      )
+    )
   ])
+
+  // push it as the first line of the source code
   ast.program.body.unshift(importPlugin)
 
-  // add the code to put the plugin library into the plugin list
+  /**
+   * Update the AST to add the imported plugin to a plugin list:
+   * 1. create a plugin object with the plugin instance and options
+   * 2. traverse the AST and find the correct plugin list
+   * 3. push the plugin object to the plugin list
+   */
+
+  // get the plugin object
   const pluginObject = createPluginObject(type, shortName, options)
-  const listId = type === 'output' ? 'outputs' : 'plugins'
-  // find the correct plugin list based on the plugin type
+
+  // pick the correct plugin list name based on the plugin type
+  const listName = type === 'output' ? 'outputs' : 'plugins'
+
+  // find the plugin list from the AST (using the simple logic because we know
+  // the plugin list is declared at the top-most level)
   const pluginList = ast.program.body.find((line) => {
+    // find a variable declaration with the list name
     return line.type === 'VariableDeclaration' &&
-      line.declarations[0].id.name === listId
+      line.declarations[0].id.name === listName
   })
+
+  // push the plugin object to the element array of the plugin list
   pluginList.declarations[0].init.elements.push(pluginObject)
 
   // print the code from the AST
@@ -98,7 +124,7 @@ async function registerPlugin (cwd, type, name, options = {}) {
     .prettyPrint(ast, { tabWidth: 2, quote: 'single' })
     .code
     // recast has an issue(?) to add extra line breaks when printing the code:
-    // https://github.com/benjamn/recast/issues/534
+    // https://githuastBuilders.com/benjamn/recast/issues/534
     .replace(/\r?\n\r?\n/g, os.EOL)
 
   // overwrite the original file with the new code
@@ -119,18 +145,29 @@ async function registerPlugin (cwd, type, name, options = {}) {
  *  }
  */
 function createPluginObject (type, name, options = {}) {
+  // property list for the plugin object
   const astProperties = [
-    b.property('init', b.identifier('instance'), b.identifier(name))
+    // add the property "instance: moduleName"
+    astBuilders.property(
+      'init',
+      astBuilders.identifier('instance'),
+      astBuilders.identifier(name)
+    )
   ]
 
   const pluginOptions = createPluginOptions(type, options)
 
   if (pluginOptions) {
-    // only add the options key if there is any option
-    astProperties.push(b.property('init', b.identifier('options'), pluginOptions))
+    // if there is any option, add another property "options: {...}"
+    astProperties.push(astBuilders.property(
+      'init',
+      astBuilders.identifier('options'),
+      pluginOptions)
+    )
   }
 
-  return b.objectExpression(astProperties)
+  // create the plugin object in AST
+  return astBuilders.objectExpression(astProperties)
 }
 
 /**
@@ -152,12 +189,19 @@ function createPluginOptions (type, options = {}) {
     return null
   }
 
+  // property list for the options object
   const astProperties = []
 
+  // add each option to the property list
   for (const name in pluginOptions) {
     const value = pluginOptions[name]
-    astProperties.push(b.property('init', b.identifier(name), b.literal(value)))
+    astProperties.push(astBuilders.property(
+      'init',
+      astBuilders.identifier(name),
+      astBuilders.literal(value))
+    )
   }
 
-  return b.objectExpression(astProperties)
+  // create the options object
+  return astBuilders.objectExpression(astProperties)
 }
