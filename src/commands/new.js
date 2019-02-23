@@ -1,6 +1,6 @@
 const createNewProject = require('../utils/create-new-project')
 
-exports.options = (yargs) => {
+function builder (yargs) {
   yargs
     .positional('type', {
       describe: 'project type',
@@ -23,10 +23,17 @@ exports.options = (yargs) => {
     })
 }
 
-exports.handler = async (argv) => {
+async function handler (argv) {
   const type = argv.type
   const name = argv.name
   const cwd = process.cwd()
 
   return createNewProject(cwd, type, name, argv)
+}
+
+module.exports = {
+  command: 'new <type> <name>',
+  description: 'create a new project',
+  builder,
+  handler
 }
