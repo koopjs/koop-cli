@@ -1,6 +1,6 @@
 const addPlugin = require('../utils/add-plugin')
 
-exports.options = (yargs) => {
+function builder (yargs) {
   yargs
     .positional('type', {
       description: 'plugin type',
@@ -27,10 +27,17 @@ exports.options = (yargs) => {
     })
 }
 
-exports.handler = async (argv) => {
+async function handler (argv) {
   const name = argv.name
   const type = argv.type
   const cwd = process.cwd()
 
   return addPlugin(cwd, type, name, argv)
+}
+
+module.exports = {
+  command: 'add <type> <name>',
+  description: 'add a new plugin to the current app',
+  builder,
+  handler
 }
