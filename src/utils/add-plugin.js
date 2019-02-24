@@ -4,6 +4,7 @@ const os = require('os')
 const _ = require('lodash')
 const recast = require('recast')
 const execa = require('execa')
+const latestVersion = require('latest-version')
 const addConfig = require('./add-config')
 const log = require('./log')
 const scripts = require('./scripts')
@@ -18,6 +19,7 @@ const astBuilders = recast.types.builders
  * @param  {string}  name         plugin name
  * @param  {Object}  [options={}] options
  * @param  {Object}  [options.config] plugin configuration
+ * @param  {boolean} [options.noInstall]  add plugin withoult actual installation
  * @param  {boolean} [options.addToRoot]  add plugin configuration to the app root configuration
  * @param  {boolean} [options.routePrefix]  URL prefix for register routes
  * @return {Promise}              a promise
@@ -29,7 +31,15 @@ module.exports = async (cwd, type, name, options = {}) => {
     throw new Error(`cannot add the plugin to a ${koopConfig.type} project`)
   }
 
-  if (!options.skipInstall) {
+  if (options.noInstall) {
+    const pluginVersion = await latestVersion(name)
+    const packageInfoPath = path.join(cwd, 'package.json')
+    const packageInfo = await fs.readJson(packageInfoPath)
+
+    packageInfo.dependencies[name] = `^${pluginVersion}`
+    await fs.writeJson(packageInfoPath, packageInfo)
+    log(`\u2713 added ${name}`, 'info', options)
+  } else {
     const script = scripts.NPM_INSTALL
     await execa.shell(`${script} ${name}`, { cwd })
     log(`\u2713 installed ${name}`, 'info', options)

@@ -14,6 +14,8 @@ const scripts = require('./scripts')
  * @param  {Object}  [options={}] options
  * @param  {Object}  [options.config] configuration
  * @param  {boolean} [options.addServer]  add a server file for the provider project
+ * @param  {boolean} [options.noInstall]  add dependencies withoult actual installation
+ * @param  {boolean} [options.noGit]  not to initialize git
  * @return {Promise}              a promise
  */
 module.exports = async (cwd, type, name, options = {}) => {
@@ -25,7 +27,7 @@ module.exports = async (cwd, type, name, options = {}) => {
 
   log('\u2713 created project folder', 'info', options)
 
-  if (!options.skipGit) {
+  if (!options.noGit) {
     await setupGit(projectPath)
     log('\u2713 initialized Git', 'info', options)
   }
@@ -42,7 +44,7 @@ module.exports = async (cwd, type, name, options = {}) => {
     log(`\u2713 added ${type} configuration`, 'info', options)
   }
 
-  if (!options.skipInstall) {
+  if (!options.noGit) {
     const script = scripts.NPM_INSTALL
     // install dependencies
     await execa.shell(script, { cwd: projectPath })

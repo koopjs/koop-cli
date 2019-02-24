@@ -4,15 +4,19 @@ const chai = require('chai')
 const path = require('path')
 const fs = require('fs-extra')
 const os = require('os')
+const proxyquire = require('proxyquire')
 const createNewProject = require('../../src/utils/create-new-project')
-const addPlugin = require('../../src/utils/add-plugin')
+
+const addPlugin = proxyquire('../../src/utils/add-plugin', {
+  'latest-version': async () => '1.0.0'
+})
 
 const expect = chai.expect
 const temp = os.tmpdir()
 
 const defaultOptions = {
-  skipGit: true,
-  skipInstall: true,
+  noGit: true,
+  noInstall: true,
   quiet: true
 }
 
@@ -38,6 +42,9 @@ describe('utils/add-plugin', () => {
       'module.exports = [...outputs, ...plugins];'
     ].join(os.EOL)
     expect(plugins).to.equal(expected)
+
+    const packageInfo = await fs.readJson(path.join(appPath, 'package.json'))
+    expect(packageInfo.dependencies['test-provider']).to.equal('^1.0.0')
   })
 
   it('should add a plugin published as a scoped module', async () => {
