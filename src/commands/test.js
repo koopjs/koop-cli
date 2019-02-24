@@ -1,8 +1,10 @@
 const exec = require('../utils/exec-realtime')
 
-exports.options = (yargs) => {
-}
-
-exports.handler = (argv) => {
-  exec('npm test')
+module.exports = {
+  command: 'test',
+  description: 'run tests in the current project',
+  builder: () => {},
+  handler: (argv) => {
+    exec('npm test')
+  }
 }

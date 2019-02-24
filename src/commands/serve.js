@@ -2,7 +2,12 @@ const path = require('path')
 const fs = require('fs-extra')
 const exec = require('../utils/exec-realtime')
 
-exports.options = (yargs) => {
+const createServer = {
+  provider: serveProvider,
+  app: serveApp
+}
+
+function builder (yargs) {
   yargs
     .option('port', {
       alias: 'p',
@@ -11,14 +16,11 @@ exports.options = (yargs) => {
     })
 }
 
-exports.handler = (argv = {}) => {
-  const koopConfig = fs.readJsonSync(path.join(process.cwd(), 'koop.json'))
+async function handler (argv = {}) {
+  const configPath = path.join(process.cwd(), 'koop.json')
+  const koopConfig = await fs.readJson(configPath)
 
-  if (koopConfig.type === 'provider') {
-    serveProvider(argv.port)
-  } else if (koopConfig.type === 'app') {
-    serveApp(argv.port)
-  }
+  createServer[koopConfig.type](argv.port)
 }
 
 function serveApp () {
@@ -43,4 +45,11 @@ function serveProvider (port) {
     koop.register(provider)
     koop.server.listen(port || 8080)
   }
+}
+
+module.exports = {
+  command: 'serve',
+  description: 'run a koop server for the current project',
+  builder,
+  handler
 }
