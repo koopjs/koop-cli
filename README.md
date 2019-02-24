@@ -28,8 +28,8 @@ Once installed the `koop` command is available.
 koop <command>
 
 Commands:
-  koop new [type] [name]  create a new koop project
-  koop add [name]         add a new plugin to the current app
+  koop new <type> <name>  create a new koop project
+  koop add <type> <name>  add a new plugin to the current app
   koop test               run tests in the current project
   koop serve              run a koop server for the current project
 
@@ -43,7 +43,7 @@ Options:
 The `new` command creates a new Koop project from the template at the current location.
 
 ```
-koop new [type] [name]
+koop new <type> <name>
 
 Positionals:
   type  project type                       [string] [choices: "app", "provider"]
@@ -54,7 +54,9 @@ Provider Options:
                                                       [boolean] [default: false]
 
 Options:
-  --config   specify the project configuration in JSON                  [string]
+  --config      specify the project configuration in JSON               [string]
+  --no-install  add the new plugin but not install it [boolean] [default: false]
+  --no-git      do not initialize Git                 [boolean] [default: false]
 ```
 
 You can create different types of Koop projects from templates:
@@ -68,7 +70,7 @@ For more details on the project templates, please take a look at the Koop [speci
 The `add` command adds a Koop plugin to the current Koop app.
 
 ```
-koop add [type] [name]
+koop add <type> <name>
 
 Positionals:
   type  plugin type    [string] [choices: "output", "provider", "cache", "auth"]
@@ -81,6 +83,7 @@ Options:
   --config       specify the plugin configuration in JSON               [string]
   --add-to-root  add the given configuration to the app root configuration
                                                       [boolean] [default: false]
+  --no-install   add the new plugin but not install it[boolean] [default: false]
 ```
 
 ### serve

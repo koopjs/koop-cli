@@ -21,6 +21,16 @@ function builder (yargs) {
       default: false,
       group: 'Provider Options:'
     })
+    .option('no-install', {
+      description: 'add the new plugin but not install it',
+      type: 'boolean',
+      default: false
+    })
+    .option('no-git', {
+      description: 'do not initialize Git',
+      type: 'boolean',
+      default: false
+    })
 }
 
 async function handler (argv) {

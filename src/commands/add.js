@@ -25,6 +25,11 @@ function builder (yargs) {
       type: 'boolean',
       default: false
     })
+    .option('no-install', {
+      description: 'add the new plugin but not install it',
+      type: 'boolean',
+      default: false
+    })
 }
 
 async function handler (argv) {
