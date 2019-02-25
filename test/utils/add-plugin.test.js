@@ -7,16 +7,13 @@ const os = require('os')
 const proxyquire = require('proxyquire')
 const createNewProject = require('../../src/utils/create-new-project')
 
-const addPlugin = proxyquire('../../src/utils/add-plugin', {
-  'latest-version': async () => '1.0.0'
-})
-
+const modulePath = '../../src/utils/add-plugin'
 const expect = chai.expect
 const temp = os.tmpdir()
 
 const defaultOptions = {
-  noGit: true,
-  noInstall: true,
+  skipGit: true,
+  skipInstall: true,
   quiet: true
 }
 
@@ -30,6 +27,9 @@ describe('utils/add-plugin', () => {
   })
 
   it('should add a plugin to an app project', async () => {
+    const addPlugin = proxyquire(modulePath, {
+      'latest-version': async () => '1.0.0'
+    })
     await addPlugin(appPath, 'provider', 'test-provider', defaultOptions)
 
     const plugins = await fs.readFile(path.join(appPath, 'src', 'plugins.js'), 'utf-8')
@@ -48,6 +48,9 @@ describe('utils/add-plugin', () => {
   })
 
   it('should add a plugin published as a scoped module', async () => {
+    const addPlugin = proxyquire(modulePath, {
+      'latest-version': async () => '1.0.0'
+    })
     await addPlugin(appPath, 'provider', '@koop/test-provider', defaultOptions)
 
     const plugins = await fs.readFile(path.join(appPath, 'src', 'plugins.js'), 'utf-8')
@@ -60,10 +63,16 @@ describe('utils/add-plugin', () => {
       'module.exports = [...outputs, ...plugins];'
     ].join(os.EOL)
     expect(plugins).to.equal(expected)
+
+    const packageInfo = await fs.readJson(path.join(appPath, 'package.json'))
+    expect(packageInfo.dependencies['@koop/test-provider']).to.equal('^1.0.0')
   })
 
   it('should add a plugin published with a version number', async () => {
-    await addPlugin(appPath, 'provider', '@koop/test-provider@^3.2.0', defaultOptions)
+    const addPlugin = proxyquire(modulePath, {
+      'latest-version': async () => '3.2.1'
+    })
+    await addPlugin(appPath, 'provider', '@koop/test-provider@3.2.0', defaultOptions)
 
     const plugins = await fs.readFile(path.join(appPath, 'src', 'plugins.js'), 'utf-8')
     const expected = [
@@ -75,9 +84,15 @@ describe('utils/add-plugin', () => {
       'module.exports = [...outputs, ...plugins];'
     ].join(os.EOL)
     expect(plugins).to.equal(expected)
+
+    const packageInfo = await fs.readJson(path.join(appPath, 'package.json'))
+    expect(packageInfo.dependencies['@koop/test-provider']).to.equal('^3.2.1')
   })
 
   it('should add plugin config if provided', async () => {
+    const addPlugin = proxyquire(modulePath, {
+      'latest-version': async () => '3.2.1'
+    })
     await addPlugin(
       appPath,
       'provider',
@@ -95,6 +110,9 @@ describe('utils/add-plugin', () => {
   })
 
   it('should append the plugin config to the app config if specified', async () => {
+    const addPlugin = proxyquire(modulePath, {
+      'latest-version': async () => '3.2.1'
+    })
     await addPlugin(
       appPath,
       'provider',
@@ -111,6 +129,9 @@ describe('utils/add-plugin', () => {
   })
 
   it('should add the output plugin to the output list in the project', async () => {
+    const addPlugin = proxyquire(modulePath, {
+      'latest-version': async () => '3.2.1'
+    })
     await addPlugin(appPath, 'output', '@koop/output-tile', defaultOptions)
 
     const plugins = await fs.readFile(path.join(appPath, 'src', 'plugins.js'), 'utf-8')
@@ -127,6 +148,9 @@ describe('utils/add-plugin', () => {
   })
 
   it('should add the plugin options to the plugin list', async () => {
+    const addPlugin = proxyquire(modulePath, {
+      'latest-version': async () => '3.2.1'
+    })
     await addPlugin(
       appPath,
       'provider',

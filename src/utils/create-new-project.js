@@ -5,6 +5,7 @@ const addConfig = require('./add-config')
 const setupGit = require('./setup-git')
 const log = require('./log')
 const scripts = require('./scripts')
+const writeJson = require('./write-formatted-json')
 
 /**
  * Creat a new koop project.
@@ -27,7 +28,7 @@ module.exports = async (cwd, type, name, options = {}) => {
 
   log('\u2713 created project folder', 'info', options)
 
-  if (!options.noGit) {
+  if (!options.skipGit) {
     await setupGit(projectPath)
     log('\u2713 initialized Git', 'info', options)
   }
@@ -44,7 +45,7 @@ module.exports = async (cwd, type, name, options = {}) => {
     log(`\u2713 added ${type} configuration`, 'info', options)
   }
 
-  if (!options.noGit) {
+  if (!options.skipInstall) {
     const script = scripts.NPM_INSTALL
     // install dependencies
     await execa.shell(script, { cwd: projectPath })
@@ -84,7 +85,7 @@ async function customizePackage (projectPath, type, name, options = {}) {
     packageConfig.dependencies.koop = koopConfig.koopCompatibility
   }
 
-  return fs.writeJson(packagePath, packageConfig)
+  return writeJson(packagePath, packageConfig)
 }
 
 async function customizeApp (projectPath, type, name) {
@@ -98,7 +99,7 @@ async function customizeProvider (projectPath, type, name, options = {}) {
   config[name] = config['koop-cli-new-provider']
   delete config['koop-cli-new-provider']
 
-  await fs.writeJson(configPath, config)
+  await writeJson(configPath, config)
 
   // add a server file to the koop provider project so the user does not have to
   // publish the provider and use it without koop-cli

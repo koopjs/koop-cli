@@ -21,12 +21,12 @@ function builder (yargs) {
       default: false,
       group: 'Provider Options:'
     })
-    .option('no-install', {
-      description: 'add the new plugin but not install it',
+    .option('skip-install', {
+      description: 'skip dependence installation',
       type: 'boolean',
       default: false
     })
-    .option('no-git', {
+    .option('skip-git', {
       description: 'do not initialize Git',
       type: 'boolean',
       default: false

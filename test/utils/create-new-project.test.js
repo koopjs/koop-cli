@@ -10,8 +10,8 @@ const expect = chai.expect
 const temp = os.tmpdir()
 
 const defaultOptions = {
-  noGit: true,
-  noInstall: true,
+  skipGit: true,
+  skipInstall: true,
   quiet: true
 }
 

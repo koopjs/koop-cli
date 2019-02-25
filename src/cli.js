@@ -9,6 +9,6 @@ module.exports = yargs
   .commandDir('commands')
   .middleware([parseConfig])
   .demandCommand()
-  .showHelpOnFail(true)
+  .showHelpOnFail(false)
   .help('help')
   .argv

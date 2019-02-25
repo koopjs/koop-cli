@@ -25,8 +25,8 @@ function builder (yargs) {
       type: 'boolean',
       default: false
     })
-    .option('no-install', {
-      description: 'add the new plugin but not install it',
+    .option('skip-install', {
+      description: 'skip plugin installation',
       type: 'boolean',
       default: false
     })

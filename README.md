@@ -54,9 +54,9 @@ Provider Options:
                                                       [boolean] [default: false]
 
 Options:
-  --config      specify the project configuration in JSON               [string]
-  --no-install  add the new plugin but not install it [boolean] [default: false]
-  --no-git      do not initialize Git                 [boolean] [default: false]
+  --config        specify the project configuration in JSON             [string]
+  --skip-install  skip dependence installation        [boolean] [default: false]
+  --skip-git      do not initialize Git               [boolean] [default: false]
 ```
 
 You can create different types of Koop projects from templates:
@@ -80,10 +80,10 @@ Provider Options:
   --route-prefix  add a prefix to all of a registered routes            [string]
 
 Options:
-  --config       specify the plugin configuration in JSON               [string]
-  --add-to-root  add the given configuration to the app root configuration
+  --config        specify the plugin configuration in JSON              [string]
+  --add-to-root   add the given configuration to the app root configuration
                                                       [boolean] [default: false]
-  --no-install   add the new plugin but not install it[boolean] [default: false]
+  --skip-install  skip plugin installation            [boolean] [default: false]
 ```
 
 ### serve
