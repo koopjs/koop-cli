@@ -20,7 +20,7 @@ const astBuilders = recast.types.builders
  * @param  {string}  name         plugin name
  * @param  {Object}  [options={}] options
  * @param  {Object}  [options.config] plugin configuration
- * @param  {boolean} [options.noInstall]  add plugin withoult actual installation
+ * @param  {boolean} [options.skipInstall]  skip plugin installation
  * @param  {boolean} [options.addToRoot]  add plugin configuration to the app root configuration
  * @param  {boolean} [options.routePrefix]  URL prefix for register routes
  * @return {Promise}              a promise

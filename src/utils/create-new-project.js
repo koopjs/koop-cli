@@ -15,8 +15,8 @@ const writeJson = require('./write-formatted-json')
  * @param  {Object}  [options={}] options
  * @param  {Object}  [options.config] configuration
  * @param  {boolean} [options.addServer]  add a server file for the provider project
- * @param  {boolean} [options.noInstall]  add dependencies withoult actual installation
- * @param  {boolean} [options.noGit]  not to initialize git
+ * @param  {boolean} [options.skipInstall]  skip dependency installation
+ * @param  {boolean} [options.skipGit]  skip Git initialization
  * @return {Promise}              a promise
  */
 module.exports = async (cwd, type, name, options = {}) => {
