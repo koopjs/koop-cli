@@ -18,7 +18,9 @@ const defaultOptions = {
 
 let appName, appPath
 
-describe('utils/add-plugin', () => {
+describe('utils/add-plugin', function () {
+  this.timeout(5000)
+
   beforeEach(async () => {
     appName = `add-command-test-${Date.now()}`
     appPath = path.join(temp, appName)
