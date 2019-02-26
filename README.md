@@ -6,18 +6,16 @@ A cross-platform CLI tool to build [Koop](https://github.com/koopjs/koop) projec
 
 ## Install
 
-This library is not published but can be installed via GitHub URL.
-
 Use npm
 
 ```
-npm install -g https://github.com/koopjs/koop-cli.git
+npm install -g @koopjs/cli
 ```
 
 Use yarn
 
 ```
-yarn global add https://github.com/koopjs/koop-cli.git
+yarn global add @koopjs/cli
 ```
 
 ## Commands

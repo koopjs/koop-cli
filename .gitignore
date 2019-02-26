@@ -61,5 +61,5 @@ typings/
 .next
 
 # lock file
-templates/**/yarn.lock
-templates/**/package-lock.json
+src/templates/**/yarn.lock
+src/templates/**/package-lock.json
