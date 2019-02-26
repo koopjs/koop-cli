@@ -1,3 +1,4 @@
+const os = require('os')
 const fs = require('fs-extra')
 
 /**
@@ -9,6 +10,6 @@ const fs = require('fs-extra')
 module.exports = async (path, data) => {
   return fs.writeJson(path, data, {
     spaces: 2,
-    EOL: '\n'
+    EOL: os.EOL
   })
 }

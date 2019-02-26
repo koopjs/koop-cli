@@ -5,7 +5,6 @@ const path = require('path')
 const fs = require('fs-extra')
 const os = require('os')
 const proxyquire = require('proxyquire')
-const createNewProject = require('../../src/utils/create-new-project')
 
 const modulePath = '../../src/utils/add-plugin'
 const expect = chai.expect
@@ -177,3 +176,13 @@ describe('utils/add-plugin', () => {
     expect(plugins).to.equal(expected)
   })
 })
+
+async function createNewProject (cwd, type, name) {
+  const templatePath = path.resolve(__dirname, '../../src/templates/app/project')
+  const projectPath = path.join(cwd, name)
+
+  // just copy the app template and no need to use the formal project creator
+  // (skip some file I/O)
+  await fs.ensureDir(projectPath)
+  await fs.copy(templatePath, projectPath)
+}
