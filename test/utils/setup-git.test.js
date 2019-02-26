@@ -2,9 +2,15 @@
 
 const chai = require('chai')
 const fs = require('fs-extra')
+const proxyquire = require('proxyquire')
 const path = require('path')
 const os = require('os')
-const setupGit = require('../../src/utils/setup-git')
+
+const setupGit = proxyquire('../../src/utils/setup-git', {
+  'node-fetch': async () => ({
+    text: async () => 'test'
+  })
+})
 
 const expect = chai.expect
 const temp = os.tmpdir()

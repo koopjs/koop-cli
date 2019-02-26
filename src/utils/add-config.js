@@ -1,5 +1,6 @@
 const path = require('path')
 const fs = require('fs-extra')
+const writeJson = require('./write-formatted-json')
 
 module.exports = async (cwd, newConfig, options = {}) => {
   const configName = options.configName || 'default'
@@ -13,5 +14,5 @@ module.exports = async (cwd, newConfig, options = {}) => {
 
   config = Object.assign(config, newConfig)
 
-  return fs.writeJson(configPath, config)
+  return writeJson(configPath, config)
 }

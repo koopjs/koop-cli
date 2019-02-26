@@ -5,6 +5,7 @@ const addConfig = require('./add-config')
 const setupGit = require('./setup-git')
 const log = require('./log')
 const scripts = require('./scripts')
+const writeJson = require('./write-formatted-json')
 
 /**
  * Creat a new koop project.
@@ -14,6 +15,8 @@ const scripts = require('./scripts')
  * @param  {Object}  [options={}] options
  * @param  {Object}  [options.config] configuration
  * @param  {boolean} [options.addServer]  add a server file for the provider project
+ * @param  {boolean} [options.skipInstall]  skip dependency installation
+ * @param  {boolean} [options.skipGit]  skip Git initialization
  * @return {Promise}              a promise
  */
 module.exports = async (cwd, type, name, options = {}) => {
@@ -82,7 +85,7 @@ async function customizePackage (projectPath, type, name, options = {}) {
     packageConfig.dependencies.koop = koopConfig.koopCompatibility
   }
 
-  return fs.writeJson(packagePath, packageConfig)
+  return writeJson(packagePath, packageConfig)
 }
 
 async function customizeApp (projectPath, type, name) {
@@ -96,7 +99,7 @@ async function customizeProvider (projectPath, type, name, options = {}) {
   config[name] = config['koop-cli-new-provider']
   delete config['koop-cli-new-provider']
 
-  await fs.writeJson(configPath, config)
+  await writeJson(configPath, config)
 
   // add a server file to the koop provider project so the user does not have to
   // publish the provider and use it without koop-cli

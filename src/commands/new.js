@@ -21,6 +21,16 @@ function builder (yargs) {
       default: false,
       group: 'Provider Options:'
     })
+    .option('skip-install', {
+      description: 'skip dependence installation',
+      type: 'boolean',
+      default: false
+    })
+    .option('skip-git', {
+      description: 'do not initialize Git',
+      type: 'boolean',
+      default: false
+    })
 }
 
 async function handler (argv) {

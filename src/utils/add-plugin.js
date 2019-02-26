@@ -4,9 +4,11 @@ const os = require('os')
 const _ = require('lodash')
 const recast = require('recast')
 const execa = require('execa')
+const latestVersion = require('latest-version')
 const addConfig = require('./add-config')
 const log = require('./log')
 const scripts = require('./scripts')
+const writeJson = require('./write-formatted-json')
 
 // AST builders
 const astBuilders = recast.types.builders
@@ -18,6 +20,7 @@ const astBuilders = recast.types.builders
  * @param  {string}  name         plugin name
  * @param  {Object}  [options={}] options
  * @param  {Object}  [options.config] plugin configuration
+ * @param  {boolean} [options.skipInstall]  skip plugin installation
  * @param  {boolean} [options.addToRoot]  add plugin configuration to the app root configuration
  * @param  {boolean} [options.routePrefix]  URL prefix for register routes
  * @return {Promise}              a promise
@@ -29,11 +32,8 @@ module.exports = async (cwd, type, name, options = {}) => {
     throw new Error(`cannot add the plugin to a ${koopConfig.type} project`)
   }
 
-  if (!options.skipInstall) {
-    const script = scripts.NPM_INSTALL
-    await execa.shell(`${script} ${name}`, { cwd })
-    log(`\u2713 installed ${name}`, 'info', options)
-  }
+  await addPlugin(cwd, name, options)
+  log(`\u2713 added ${name}`, 'info', options)
 
   if (options.config) {
     await updateConfig(cwd, name, options)
@@ -58,16 +58,44 @@ async function updateConfig (cwd, name, options) {
   return addConfig(cwd, config)
 }
 
+/**
+ * Add the given plugin to the project.
+ * @param {string} cwd     app directory
+ * @param {string} name    plugin name
+ * @param {Object} options options
+ */
+async function addPlugin (cwd, name, options = {}) {
+  if (options.skipInstall) {
+    const packageInfoPath = path.join(cwd, 'package.json')
+    const packageInfo = await fs.readJson(packageInfoPath)
+    const nameComponents = parseModuleName(name)
+
+    let options
+
+    if (nameComponents.version) {
+      options = {
+        version: nameComponents.version
+      }
+    }
+
+    const pluginVersion = await latestVersion(nameComponents.fullName, options)
+    packageInfo.dependencies[nameComponents.fullName] = `^${pluginVersion}`
+
+    await writeJson(packageInfoPath, packageInfo)
+  } else {
+    const script = scripts.NPM_INSTALL
+    await execa.shell(`${script} ${name}`, { cwd })
+  }
+}
+
 async function registerPlugin (cwd, type, name, options = {}) {
   const pluginsFilePath = path.join(cwd, 'src', 'plugins.js')
   const pluginsFile = await fs.readFile(pluginsFilePath, 'utf-8')
   const ast = recast.parse(pluginsFile)
 
-  const matched = name.match(/^((@.+\/)?([a-zA-Z0-9._-]+))(@.+)?$/)
-  // full module name with the scope
-  const fullName = matched[1]
+  const nameComponents = parseModuleName(name)
   // module name with no scope
-  const shortName = _.camelCase(matched[3])
+  const shortName = _.camelCase(nameComponents.moduleName)
 
   /**
    * Update the AST to import the plugin library:
@@ -85,7 +113,7 @@ async function registerPlugin (cwd, type, name, options = {}) {
         // function name is "require"
         astBuilders.identifier('require'),
         // function parameter is the full plugin module name
-        [astBuilders.literal(fullName)]
+        [astBuilders.literal(nameComponents.fullName)]
       )
     )
   ])
@@ -129,6 +157,25 @@ async function registerPlugin (cwd, type, name, options = {}) {
 
   // overwrite the original file with the new code
   return fs.writeFile(pluginsFilePath, output)
+}
+
+/**
+ * Parse the given module name and return name components.
+ * @param  {string} name module name
+ * @return {Object}      name components
+ */
+function parseModuleName (name) {
+  const matches = name.match(/^((@.+\/)?([a-zA-Z0-9._-]+))(@(.+))?$/)
+  const components = {
+    fullName: matches[1],
+    moduleName: matches[3]
+  }
+
+  if (matches[5]) {
+    components.version = matches[5]
+  }
+
+  return components
 }
 
 /**
