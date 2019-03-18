@@ -3,7 +3,6 @@
   "private": true,
   "description": "Opinionated app template for koop-cli",
   "version": "1.0.0",
-  "author": "",
   "dependencies": {
     "config": "^3.0.0",
     "koop": "^3.10.1"
@@ -16,11 +15,10 @@
     "koop",
     "app"
   ],
-  "license": "MIT",
   "main": "src/index.js",
   "repository": "",
   "scripts": {
     "start": "node src/index.js",
-    "test": "tape test/*.js | tap-spec"
+    "test": "mocha test/*.test.js"
   }
 }

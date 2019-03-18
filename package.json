@@ -4,7 +4,9 @@
   "description": "CLI tool to build Koop projects",
   "main": "src/index.js",
   "scripts": {
-    "test": "mocha \"test/**/*.test.js\"",
+    "test": "npm run test:cli && npm run test:template",
+    "test:template": "SUPPRESS_NO_CONFIG_WARNING=true mocha \"src/templates/**/project/test/**/*.test.js\"",
+    "test:cli": "mocha \"test/**/*.test.js\"",
     "lint": "standard src",
     "precommit": "lint-staged && npm test"
   },
