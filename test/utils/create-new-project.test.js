@@ -85,4 +85,15 @@ describe('utils/create-new-project', () => {
     const config = await fs.readJson(configPath)
     expect(config.port).to.equal(3000)
   })
+
+  it('should create an auth plugin project from the template', async () => {
+    await createNewProject(temp, 'auth', appName, defaultOptions)
+    expect(await fs.pathExists(appPath)).to.equal(true)
+
+    const packageInfo = await fs.readJson(path.join(appPath, 'package.json'))
+    expect(packageInfo.name).to.equal(appName)
+
+    const koopConfig = await fs.readJson(path.join(appPath, 'koop.json'))
+    expect(koopConfig.type).to.equal('auth')
+  })
 })
