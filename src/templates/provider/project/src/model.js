@@ -24,7 +24,7 @@ function Model (koop) {}
 // req.params.layer
 // req.params.method
 Model.prototype.getData = function (req, callback) {
-  const url = config[providerName].url;
+  const url = config[providerName].url
 
   // Call the remote API with our developer key
   fetch(url)
@@ -47,7 +47,6 @@ Model.prototype.getData = function (req, callback) {
       callback(null, geojson)
     })
     .catch((err) => {
-      console.error(err)
       callback(err)
     })
 }

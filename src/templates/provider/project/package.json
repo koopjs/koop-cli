@@ -5,18 +5,16 @@
   "description": "An opinionated provider template for koop-cli",
   "main": "src/index.js",
   "scripts": {
-    "test": "tape test/*.js | tap-spec"
+    "test": "tape test/*.test.js | tap-spec"
   },
   "dependencies": {
     "config": "^3.0.0",
     "node-fetch": "^2.3.0"
   },
-  "author": "",
-  "license": "MIT",
   "devDependencies": {
-    "nock": "^10.0.3",
-    "tap-spec": "^5.0.0",
-    "tape": "^4.6.3"
+    "chai": "^4.2.0",
+    "mocha": "^6.0.2",
+    "proxyquire": "^2.1.0"
   },
   "repository": "",
   "keywords": [
