@@ -9,13 +9,7 @@ A cross-platform CLI tool to build [Koop](https://github.com/koopjs/koop) projec
 Use npm
 
 ```
-npm install -g @koopjs/cli
-```
-
-Use yarn
-
-```
-yarn global add @koopjs/cli
+npm install -g https://github.com/koopjs/koop-cli.git
 ```
 
 ## Commands
