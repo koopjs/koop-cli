@@ -13,6 +13,12 @@ const writeJson = require('./write-formatted-json')
 // AST builders
 const astBuilders = recast.types.builders
 
+// Different plugins should be registered in ordered lists based on their type
+const pluginLists = {
+  output: 'outputs',
+  auth: 'auths'
+}
+
 /**
  * Add a plugin to the current koop project.
  * @param  {string}  cwd          koop project directory
@@ -132,7 +138,7 @@ async function registerPlugin (cwd, type, name, options = {}) {
   const pluginObject = createPluginObject(type, shortName, options)
 
   // pick the correct plugin list name based on the plugin type
-  const listName = type === 'output' ? 'outputs' : 'plugins'
+  const listName = type in pluginLists ? pluginLists[type] : 'plugins'
 
   // find the plugin list from the AST (using the simple logic because we know
   // the plugin list is declared at the top-most level)
