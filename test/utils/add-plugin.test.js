@@ -37,10 +37,11 @@ describe('utils/add-plugin', function () {
     const expected = [
       "const testProvider = require('test-provider');",
       'const outputs = [];',
+      'const auths = [];',
       'const plugins = [{',
       '  instance: testProvider',
       '}];',
-      'module.exports = [...outputs, ...plugins];'
+      'module.exports = [...outputs, ...auths, ...plugins];'
     ].join(os.EOL)
     expect(plugins).to.equal(expected)
 
@@ -58,10 +59,11 @@ describe('utils/add-plugin', function () {
     const expected = [
       "const testProvider = require('@koop/test-provider');",
       'const outputs = [];',
+      'const auths = [];',
       'const plugins = [{',
       '  instance: testProvider',
       '}];',
-      'module.exports = [...outputs, ...plugins];'
+      'module.exports = [...outputs, ...auths, ...plugins];'
     ].join(os.EOL)
     expect(plugins).to.equal(expected)
 
@@ -79,10 +81,11 @@ describe('utils/add-plugin', function () {
     const expected = [
       "const testProvider = require('@koop/test-provider');",
       'const outputs = [];',
+      'const auths = [];',
       'const plugins = [{',
       '  instance: testProvider',
       '}];',
-      'module.exports = [...outputs, ...plugins];'
+      'module.exports = [...outputs, ...auths, ...plugins];'
     ].join(os.EOL)
     expect(plugins).to.equal(expected)
 
@@ -138,12 +141,31 @@ describe('utils/add-plugin', function () {
     const plugins = await fs.readFile(path.join(appPath, 'src', 'plugins.js'), 'utf-8')
     const expected = [
       "const outputTile = require('@koop/output-tile');",
-
       'const outputs = [{',
       '  instance: outputTile',
       '}];',
+      'const auths = [];',
       'const plugins = [];',
-      'module.exports = [...outputs, ...plugins];'
+      'module.exports = [...outputs, ...auths, ...plugins];'
+    ].join(os.EOL)
+    expect(plugins).to.equal(expected)
+  })
+
+  it('should add the auth plugin to the auth list in the project', async () => {
+    const addPlugin = proxyquire(modulePath, {
+      'latest-version': async () => '3.2.1'
+    })
+    await addPlugin(appPath, 'auth', '@koop/my-auth', defaultOptions)
+
+    const plugins = await fs.readFile(path.join(appPath, 'src', 'plugins.js'), 'utf-8')
+    const expected = [
+      "const myAuth = require('@koop/my-auth');",
+      'const outputs = [];',
+      'const auths = [{',
+      '  instance: myAuth',
+      '}];',
+      'const plugins = [];',
+      'module.exports = [...outputs, ...auths, ...plugins];'
     ].join(os.EOL)
     expect(plugins).to.equal(expected)
   })
@@ -167,13 +189,14 @@ describe('utils/add-plugin', function () {
     const expected = [
       "const testProvider = require('test-provider');",
       'const outputs = [];',
+      'const auths = [];',
       'const plugins = [{',
       '  instance: testProvider,',
       '  options: {',
       "    routePrefix: '/my-route/'",
       '  }',
       '}];',
-      'module.exports = [...outputs, ...plugins];'
+      'module.exports = [...outputs, ...auths, ...plugins];'
     ].join(os.EOL)
     expect(plugins).to.equal(expected)
   })
