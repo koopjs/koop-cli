@@ -3,7 +3,18 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## 0.1.0
+## 0.2.0 - 2019-03-21
+
+### Added
+
+* project template for authorization plugin (#18)
+
+### Updated
+
+* `new` command is able to create authorization plugin projects (#18)
+* `add` command is able to add authorization plugin to the existing app (#20)
+
+## 0.1.0 - 2019-03-14
 
 This is the initial development.
 
