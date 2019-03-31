@@ -30,6 +30,10 @@ function builder (yargs) {
       type: 'boolean',
       default: false
     })
+    .option('local', {
+      description: 'add a plugin from the local path',
+      type: 'string'
+    })
 }
 
 async function handler (argv) {

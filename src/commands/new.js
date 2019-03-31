@@ -15,12 +15,6 @@ function builder (yargs) {
       description: 'specify the project configuration in JSON',
       type: 'string'
     })
-    .option('add-server', {
-      description: 'add a server file to the new koop provider project',
-      type: 'boolean',
-      default: false,
-      group: 'Provider Options:'
-    })
     .option('skip-install', {
       description: 'skip dependence installation',
       type: 'boolean',

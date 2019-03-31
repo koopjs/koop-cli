@@ -45,29 +45,6 @@ describe('utils/create-new-project', () => {
     expect(koopConfig.type).to.equal('provider')
   })
 
-  it('should add a server file to the new provider project if specified', async () => {
-    await createNewProject(
-      temp,
-      'provider',
-      appName,
-      {
-        ...defaultOptions,
-        addServer: true
-      }
-    )
-
-    expect(await fs.pathExists(appPath)).to.equal(true)
-    expect(await fs.pathExists(path.join(appPath, 'src/server.js'))).to.equal(true)
-
-    const packageInfo = await fs.readJson(path.join(appPath, 'package.json'))
-    expect(packageInfo.name).to.equal(appName)
-    expect(packageInfo.scripts.start).to.equal('node src/server.js')
-    expect(packageInfo.dependencies.koop).to.be.a('string')
-
-    const koopConfig = await fs.readJson(path.join(appPath, 'koop.json'))
-    expect(koopConfig.type).to.equal('provider')
-  })
-
   it('should update the config file if the config is specified with a JSON', async () => {
     await createNewProject(
       temp,
