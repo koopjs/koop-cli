@@ -2,7 +2,7 @@ const fetch = require('node-fetch')
 const fs = require('fs-extra')
 const path = require('path')
 const execa = require('execa')
-const scripts = require('./scripts')
+const scripts = require('../scripts')
 
 module.exports = async (cwd) => {
   await execa.shell(scripts.GIT_INIT, { cwd })

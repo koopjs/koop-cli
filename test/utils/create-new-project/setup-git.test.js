@@ -6,7 +6,7 @@ const proxyquire = require('proxyquire')
 const path = require('path')
 const os = require('os')
 
-const setupGit = proxyquire('../../src/utils/setup-git', {
+const setupGit = proxyquire('../../../src/utils/create-new-project/setup-git', {
   'node-fetch': async () => ({
     text: async () => 'test'
   })
@@ -17,7 +17,7 @@ const temp = os.tmpdir()
 
 let appName, appPath
 
-describe('utils/setup-git', () => {
+describe('utils/create-new-project/setup-git', () => {
   beforeEach(async () => {
     appName = `test-${Date.now()}`
     appPath = path.join(temp, appName)
