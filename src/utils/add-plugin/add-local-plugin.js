@@ -18,10 +18,10 @@ module.exports = async function addLocalPlugin (cwd, type, plugin, options = {})
     return
   }
 
-  const templatePath = path.join(__dirname, '../../templates', type, 'components')
+  const componentPath = path.join(__dirname, '../../templates/plugin/components', type)
   const pluginTestPath = path.join(cwd, 'test', plugin.fullName)
 
   // copy components
-  await fs.copy(path.join(templatePath, 'src'), pluginSrcPath)
-  await fs.copy(path.join(templatePath, 'test'), pluginTestPath)
+  await fs.copy(path.join(componentPath, 'src'), pluginSrcPath)
+  await fs.copy(path.join(componentPath, 'test'), pluginTestPath)
 }

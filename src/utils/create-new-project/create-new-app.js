@@ -9,6 +9,6 @@ module.exports = async (cwd, type, name) => {
   // copy project template
   await fs.copy(templatePath, projectPath)
 
-  // update package.json
+  // customize package.json
   await updatePackage(projectPath, type, name)
 }

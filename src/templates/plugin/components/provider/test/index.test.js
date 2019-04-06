@@ -8,8 +8,8 @@ describe('Koop provider', function () {
     const provider = require('../src/index')
 
     expect(provider.type).to.equal('provider')
-    expect(provider.name).to.equal('my-koop-provider')
-    expect(provider.version).to.equal('0.2.0')
+    expect(provider.name).to.equal('koop-cli-new-provider')
+    expect(provider.version).to.equal('1.0.0')
     expect(provider.Model).to.be.a('function')
   })
 })

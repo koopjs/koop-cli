@@ -60,7 +60,7 @@ describe('Koop provider - model', function () {
         }
       },
       config: {
-        'my-koop-provider': {
+        'koop-cli-new-provider': {
           url: 'www.test.com'
         }
       }
