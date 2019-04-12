@@ -13,8 +13,8 @@ module.exports = async (cwd, type, name) => {
   await fs.copy(path.join(templatePath, 'project'), projectPath)
 
   // copy components
-  await fs.copy(path.join(componentPath, 'src'), projectPath)
-  await fs.copy(path.join(componentPath, 'test'), projectPath)
+  await fs.copy(path.join(componentPath, 'src'), path.join(projectPath, 'src'))
+  await fs.copy(path.join(componentPath, 'test'), path.join(projectPath, 'test'))
 
   // add koop.json and package.json
   await updateInfo(componentPath, projectPath, 'koop.json')
