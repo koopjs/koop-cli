@@ -18,6 +18,13 @@ module.exports = async function addLocalPlugin (cwd, type, plugin, options = {})
     return
   }
 
+  if (
+    options.local &&
+    !['auth', 'provider'].includes(type)
+  ) {
+    throw new Error(`No template exists for the given plugin type "${type}".`)
+  }
+
   const componentPath = path.join(__dirname, '../../templates/plugin/components', type)
   const pluginTestPath = path.join(cwd, 'test', plugin.fullName)
 

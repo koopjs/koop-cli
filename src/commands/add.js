@@ -31,7 +31,7 @@ function builder (yargs) {
       default: false
     })
     .option('local', {
-      description: 'add a plugin from the local path',
+      description: 'add a plugin from a local path',
       type: 'string'
     })
 }

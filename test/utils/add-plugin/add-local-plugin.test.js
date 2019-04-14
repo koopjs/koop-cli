@@ -30,6 +30,16 @@ describe('utils/add-plugin', function () {
       await createNewProject(temp, 'app', appName, defaultOptions)
     })
 
+    it('should throw an error for unsupported plugin types', async () => {
+      const addPlugin = require(modulePath)
+
+      try {
+        await addPlugin(appPath, 'output', 'plugins/test-provider', defaultOptions)
+      } catch (err) {
+        expect(err).to.be.an('error')
+      }
+    })
+
     it('should add a provider plugin from a local path', async () => {
       const addPlugin = require(modulePath)
       await addPlugin(appPath, 'provider', 'plugins/test-provider', defaultOptions)
