@@ -5,7 +5,7 @@
   "description": "An opinionated plugin template for koop-cli",
   "main": "src/index.js",
   "scripts": {
-    "test": "mocha test/*.test.js | tap-spec"
+    "test": "mocha test/*.test.js"
   },
   "dependencies": {
     "config": "^3.0.0"

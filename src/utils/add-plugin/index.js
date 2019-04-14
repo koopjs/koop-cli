@@ -12,6 +12,7 @@ const log = require('../log')
  * @param  {string}  type         plugin type
  * @param  {string}  nameOrPath   plugin name or path
  * @param  {Object}  [options={}] options
+ * @param  {boolean} [options.local]  local file path of the plugin
  * @param  {Object}  [options.config] plugin configuration
  * @param  {boolean} [options.skipInstall]  skip plugin installation
  * @param  {boolean} [options.addToRoot]  add plugin configuration to the app root configuration
