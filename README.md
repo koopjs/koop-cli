@@ -47,10 +47,6 @@ Positionals:
   type  project type               [string] [choices: "app", "provider", "auth"]
   name  project name                                                    [string]
 
-Provider Options:
-  --add-server  add a server file to the new koop provider project
-                                                      [boolean] [default: false]
-
 Options:
   --config        specify the project configuration in JSON             [string]
   --skip-install  skip dependence installation        [boolean] [default: false]
