@@ -32,7 +32,7 @@ function builder (yargs) {
     })
     .option('local', {
       description: 'add a plugin from a local path',
-      type: 'string'
+      type: 'boolean'
     })
 }
 
