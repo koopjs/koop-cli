@@ -91,8 +91,9 @@ describe('utils/add-plugin', function () {
       '  instance: outputTile',
       '}];',
       'const auths = [];',
+      'const caches = [];',
       'const plugins = [];',
-      'module.exports = [...outputs, ...auths, ...plugins];'
+      'module.exports = [...outputs, ...auths, ...caches, ...plugins];'
     ].join(os.EOL)
     expect(plugins).to.equal(expected)
   })
@@ -113,8 +114,32 @@ describe('utils/add-plugin', function () {
       'const auths = [{',
       '  instance: myAuth',
       '}];',
+      'const caches = [];',
       'const plugins = [];',
-      'module.exports = [...outputs, ...auths, ...plugins];'
+      'module.exports = [...outputs, ...auths, ...caches, ...plugins];'
+    ].join(os.EOL)
+    expect(plugins).to.equal(expected)
+  })
+
+  it('should add the cache plugin to the cache list in the project', async () => {
+    const addNpmPlugin = proxyquire(addNpmPluginModulePath, {
+      'latest-version': async () => '3.2.1'
+    })
+    const addPlugin = proxyquire(modulePath, {
+      './add-npm-plugin': addNpmPlugin
+    })
+    await addPlugin(appPath, 'cache', '@koop/my-cache', defaultOptions)
+
+    const plugins = await fs.readFile(path.join(appPath, 'src', 'plugins.js'), 'utf-8')
+    const expected = [
+      "const myCache = require('@koop/my-cache');",
+      'const outputs = [];',
+      'const auths = [];',
+      'const caches = [{',
+      '  instance: myCache',
+      '}];',
+      'const plugins = [];',
+      'module.exports = [...outputs, ...auths, ...caches, ...plugins];'
     ].join(os.EOL)
     expect(plugins).to.equal(expected)
   })
@@ -142,13 +167,14 @@ describe('utils/add-plugin', function () {
       "const testProvider = require('test-provider');",
       'const outputs = [];',
       'const auths = [];',
+      'const caches = [];',
       'const plugins = [{',
       '  instance: testProvider,',
       '  options: {',
       "    routePrefix: '/my-route/'",
       '  }',
       '}];',
-      'module.exports = [...outputs, ...auths, ...plugins];'
+      'module.exports = [...outputs, ...auths, ...caches, ...plugins];'
     ].join(os.EOL)
     expect(plugins).to.equal(expected)
   })

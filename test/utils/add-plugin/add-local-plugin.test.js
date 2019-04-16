@@ -49,10 +49,11 @@ describe('utils/add-plugin', function () {
         "const testProvider = require('./plugins/test-provider');",
         'const outputs = [];',
         'const auths = [];',
+        'const caches = [];',
         'const plugins = [{',
         '  instance: testProvider',
         '}];',
-        'module.exports = [...outputs, ...auths, ...plugins];'
+        'module.exports = [...outputs, ...auths, ...caches, ...plugins];'
       ].join(os.EOL)
       expect(plugins).to.equal(expected)
 
@@ -77,8 +78,9 @@ describe('utils/add-plugin', function () {
         'const auths = [{',
         '  instance: myAuth',
         '}];',
+        'const caches = [];',
         'const plugins = [];',
-        'module.exports = [...outputs, ...auths, ...plugins];'
+        'module.exports = [...outputs, ...auths, ...caches, ...plugins];'
       ].join(os.EOL)
       expect(plugins).to.equal(expected)
 

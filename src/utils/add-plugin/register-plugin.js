@@ -10,7 +10,8 @@ const astBuilders = recast.types.builders
 // Different plugins should be registered in ordered lists based on their type
 const pluginLists = {
   output: 'outputs',
-  auth: 'auths'
+  auth: 'auths',
+  cache: 'caches'
 }
 
 /**
