@@ -1,0 +1,9 @@
+{
+  "name": "koop-cli-new-auth",
+  "description": "An opinionated auth plugin template for koop-cli",
+  "keywords": [
+    "koop",
+    "plugin",
+    "auth"
+  ]
+}

@@ -47,10 +47,6 @@ Positionals:
   type  project type               [string] [choices: "app", "provider", "auth"]
   name  project name                                                    [string]
 
-Provider Options:
-  --add-server  add a server file to the new koop provider project
-                                                      [boolean] [default: false]
-
 Options:
   --config        specify the project configuration in JSON             [string]
   --skip-install  skip dependence installation        [boolean] [default: false]
@@ -79,6 +75,7 @@ Provider Options:
   --route-prefix  add a prefix to all of a registered routes            [string]
 
 Options:
+  --local         add a plugin from a local path                      [string]
   --config        specify the plugin configuration in JSON              [string]
   --add-to-root   add the given configuration to the app root configuration
                                                       [boolean] [default: false]
