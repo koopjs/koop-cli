@@ -1,6 +1,5 @@
 {
   "name": "koop-cli-new-provider",
-  "version": "1.0.0",
   "description": "An opinionated provider template for koop-cli",
   "dependencies": {
     "node-fetch": "^2.3.0"

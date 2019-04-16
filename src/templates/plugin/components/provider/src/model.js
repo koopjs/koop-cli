@@ -8,7 +8,6 @@
 
 const config = require('config')
 const fetch = require('node-fetch')
-const providerName = require('../package.json').name
 
 function Model (koop) {}
 
@@ -24,7 +23,7 @@ function Model (koop) {}
 // req.params.layer
 // req.params.method
 Model.prototype.getData = function (req, callback) {
-  const url = config[providerName].url
+  const url = config['koop-cli-new-provider'].url
 
   // Call the remote API with our developer key
   fetch(url)
