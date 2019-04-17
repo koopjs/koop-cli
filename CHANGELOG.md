@@ -11,7 +11,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
-* cache plugins is not registered before provider plugins (#23)
+* cache plugins are not registered before provider plugins (#23)
 
 ## 0.2.0 - 2019-03-21
 
