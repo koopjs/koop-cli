@@ -63,3 +63,4 @@ typings/
 # lock file
 src/templates/**/yarn.lock
 src/templates/**/package-lock.json
+yarn.lock

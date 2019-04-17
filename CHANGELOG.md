@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.3.0 - 2019-04-18
+
+### Added
+
+* `--local` option for the `add` command (#22)
+
+### Fixed
+
+* cache plugins are not registered before provider plugins (#23)
+
 ## 0.2.0 - 2019-03-21
 
 ### Added
