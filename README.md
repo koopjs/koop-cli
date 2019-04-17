@@ -9,6 +9,7 @@ An easy-to-use CLI tool to quickly build [Koop](https://github.com/koopjs/koop) 
 * follow [Koop specification](https://koopjs.github.io/docs/usage/koop-core)
 * minimal project templates
 * full development cycle support
+* console commands + Node.js APIs
 * cross-platform
 
 ## Install
@@ -25,7 +26,7 @@ Use yarn
 yarn global add @koopjs/cli
 ```
 
-Once installed the `koop` command is available at your console.
+Once installed the `koop` command is available at the console.
 
 ## Example
 
