@@ -1,6 +1,6 @@
 {
   "name": "@koopjs/cli",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "CLI tool to build Koop projects",
   "main": "src/index.js",
   "scripts": {
