@@ -7,7 +7,7 @@ module.exports = {
   new: (cwd, type, name, options) => {
     return createNewProject(cwd, type, name, _.assign({ quiet: true }, options))
   },
-  add: (cwd, name, options) => {
-    return addPlugin(cwd, name, _.assign({ quiet: true }, options))
+  add: (cwd, type, name, options) => {
+    return addPlugin(cwd, type, name, _.assign({ quiet: true }, options))
   }
 }

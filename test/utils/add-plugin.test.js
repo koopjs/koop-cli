@@ -5,7 +5,7 @@ const path = require('path')
 const chai = require('chai')
 const fs = require('fs-extra')
 const proxyquire = require('proxyquire')
-const createNewProject = require('./add-plugin/create-new-project')
+const createNewProject = require('../test-helpers/create-new-project')
 
 const modulePath = '../../src/utils/add-plugin'
 const addNpmPluginModulePath = path.join(modulePath, 'add-npm-plugin')
