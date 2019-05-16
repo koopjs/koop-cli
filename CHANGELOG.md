@@ -3,11 +3,17 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unpublished
+
+### Fixed
+
+* `add` command doesn't install the correct plugin name
+
 ## 0.3.2 - 2019-04-19
 
 ### Fixed
 
-* Node.js `add()` API is broken (#27) 
+* Node.js `add()` API is broken (#27)
 
 ## 0.3.1 - 2019-04-18
 
