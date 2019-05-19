@@ -5,8 +5,9 @@ const addConfig = require('../add-config')
 const setupGit = require('./setup-git')
 const log = require('../log')
 const scripts = require('../scripts')
-const createNewApp = require('./create-new-app')
-const createNewPlugin = require('./create-new-plugin')
+const addComponents = require('./add-components')
+const updatePackage = require('./update-package')
+const updateConfig = require('./update-config')
 
 /**
  * Creat a new koop project.
@@ -26,13 +27,14 @@ module.exports = async (cwd, type, name, options = {}) => {
    * Create project directory and copy project template
    */
 
-  await fs.ensureDir(projectPath)
+  const templatePath = path.join(__dirname, '../../template/project')
+  await fs.copy(templatePath, projectPath)
 
-  if (type === 'app') {
-    await createNewApp(cwd, type, name)
-  } else {
-    await createNewPlugin(cwd, type, name)
-  }
+  const componentPath = path.join(__dirname, '../../template/components', type)
+  await addComponents(projectPath, componentPath)
+
+  await updatePackage(projectPath, type, name)
+  await updateConfig(projectPath, type, name)
 
   log('\u2713 created project', 'info', options)
 

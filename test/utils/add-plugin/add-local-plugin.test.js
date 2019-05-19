@@ -4,7 +4,7 @@ const os = require('os')
 const path = require('path')
 const chai = require('chai')
 const fs = require('fs-extra')
-const createNewProject = require('../../test-helpers/create-new-project')
+const createNewProject = require('../../../src/utils/create-new-project')
 
 const modulePath = '../../../src/utils/add-plugin'
 

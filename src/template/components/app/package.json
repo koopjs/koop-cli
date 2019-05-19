@@ -1,0 +1,14 @@
+{
+  "name": "koop-cli-new-app",
+  "dependencies": {
+    "koop": "^3.10.1"
+  },
+  "keywords": [
+    "koop",
+    "app"
+  ],
+  "repository": "",
+  "scripts": {
+    "start": "node src/index.js"
+  }
+}
