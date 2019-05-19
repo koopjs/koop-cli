@@ -1,5 +1,5 @@
-# koop-cli-new-plugin
+# koop-cli-new-project
 
-A minimal Koop plugin template from [koop-cli](https://github.com/haoliangyu/koop-cli).
+A minimal Koop project template from [koop-cli](https://github.com/haoliangyu/koop-cli).
 
-See the [plugin specification](https://koopjs.github.io/docs/usage/koop-core) for more details.
+See the [specification](https://koopjs.github.io/docs/usage/koop-core) for more details.

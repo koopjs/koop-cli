@@ -95,11 +95,6 @@ Options:
   --skip-git      do not initialize Git               [boolean] [default: false]
 ```
 
-You can create different types of Koop projects from templates:
-* **app** from [koop-cli-new-app](https://github.com/koopjs/koop-cli/tree/master/src/templates/app/project)
-* **provider** from [koop-cli-new-provider](https://github.com/koopjs/koop-cli/tree/master/src/templates/provider/project)
-* **auth** from [koop-cli-new-auth](https://github.com/koopjs/koop-cli/tree/master/src/templates/auth/project)
-
 For more details on the project templates, please take a look at the Koop [specification](https://koopjs.github.io/docs/usage/koop-core) and [samples](https://github.com/koopjs?utf8=%E2%9C%93&q=sample).
 
 ### add
