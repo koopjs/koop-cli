@@ -1,7 +1,7 @@
 {
   "name": "koop-cli-new-app",
   "dependencies": {
-    "koop": "^3.10.1"
+    "koop": "^3.11.0"
   },
   "keywords": [
     "koop",
