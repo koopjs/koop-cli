@@ -1,8 +1,7 @@
 {
-  "name": "koop-cli-new-plugin",
-  "private": true,
+  "name": "koop-cli-new-project",
   "version": "1.0.0",
-  "description": "An opinionated plugin template for koop-cli",
+  "description": "A project template for Koop",
   "main": "src/index.js",
   "scripts": {
     "test": "mocha test/*.test.js"
