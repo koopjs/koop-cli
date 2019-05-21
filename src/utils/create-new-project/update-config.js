@@ -3,6 +3,7 @@ const fs = require('fs-extra')
 const writeJson = require('../write-formatted-json')
 
 module.exports = async (projectPath, type, name) => {
+  // no need to update app's config
   if (type === 'app') {
     return
   }
@@ -10,7 +11,7 @@ module.exports = async (projectPath, type, name) => {
   const configPath = path.join(projectPath, 'config/default.json')
   const config = await fs.readJson(configPath)
 
-  // create a config namespace of this plugin
+  // create a config namespace for this plugin
   config[name] = {}
 
   return writeJson(configPath, config)

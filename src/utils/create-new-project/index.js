@@ -27,12 +27,15 @@ module.exports = async (cwd, type, name, options = {}) => {
    * Create project directory and copy project template
    */
 
+  // copy the template skeleton
   const templatePath = path.join(__dirname, '../../template/project')
   await fs.copy(templatePath, projectPath)
 
+  // add type-specific components
   const componentPath = path.join(__dirname, '../../template/components', type)
   await addComponents(projectPath, componentPath)
 
+  // update package.json and koop.json
   await updatePackage(projectPath, type, name)
   await updateConfig(projectPath, type, name)
 

@@ -1,10 +1,15 @@
 const path = require('path')
 const _ = require('lodash')
 const fs = require('fs-extra')
+
+// klawSync() is a function to recursively walk the given directory and return
+// an array of internal file/directory paths
 const klawSync = require('klaw-sync')
 
 module.exports = async (projectPath, componentPath) => {
   const componentExts = ['.js', '.json']
+
+  // only get the component file paths, not directories
   const items = klawSync(componentPath, { nodir: true })
 
   for (const item of items) {
