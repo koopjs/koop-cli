@@ -3,11 +3,11 @@
 
   This file is required. It's role is to specify configuration settings.
 
-  Documentation: http://koopjs.github.io/docs/specs/provider/
+  Documentation: https://koopjs.github.io/docs/usage/provider
 */
 
 // Define the provider path
-// /:name/:hosts?/:disableIdParam?/FeatureServer/:layer/:method
+// /:name/:hosts?/:id?/FeatureServer/:layer/:method
 // e.g. /sample/FeatureServer/0/query
 const provider = {
   type: 'provider',

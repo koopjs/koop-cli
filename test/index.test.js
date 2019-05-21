@@ -4,7 +4,7 @@ const os = require('os')
 const path = require('path')
 const chai = require('chai')
 const api = require('../src/index.js')
-const createNewProject = require('./test-helpers/create-new-project')
+const createNewProject = require('../src/utils/create-new-project')
 
 const expect = chai.expect
 const temp = os.tmpdir()
@@ -29,7 +29,11 @@ describe('Node.js APIs', () => {
     beforeEach(async () => {
       appName = `add-api-test-${Date.now()}`
       appPath = path.join(temp, appName)
-      await createNewProject(temp, 'app', appName)
+      await createNewProject(temp, 'app', appName, {
+        skipGit: true,
+        skipInstall: true,
+        quiet: true
+      })
     })
 
     it('should work', async () => {

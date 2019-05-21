@@ -15,5 +15,4 @@ plugins.forEach((plugin) => {
 routes.forEach((route) => koop.server[route.method.toLowerCase()](route.path, route.controller))
 
 // start the server
-const port = config.get('port')
-koop.server.listen(port, () => koop.log.info(`Koop server listening at ${port}`))
+koop.server.listen(config.port, () => koop.log.info(`Koop server listening at ${config.port}`))

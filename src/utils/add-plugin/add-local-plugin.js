@@ -25,7 +25,7 @@ module.exports = async function addLocalPlugin (cwd, type, plugin, options = {})
     throw new Error(`No template exists for the given plugin type "${type}".`)
   }
 
-  const componentPath = path.join(__dirname, '../../templates/plugin/components', type)
+  const componentPath = path.join(__dirname, '../../template/components', type)
   const pluginTestPath = path.join(cwd, 'test', plugin.fullName)
 
   // copy components

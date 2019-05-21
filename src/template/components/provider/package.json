@@ -1,12 +1,6 @@
 {
   "name": "koop-cli-new-provider",
   "description": "An opinionated provider template for koop-cli",
-  "dependencies": {
-    "node-fetch": "^2.3.0"
-  },
-  "devDependencies": {
-    "proxyquire": "^2.1.0"
-  },
   "keywords": [
     "koop",
     "plugin",
