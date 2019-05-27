@@ -35,7 +35,10 @@ async function serveProvider (port) {
 
   const provider = require(path.join(process.cwd(), packageInfo.main))
   koop.register(provider)
-  koop.server.listen(port || 8080)
+  const serverPort = port || 8080
+  koop.server.listen(serverPort, () => {
+    console.log(`Server listening at http://localhost:${serverPort}`)
+  })
 }
 
 module.exports = {

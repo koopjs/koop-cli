@@ -20,10 +20,12 @@ $ npm test
 
 ### Dev Server
 
-This project by default uses the [Koop CLI](https://github.com/koopjs/koop-cli) to set up the dev server. It can be invoded with
+This project by default uses the [Koop CLI](https://github.com/koopjs/koop-cli) to set up the dev server. It can be invoded via
 
 ```
 $ npm start
 ```
+
+The server will be running at `http://localhost:8080` or at the port specified at the configuration.
 
 For more details, check the [Koop CLI documentation](https://github.com/koopjs/koop-cli/blob/master/README.md).
