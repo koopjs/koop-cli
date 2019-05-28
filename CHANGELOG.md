@@ -5,9 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## 0.4.0 - 2019-05-28
+
 ### Changed
 
-* allow to start a dev server with the local Koop CLI in a Koop project (#31)
+* simplify project templates (#30)
+* allow starting a dev server with the local Koop CLI in a Koop project (#31)
 
 ## 0.3.3 - 2019-05-16
 
