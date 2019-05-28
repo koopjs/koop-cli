@@ -20,31 +20,25 @@ async function handler (argv = {}) {
   const configPath = path.join(process.cwd(), 'koop.json')
   const koopConfig = await fs.readJson(configPath)
 
-  createServer[koopConfig.type](argv.port)
+  await createServer[koopConfig.type](argv.port)
 }
 
-function serveApp () {
-  const packageInfo = fs.readJsonSync(path.join(process.cwd(), 'package.json'))
-  const command = packageInfo.scripts.start
-    ? 'npm run start'
-    : `node ${packageInfo.main}`
-
-  exec(command)
+async function serveApp () {
+  const packageInfo = await fs.readJson(path.join(process.cwd(), 'package.json'))
+  exec(`node ${packageInfo.main}`)
 }
 
-function serveProvider (port) {
-  const packageInfo = fs.readJsonSync(path.join(process.cwd(), 'package.json'))
+async function serveProvider (port) {
+  const packageInfo = await fs.readJson(path.join(process.cwd(), 'package.json'))
+  const Koop = require('koop')
+  const koop = new Koop()
 
-  if (packageInfo.scripts.start) {
-    exec('npm run start')
-  } else {
-    const Koop = require('koop')
-    const koop = new Koop()
-
-    const provider = require(path.join(process.cwd(), packageInfo.main))
-    koop.register(provider)
-    koop.server.listen(port || 8080)
-  }
+  const provider = require(path.join(process.cwd(), packageInfo.main))
+  koop.register(provider)
+  const serverPort = port || 8080
+  koop.server.listen(serverPort, () => {
+    console.log(`Server listening at http://localhost:${serverPort}`)
+  })
 }
 
 module.exports = {

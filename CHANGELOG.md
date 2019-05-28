@@ -5,11 +5,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+### Changed
+
+* allow to start a dev server with the local Koop CLI in a Koop project (#31)
+
 ## 0.3.3 - 2019-05-16
 
 ### Fixed
 
-* `add` command doesn't install the correct package name
+* `add` command doesn't install the correct package name (#29)
 
 ## 0.3.2 - 2019-04-19
 
