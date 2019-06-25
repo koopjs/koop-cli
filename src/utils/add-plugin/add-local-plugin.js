@@ -20,7 +20,7 @@ module.exports = async function addLocalPlugin (cwd, type, plugin, options = {})
 
   if (
     options.local &&
-    !['auth', 'provider'].includes(type)
+    !['auth', 'provider', 'output'].includes(type)
   ) {
     throw new Error(`No template exists for the given plugin type "${type}".`)
   }
