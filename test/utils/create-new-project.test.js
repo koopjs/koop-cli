@@ -71,6 +71,23 @@ describe('utils/create-new-project', () => {
     expect(await fs.pathExists(path.join(appPath, 'test/authentication-specification.test.js'))).to.equal(true)
   })
 
+  it('should create an output plugin project from the template', async () => {
+    await createNewProject(temp, 'output', appName, defaultOptions)
+    expect(await fs.pathExists(appPath)).to.equal(true)
+
+    const packageInfo = await fs.readJson(path.join(appPath, 'package.json'))
+    expect(packageInfo.name).to.equal(appName)
+
+    const koopConfig = await fs.readJson(path.join(appPath, 'koop.json'))
+    expect(koopConfig.type).to.equal('output')
+
+    expect(await fs.pathExists(path.join(appPath, 'src/index.js'))).to.equal(true)
+    expect(await fs.pathExists(path.join(appPath, 'src/serve.js'))).to.equal(true)
+
+    expect(await fs.pathExists(path.join(appPath, 'test/index.test.js'))).to.equal(true)
+    expect(await fs.pathExists(path.join(appPath, 'test/serve.test.js'))).to.equal(true)
+  })
+
   it('should update the config file if the config is specified with a JSON', async () => {
     await createNewProject(
       temp,
