@@ -9,7 +9,7 @@ describe('Koop provider', function () {
 
     expect(provider.type).to.equal('provider')
     expect(provider.name).to.equal('koop-cli-new-provider')
-    expect(provider.version).to.equal('1.0.0')
+    expect(provider.version).to.equal('0.1.0')
     expect(provider.Model).to.be.a('function')
   })
 })

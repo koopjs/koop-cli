@@ -1,0 +1,14 @@
+{
+  "name": "koop-cli-new-output",
+  "version": "0.1.0",
+  "description": "An opinionated output template for koop-cli",
+  "keywords": [
+    "koop",
+    "plugin",
+    "output"
+  ],
+  "devDependencies": {
+    "express": "^4.17.1",
+    "supertest": "^4.0.2"
+  }
+}

@@ -86,7 +86,8 @@ The `new` command creates a new Koop project from the template at the current lo
 koop new <type> <name>
 
 Positionals:
-  type  project type               [string] [choices: "app", "provider", "auth"]
+  type  project type
+                         [string] [choices: "app", "provider", "auth", "output"]
   name  project name                                                    [string]
 
 Options:

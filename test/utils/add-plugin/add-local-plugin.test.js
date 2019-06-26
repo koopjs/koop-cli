@@ -95,5 +95,32 @@ describe('utils/add-plugin', function () {
       expect(await fs.pathExists(path.join(testPath, 'authenticate.test.js'))).to.equal(true)
       expect(await fs.pathExists(path.join(testPath, 'authentication-specification.test.js'))).to.equal(true)
     })
+
+    it('should add an output plugin from a local path', async () => {
+      const addPlugin = require(modulePath)
+
+      await addPlugin(appPath, 'output', 'my-output', defaultOptions)
+
+      const plugins = await fs.readFile(path.join(appPath, 'src', 'plugins.js'), 'utf-8')
+      const expected = [
+        "const myOutput = require('./my-output');",
+        'const outputs = [{',
+        '  instance: myOutput',
+        '}];',
+        'const auths = [];',
+        'const caches = [];',
+        'const plugins = [];',
+        'module.exports = [...outputs, ...auths, ...caches, ...plugins];'
+      ].join(os.EOL)
+      expect(plugins).to.equal(expected)
+
+      const srcPath = path.join(appPath, 'src/my-output')
+      expect(await fs.pathExists(path.join(srcPath, 'index.js'))).to.equal(true)
+      expect(await fs.pathExists(path.join(srcPath, 'serve.js'))).to.equal(true)
+
+      const testPath = path.join(appPath, 'test/my-output')
+      expect(await fs.pathExists(path.join(testPath, 'index.test.js'))).to.equal(true)
+      expect(await fs.pathExists(path.join(testPath, 'serve.test.js'))).to.equal(true)
+    })
   })
 })

@@ -5,7 +5,7 @@ function builder (yargs) {
     .positional('type', {
       describe: 'project type',
       type: 'string',
-      choices: ['app', 'provider', 'auth']
+      choices: ['app', 'provider', 'auth', 'output']
     })
     .positional('name', {
       describe: 'project name',
