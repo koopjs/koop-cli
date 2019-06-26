@@ -8,7 +8,7 @@ describe('Koop output', function () {
     const output = require('../src/index')
 
     expect(output.type).to.equal('output')
-    expect(output.version).to.equal('1.0.0')
+    expect(output.version).to.equal('0.1.0')
     expect(output.routes).to.be.an('array')
     expect(output.prototype.serve).to.be.a('function')
   })

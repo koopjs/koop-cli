@@ -1,6 +1,6 @@
 {
   "name": "koop-cli-new-project",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "A project template for Koop",
   "main": "src/index.js",
   "scripts": {

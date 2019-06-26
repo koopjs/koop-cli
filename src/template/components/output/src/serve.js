@@ -10,6 +10,6 @@ module.exports = function (req, res) {
       return res.status(404).send()
     }
 
-    res.json(data)
+    res.status(200).json(data)
   })
 }
