@@ -1,6 +1,9 @@
 {
   "name": "koop-cli-new-auth",
   "description": "An opinionated auth plugin template for koop-cli",
+  "scripts": {
+    "start": "koop serve --data test/data.geojson"
+  },
   "keywords": [
     "koop",
     "plugin",

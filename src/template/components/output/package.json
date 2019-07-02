@@ -2,6 +2,9 @@
   "name": "koop-cli-new-output",
   "version": "0.1.0",
   "description": "An opinionated output template for koop-cli",
+  "scripts": {
+    "start": "koop serve --data test/data.geojson"
+  },
   "keywords": [
     "koop",
     "plugin",
