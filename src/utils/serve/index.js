@@ -27,12 +27,12 @@ module.exports = async (cwd, options) => {
       if (
         !dataPath ||
         !dataPath.endsWith('.geojson') ||
-        !(await fs.pathExists(dataPath))
+        !(await fs.pathExists(path.join(cwd, dataPath)))
       ) {
         throw new Error('A GeoJSON test data is requried for the dev server.')
       }
 
-      koop.register(getProvider(dataPath))
+      koop.register(getProvider(path.join(cwd, dataPath)))
     }
 
     const serverPort = options.port || 8080
