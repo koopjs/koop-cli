@@ -16,7 +16,9 @@ const defaultOptions = {
   quiet: true
 }
 
-describe('utils/serve', () => {
+describe('utils/serve', function () {
+  this.timeout(5000)
+
   it('should run the given server file', (done) => {
     const appName = `serve-test-${Date.now()}`
     const appPath = path.join(temp, appName)
