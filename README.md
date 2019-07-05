@@ -126,7 +126,7 @@ The `serve` command starts a test server for the current project.
 
 For Koop apps, the command runs the app directly.
 
-For Koop plugins, the command creates a Koop server that includes the plugin and a simple GeoJSON provider. This GeoJSON provider is only registered if the current Koop project is not a provider project. It makes sure the Koop server has an output ([geoservices](https://github.com/koopjs/koop-output-geoservices) by default) and a provider ([source](https://github.com/koopjs/koop-cli/tree/master/src/utils/serve/index.js)). When the GeoJSON provider is used, the `data` file path is required to provide test data.
+For Koop plugins, the command creates a Koop server that includes the plugin and a simple GeoJSON provider named `dev-provider` ([source](https://github.com/koopjs/koop-cli/tree/master/src/utils/serve/index.js)). This GeoJSON provider is only registered if the current Koop project is not a provider project. It makes sure the Koop server has an output ([geoservices](https://github.com/koopjs/koop-output-geoservices) by default) and a provider. When the GeoJSON provider is used, the `data` file path is required to provide test data (must be `*.geojson`).
 
 ```
 koop serve [path]
