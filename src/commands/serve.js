@@ -11,6 +11,11 @@ function builder (yargs) {
       type: 'number',
       description: 'port number of the server'
     })
+    .option('data', {
+      type: 'string',
+      default: 'test/data.geojson',
+      description: 'path to a GeoJSON data file for testing Koop plugin'
+    })
 }
 
 async function handler (argv = {}) {
