@@ -7,7 +7,7 @@ const fs = require('fs-extra')
 const klawSync = require('klaw-sync')
 
 module.exports = async (projectPath, componentPath) => {
-  const componentExts = ['.js', '.json']
+  const componentExts = ['.js', '.json', '.geojson']
 
   // only get the component file paths, not directories
   const items = klawSync(componentPath, { nodir: true })

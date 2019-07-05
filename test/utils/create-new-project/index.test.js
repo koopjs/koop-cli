@@ -4,7 +4,7 @@ const chai = require('chai')
 const path = require('path')
 const fs = require('fs-extra')
 const os = require('os')
-const createNewProject = require('../../src/utils/create-new-project')
+const createNewProject = require('../../../src/utils/create-new-project')
 
 const expect = chai.expect
 const temp = os.tmpdir()
@@ -69,6 +69,7 @@ describe('utils/create-new-project', () => {
     expect(await fs.pathExists(path.join(appPath, 'test/index.test.js'))).to.equal(true)
     expect(await fs.pathExists(path.join(appPath, 'test/authenticate.test.js'))).to.equal(true)
     expect(await fs.pathExists(path.join(appPath, 'test/authentication-specification.test.js'))).to.equal(true)
+    expect(await fs.pathExists(path.join(appPath, 'test/data.geojson'))).to.equal(true)
   })
 
   it('should create an output plugin project from the template', async () => {
@@ -86,6 +87,7 @@ describe('utils/create-new-project', () => {
 
     expect(await fs.pathExists(path.join(appPath, 'test/index.test.js'))).to.equal(true)
     expect(await fs.pathExists(path.join(appPath, 'test/serve.test.js'))).to.equal(true)
+    expect(await fs.pathExists(path.join(appPath, 'test/data.geojson'))).to.equal(true)
   })
 
   it('should update the config file if the config is specified with a JSON', async () => {

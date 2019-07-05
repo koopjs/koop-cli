@@ -14,7 +14,11 @@ function builder (yargs) {
 }
 
 async function handler (argv = {}) {
-  serve(process.cwd(), argv)
+  try {
+    await serve(process.cwd(), argv)
+  } catch (err) {
+    console.error(err)
+  }
 }
 
 module.exports = {

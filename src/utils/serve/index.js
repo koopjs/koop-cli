@@ -4,7 +4,7 @@ const fs = require('fs-extra')
 const getProvider = require('./get-provider')
 const exec = require('../exec-realtime')
 
-module.exports = async (cwd, options) => {
+module.exports = async (cwd, options = {}) => {
   const configPath = path.join(cwd, 'koop.json')
   const koopConfig = await fs.readJson(configPath)
 
@@ -13,7 +13,8 @@ module.exports = async (cwd, options) => {
     exec(`node ${serverPath}`)
   } else if (koopConfig.type === 'app') {
     const packageInfo = await fs.readJson(path.join(cwd, 'package.json'))
-    exec(`node ${packageInfo.main}`)
+    const appPath = path.join(cwd, packageInfo.main)
+    exec(`node ${appPath}`)
   } else {
     const koop = new Koop()
     const packageInfo = await fs.readJson(path.join(cwd, 'package.json'))
