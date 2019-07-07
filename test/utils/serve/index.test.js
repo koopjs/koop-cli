@@ -17,7 +17,7 @@ const defaultOptions = {
 }
 
 describe('utils/serve', function () {
-  this.timeout(5000)
+  this.timeout(25000)
 
   it('should run the given server file', (done) => {
     const appName = `serve-test-${Date.now()}`
