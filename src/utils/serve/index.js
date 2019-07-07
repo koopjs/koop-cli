@@ -1,4 +1,3 @@
-const Koop = require('koop')
 const path = require('path')
 const fs = require('fs-extra')
 const getProvider = require('./get-provider')
@@ -19,6 +18,7 @@ module.exports = async (cwd, options = {}) => {
     exec(`node ${appPath}`)
   } else {
     // otherwise, this is a plugin and we should create a Koop server for it
+    const Koop = require('koop')
     const koop = new Koop()
     const packageInfo = await fs.readJson(path.join(cwd, 'package.json'))
     const plugin = require(path.join(cwd, packageInfo.main))
