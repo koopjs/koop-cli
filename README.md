@@ -70,8 +70,8 @@ koop <command>
 Commands:
   koop new <type> <name>  create a new koop project
   koop add <type> <name>  add a new plugin to the current app
-  koop serve [path]       run a koop server for the current project
-  koop serve              run a koop server for the current project
+  koop test               run tests in the current project
+  koop serve [path]       run a Koop server for the current project
 
 Options:
   --quiet    supress all console messages except errors

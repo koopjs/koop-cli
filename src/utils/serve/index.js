@@ -37,7 +37,7 @@ module.exports = async (cwd, options = {}) => {
         !dataPath.endsWith('.geojson') ||
         !(await fs.pathExists(path.join(cwd, dataPath)))
       ) {
-        throw new Error('A GeoJSON test data is requried for the dev server.')
+        throw new Error('A GeoJSON file is requried to provide test data for the dev server.')
       }
 
       koop.register(await getProvider(path.join(cwd, dataPath)))

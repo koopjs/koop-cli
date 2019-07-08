@@ -1,5 +1,14 @@
 /* eslint-env mocha */
 
+/**
+ * Tests in this file use a callback style because the serve() function is not
+ * a typical promised function. It executes a command or runs an express server,
+ * both without an exit and don't use async/await. Using the done() callback is
+ * a better way to mock the behavior but Mocha doesn't like callback and promise
+ * returned in the same. So these tests do use the old-style promise-chain
+ * (with no return) instead of the await function.
+ */
+
 const os = require('os')
 const path = require('path')
 const proxyquire = require('proxyquire')
@@ -100,6 +109,9 @@ describe('utils/serve', function () {
 
     createNewProject(temp, 'output', appName, defaultOptions)
       .then(() => serve(appPath, { data: 'test/data.geojson' }))
+      .then(() => {
+        expect(registeredPlugins.length).to.equal(0)
+      })
       .catch(done)
   })
 
@@ -125,6 +137,9 @@ describe('utils/serve', function () {
 
     createNewProject(temp, 'auth', appName, defaultOptions)
       .then(() => serve(appPath, { data: 'test/data.geojson' }))
+      .then(() => {
+        expect(registeredPlugins.length).to.equal(0)
+      })
       .catch(done)
   })
 
@@ -143,7 +158,7 @@ describe('utils/serve', function () {
     createNewProject(temp, 'auth', appName, defaultOptions)
       .then(() => serve(appPath, { data: null }))
       .catch((err) => {
-        expect(err.message).to.equal('A GeoJSON test data is requried for the dev server.')
+        expect(err.message).to.equal('A GeoJSON file is requried to provide test data for the dev server.')
         done()
       })
   })
