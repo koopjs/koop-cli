@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 * output template (#32)
+* `serve` command support for different plugin types (#33)
 
 ## 0.4.0 - 2019-05-28
 
