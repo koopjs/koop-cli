@@ -5,6 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## 0.5.0 - 2019-07-08
+
 ### Added
 
 * output template (#32)
