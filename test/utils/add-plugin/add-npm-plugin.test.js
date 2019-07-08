@@ -112,11 +112,9 @@ describe('utils/add-plugin', function () {
 
     it('should install a npm plugin with the full module name', async () => {
       const addNpmPlugin = proxyquire(addNpmPluginModulePath, {
-        execa: {
-          shell (script, options) {
-            expect(script).to.equal('npm install --quiet @koopjs/test-provider')
-            expect(options.cwd).to.equal(appPath)
-          }
+        execa: (script, options) => {
+          expect(script).to.equal('npm install --quiet @koopjs/test-provider')
+          expect(options.cwd).to.equal(appPath)
         }
       })
       const addPlugin = proxyquire(modulePath, {
@@ -129,11 +127,9 @@ describe('utils/add-plugin', function () {
 
     it('should install a npm plugin with the full module name with version', async () => {
       const addNpmPlugin = proxyquire(addNpmPluginModulePath, {
-        execa: {
-          shell (script, options) {
-            expect(script).to.equal('npm install --quiet @koopjs/test-provider@^3.0.0')
-            expect(options.cwd).to.equal(appPath)
-          }
+        execa: (script, options) => {
+          expect(script).to.equal('npm install --quiet @koopjs/test-provider@^3.0.0')
+          expect(options.cwd).to.equal(appPath)
         }
       })
       const addPlugin = proxyquire(modulePath, {
@@ -146,11 +142,9 @@ describe('utils/add-plugin', function () {
 
     it('should install a npm plugin with the full module name with tag', async () => {
       const addNpmPlugin = proxyquire(addNpmPluginModulePath, {
-        execa: {
-          shell (script, options) {
-            expect(script).to.equal('npm install --quiet @koopjs/test-provider@latest')
-            expect(options.cwd).to.equal(appPath)
-          }
+        execa: (script, options) => {
+          expect(script).to.equal('npm install --quiet @koopjs/test-provider@latest')
+          expect(options.cwd).to.equal(appPath)
         }
       })
       const addPlugin = proxyquire(modulePath, {

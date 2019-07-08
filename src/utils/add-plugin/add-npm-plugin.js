@@ -32,6 +32,6 @@ module.exports = async function addNpmPlugin (cwd, type, plugin, options = {}) {
   } else {
     const script = scripts.NPM_INSTALL
     const moduleName = plugin.versionedFullName || plugin.fullName
-    await execa.shell(`${script} ${moduleName}`, { cwd })
+    await execa(`${script} ${moduleName}`, { cwd, shell: true })
   }
 }

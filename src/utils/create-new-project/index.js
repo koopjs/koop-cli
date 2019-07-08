@@ -66,7 +66,7 @@ module.exports = async (cwd, type, name, options = {}) => {
   if (!options.skipInstall) {
     const script = scripts.NPM_INSTALL
     // install dependencies
-    await execa.shell(script, { cwd: projectPath })
+    await execa(script, { cwd: projectPath, shell: true })
     log('\u2713 installed dependencies', 'info', options)
   }
 

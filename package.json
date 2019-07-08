@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/koopjs/koop-cli#readme",
   "dependencies": {
-    "execa": "^2.0.2",
+    "execa": "^2.0.3",
     "fs-extra": "^8.1.0",
     "klaw-sync": "^6.0.0",
     "koop": "^3.12.2",
@@ -47,9 +47,9 @@
     "cross-env": "^5.2.0",
     "express": "^4.17.1",
     "husky": "^3.0.0",
-    "lint-staged": "^9.0.1",
+    "lint-staged": "^9.1.0",
     "mocha": "^6.1.4",
-    "npm-check-updates": "^3.1.13",
+    "npm-check-updates": "^3.1.17",
     "proxyquire": "^2.1.0",
     "standard": "^12.0.1",
     "supertest": "^4.0.2"
