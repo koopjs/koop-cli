@@ -1,6 +1,7 @@
 const path = require('path')
 const _ = require('lodash')
 const fs = require('fs-extra')
+const writeJson = require('../write-formatted-json')
 
 // klawSync() is a function to recursively walk the given directory and return
 // an array of internal file/directory paths
@@ -19,7 +20,7 @@ module.exports = async (projectPath, componentPath) => {
 
     const relativePath = item.path.replace(componentPath, '')
 
-    if (item.path.endsWith('.json')) {
+    if (item.path.endsWith('.json') || item.path.endsWith('.geojson')) {
       await addJson(projectPath, componentPath, relativePath)
     } else {
       await addFile(projectPath, componentPath, relativePath)
@@ -40,7 +41,7 @@ async function addJson (projectPath, componentPath, filePath) {
   const newData = await fs.readJson(src)
   _.merge(data, newData)
 
-  return fs.writeJson(dest, data)
+  return writeJson(dest, data)
 }
 
 async function addFile (projectPath, componentPath, filePath) {

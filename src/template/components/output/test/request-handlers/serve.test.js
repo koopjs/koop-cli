@@ -5,9 +5,11 @@ const express = require('express')
 const chai = require('chai')
 const expect = chai.expect
 
-describe('Koop output - serve', function () {
+const modulePath = '../../src/request-handlers/serve'
+
+describe('request-handlers/serve', function () {
   it('should return data on success', (done) => {
-    const serve = require('../src/serve').bind({
+    const serve = require(modulePath).bind({
       model: {
         pull (req, callback) {
           expect(req).to.be.an('object')
@@ -34,7 +36,7 @@ describe('Koop output - serve', function () {
   })
 
   it('should return 404 on no data', (done) => {
-    const serve = require('../src/serve').bind({
+    const serve = require(modulePath).bind({
       model: {
         pull (req, callback) {
           expect(req).to.be.an('object')
@@ -52,7 +54,7 @@ describe('Koop output - serve', function () {
   })
 
   it('should return 500 on error', (done) => {
-    const serve = require('../src/serve').bind({
+    const serve = require(modulePath).bind({
       model: {
         pull (req, callback) {
           expect(req).to.be.an('object')
