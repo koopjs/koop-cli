@@ -1,18 +1,14 @@
-const serve = require('./serve')
+const packageInfo = require('../package.json')
+const serve = require('./request-handlers/serve')
+const routes = require('./routes')
 
 function Output () {}
 
-Output.version = require('../package.json').version
-
 Output.type = 'output'
 
-Output.routes = [
-  {
-    path: 'koop-cli-new-output',
-    methods: ['get'],
-    handler: 'serve'
-  }
-]
+Output.version = packageInfo.version
+
+Output.routes = routes
 
 Output.prototype.serve = serve
 

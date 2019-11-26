@@ -1,9 +1,9 @@
+const welcomePage = require('./request-handlers/welcome-page')
+
 module.exports = [
   {
-    method: 'GET',
     path: '/',
-    controller: (req, res) => {
-      res.status(200).send('Welcome to Koop!')
-    }
+    methods: ['get'],
+    handler: welcomePage
   }
 ]

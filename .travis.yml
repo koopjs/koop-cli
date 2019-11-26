@@ -6,4 +6,4 @@ os:
 node_js:
   - lts/*
 script:
-- npm test
+  - npm test

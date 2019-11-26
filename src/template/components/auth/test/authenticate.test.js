@@ -3,7 +3,7 @@
 const chai = require('chai')
 const expect = chai.expect
 
-describe('Koop auth plugin - authenticate', function () {
+describe('authenticate', function () {
   it('should return a token and the expiration time', async () => {
     const authenticate = require('../src/authenticate')
     const result = await authenticate({})
