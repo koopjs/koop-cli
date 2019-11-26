@@ -53,28 +53,6 @@ describe('utils/add-plugin', function () {
     })
   })
 
-  it('should append the plugin config to the app config if specified', async () => {
-    const addNpmPlugin = proxyquire(addNpmPluginModulePath, {
-      'latest-version': async () => '3.2.1'
-    })
-    const addPlugin = proxyquire(modulePath, {
-      './add-npm-plugin': addNpmPlugin
-    })
-    await addPlugin(
-      appPath,
-      'provider',
-      'test-provider',
-      {
-        config: { api: 'api url' },
-        addToRoot: true,
-        ...defaultOptions
-      }
-    )
-
-    const appConfig = await fs.readJson(path.join(appPath, 'config', 'default.json'))
-    expect(appConfig.api).to.equal('api url')
-  })
-
   it('should add the output plugin to the output list in the project', async () => {
     const addNpmPlugin = proxyquire(addNpmPluginModulePath, {
       'latest-version': async () => '3.2.1'

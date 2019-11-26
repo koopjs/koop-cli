@@ -107,4 +107,20 @@ describe('utils/create-new-project', () => {
     const config = await fs.readJson(configPath)
     expect(config.port).to.equal(3000)
   })
+
+  it('should set the npm client if specified', async () => {
+    await createNewProject(
+      temp,
+      'app',
+      appName,
+      {
+        ...defaultOptions,
+        npmClient: 'yarn'
+      }
+    )
+
+    const configPath = path.join(appPath, 'koop.json')
+    const config = await fs.readJson(configPath)
+    expect(config.npmClient).to.equal('yarn')
+  })
 })

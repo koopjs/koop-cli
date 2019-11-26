@@ -25,6 +25,12 @@ function builder (yargs) {
       type: 'boolean',
       default: false
     })
+    .option('npm-client', {
+      description: 'an executable that knows how to install npm package dependencies',
+      type: 'string',
+      default: 'npm',
+      choices: ['npm', 'yarn']
+    })
 }
 
 async function handler (argv) {

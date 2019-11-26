@@ -1,8 +1,7 @@
 const path = require('path')
 const fs = require('fs-extra')
 const latestVersion = require('latest-version')
-const execa = require('execa')
-const scripts = require('../scripts')
+const { addDependency } = require('../manage-dependencies')
 const writeJson = require('../write-formatted-json')
 
 /**
@@ -30,8 +29,7 @@ module.exports = async function addNpmPlugin (cwd, type, plugin, options = {}) {
 
     await writeJson(packageInfoPath, packageInfo)
   } else {
-    const script = scripts.NPM_INSTALL
     const moduleName = plugin.versionedFullName || plugin.fullName
-    await execa(`${script} ${moduleName}`, { cwd, shell: true })
+    await addDependency(cwd, moduleName, options)
   }
 }

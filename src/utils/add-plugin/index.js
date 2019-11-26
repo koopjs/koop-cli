@@ -3,7 +3,7 @@ const path = require('path')
 const addLocalPlugin = require('./add-local-plugin')
 const addNpmPlugin = require('./add-npm-plugin')
 const registerPlugin = require('./register-plugin')
-const addConfig = require('../add-config')
+const updateProjectConfig = require('../update-project-config')
 const log = require('../log')
 
 /**
@@ -15,7 +15,6 @@ const log = require('../log')
  * @param  {boolean} [options.local]  local file path of the plugin
  * @param  {Object}  [options.config] plugin configuration
  * @param  {boolean} [options.skipInstall]  skip plugin installation
- * @param  {boolean} [options.addToRoot]  add plugin configuration to the app root configuration
  * @param  {boolean} [options.routePrefix]  URL prefix for register routes
  * @return {Promise}              a promise
  */
@@ -25,6 +24,8 @@ module.exports = async (cwd, type, nameOrPath, options = {}) => {
   if (koopConfig.type !== 'app') {
     throw new Error(`cannot add the plugin to a ${koopConfig.type} project`)
   }
+
+  options.npmClient = options.npmClient || koopConfig.npmClient
 
   /**
    * Install plugin
@@ -43,20 +44,17 @@ module.exports = async (cwd, type, nameOrPath, options = {}) => {
   log(`\u2713 added ${pluginInfo.moduleName}`, 'info', options)
 
   /**
-   * Add plugin config (if any)
+   * Add plugin config
    */
 
-  if (options.config) {
-    await updateConfig(cwd, pluginInfo.configName, options)
-    log('\u2713 added configuration', 'info', options)
-  }
+  await updateProjectConfig(cwd, type, pluginInfo.configName, options.config)
+  log('\u2713 added plugin configuration', 'info', options)
 
   /**
    * Register plugin to the app
    */
 
   await registerPlugin(cwd, type, pluginInfo, options)
-
   log(`\u2713 registered ${pluginInfo.moduleName}`, 'info', options)
 
   /**
@@ -102,23 +100,4 @@ function parsePluginPath (pluginPath) {
   }
 
   return components
-}
-
-/**
- * Update plugin config.
- * @param  {string} cwd     project directory
- * @param  {string} name    config name
- * @param  {Object} options options
- * @return {Promise}        promise
- */
-async function updateConfig (cwd, name, options) {
-  let config = {}
-
-  if (options.addToRoot) {
-    config = options.config
-  } else {
-    config[name] = options.config
-  }
-
-  return addConfig(cwd, config)
 }
