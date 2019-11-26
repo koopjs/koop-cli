@@ -94,6 +94,8 @@ Options:
   --config        specify the project configuration in JSON             [string]
   --skip-install  skip dependence installation        [boolean] [default: false]
   --skip-git      do not initialize Git               [boolean] [default: false]
+  --npm-client    an executable that knows how to install npm package
+                  dependencies[string] [choices: "npm", "yarn"] [default: "npm"]
 ```
 
 For more details on the project templates, please take a look at the Koop [specification](https://koopjs.github.io/docs/usage/koop-core) and [samples](https://github.com/koopjs?utf8=%E2%9C%93&q=sample).
@@ -113,7 +115,6 @@ Provider Options:
   --route-prefix  add a prefix to all of a registered routes            [string]
 
 Options:
-  --local         add a plugin from a local path                        [string]
   --config        specify the plugin configuration in JSON              [string]
   --add-to-root   add the given configuration to the app root configuration
                                                       [boolean] [default: false]
