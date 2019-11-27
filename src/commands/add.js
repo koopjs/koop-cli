@@ -20,11 +20,6 @@ function builder (yargs) {
       description: 'specify the plugin configuration in JSON',
       type: 'string'
     })
-    .option('add-to-root', {
-      description: 'add the given configuration to the app root configuration',
-      type: 'boolean',
-      default: false
-    })
     .option('skip-install', {
       description: 'skip plugin installation',
       type: 'boolean',
