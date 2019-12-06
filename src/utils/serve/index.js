@@ -1,52 +1,50 @@
 const path = require('path')
 const fs = require('fs-extra')
-const getProvider = require('./get-provider')
 const exec = require('../exec-realtime')
 
 module.exports = async (cwd, options = {}) => {
-  const configPath = path.join(cwd, 'koop.json')
-  const koopConfig = await fs.readJson(configPath)
+  const koopConfig = await fs.readJson(path.join(cwd, 'koop.json'))
+  const parameters = []
+  let serverPath = ''
 
   if (options.path) {
     // run the test server file if provided
-    const serverPath = path.join(cwd, options.path)
-    exec(`node ${serverPath}`)
+    serverPath = path.join(cwd, options.path)
   } else if (koopConfig.type === 'app') {
     // if it is an app, run it directly
     const packageInfo = await fs.readJson(path.join(cwd, 'package.json'))
-    const appPath = path.join(cwd, packageInfo.main)
-    exec(`node ${appPath}`)
+    serverPath = path.join(cwd, packageInfo.main)
   } else {
-    // otherwise, this is a plugin and we should create a Koop server for it
-    const Koop = require('koop')
-    const koop = new Koop()
-    const packageInfo = await fs.readJson(path.join(cwd, 'package.json'))
-    const plugin = require(path.join(cwd, packageInfo.main))
+    // otherwise, this is a plugin and we should run a Koop server for it
 
-    // register the current plugin
-    koop.register(plugin)
-
-    // note that a default output is provided by the koop-core
-    // (https://github.com/koopjs/koop-output-geoservices), a provider is still
-    // needed and here we provide a simple GeoJSON provider
-    if (koopConfig.type !== 'provider') {
-      const dataPath = options.data
-
-      if (
-        !dataPath ||
-        !dataPath.endsWith('.geojson') ||
-        !(await fs.pathExists(path.join(cwd, dataPath)))
-      ) {
-        throw new Error('A GeoJSON file is requried to provide test data for the dev server.')
-      }
-
-      koop.register(await getProvider(path.join(cwd, dataPath)))
+    // if the plugin isn't a provider, the user should provide a test data file
+    // for the dev-provider
+    if (
+      koopConfig.type !== 'provider' && (
+        !options.data ||
+        !options.data.endsWith('.geojson') ||
+        !(await fs.pathExists(path.join(cwd, options.data)))
+      )
+    ) {
+      throw new Error('A GeoJSON file is requried to provide test data for the dev server.')
     }
 
-    const serverPort = options.port || 8080
+    serverPath = './serve-plugin'
 
-    koop.server.listen(serverPort, () => {
-      console.log(`Server listening at http://localhost:${serverPort}`)
-    })
+    parameters.push(`--cwd=${cwd}`)
+
+    if (options.data) {
+      parameters.push(`--data-path=${options.data}`)
+    }
+
+    if (options.port) {
+      parameters.push(`--port=${options.port}`)
+    }
   }
+
+  if (options.debug) {
+    parameters.push('--inspect-brk')
+  }
+
+  exec(`node ${serverPath} ${parameters.join(' ')}`.trim())
 }

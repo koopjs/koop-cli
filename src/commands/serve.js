@@ -7,14 +7,18 @@ function builder (yargs) {
       type: 'string'
     })
     .option('port', {
-      alias: 'p',
       type: 'number',
+      default: 8080,
       description: 'port number of the server'
     })
     .option('data', {
       type: 'string',
       default: 'test/data.geojson',
       description: 'path to a GeoJSON data file for testing Koop plugin'
+    })
+    .option('debug', {
+      type: 'boolean',
+      description: 'enable the nodejs inspector for debugging'
     })
 }
 

@@ -1,7 +1,7 @@
 const fs = require('fs-extra')
 
-module.exports = async (dataPath) => {
-  const data = await fs.readJson(dataPath)
+module.exports = (dataPath) => {
+  const data = fs.readJsonSync(dataPath)
   const Model = function ModelFunc (koop) {}
 
   Model.prototype.getData = async function (req, callback) {
