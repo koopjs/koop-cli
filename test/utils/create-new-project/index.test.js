@@ -32,6 +32,11 @@ describe('utils/create-new-project', () => {
 
     const koopConfig = await fs.readJson(path.join(appPath, 'koop.json'))
     expect(koopConfig.type).to.equal('app')
+
+    expect(await fs.pathExists(path.join(appPath, 'src/index.js'))).to.equal(true)
+    expect(await fs.pathExists(path.join(appPath, 'src/routes.js'))).to.equal(true)
+    expect(await fs.pathExists(path.join(appPath, 'src/plugins.js'))).to.equal(true)
+    expect(await fs.pathExists(path.join(appPath, 'src/request-handlers/welcome-page.js'))).to.equal(true)
   })
 
   it('should create a provider project from the template', async () => {
@@ -83,10 +88,12 @@ describe('utils/create-new-project', () => {
     expect(koopConfig.type).to.equal('output')
 
     expect(await fs.pathExists(path.join(appPath, 'src/index.js'))).to.equal(true)
-    expect(await fs.pathExists(path.join(appPath, 'src/serve.js'))).to.equal(true)
+    expect(await fs.pathExists(path.join(appPath, 'src/routes.js'))).to.equal(true)
+    expect(await fs.pathExists(path.join(appPath, 'src/request-handlers/serve.js'))).to.equal(true)
 
     expect(await fs.pathExists(path.join(appPath, 'test/index.test.js'))).to.equal(true)
-    expect(await fs.pathExists(path.join(appPath, 'test/serve.test.js'))).to.equal(true)
+    expect(await fs.pathExists(path.join(appPath, 'test/routes.test.js'))).to.equal(true)
+    expect(await fs.pathExists(path.join(appPath, 'test/request-handlers/serve.test.js'))).to.equal(true)
     expect(await fs.pathExists(path.join(appPath, 'test/data.geojson'))).to.equal(true)
   })
 
@@ -106,5 +113,21 @@ describe('utils/create-new-project', () => {
 
     const config = await fs.readJson(configPath)
     expect(config.port).to.equal(3000)
+  })
+
+  it('should set the npm client if specified', async () => {
+    await createNewProject(
+      temp,
+      'app',
+      appName,
+      {
+        ...defaultOptions,
+        npmClient: 'yarn'
+      }
+    )
+
+    const configPath = path.join(appPath, 'koop.json')
+    const config = await fs.readJson(configPath)
+    expect(config.npmClient).to.equal('yarn')
   })
 })

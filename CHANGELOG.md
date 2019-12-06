@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+### Changed
+* clean up templates and add tests
+* support `yarn`
+
 ## 0.5.0 - 2019-07-08
 
 ### Added

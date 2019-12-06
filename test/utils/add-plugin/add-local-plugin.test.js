@@ -116,11 +116,13 @@ describe('utils/add-plugin', function () {
 
       const srcPath = path.join(appPath, 'src/my-output')
       expect(await fs.pathExists(path.join(srcPath, 'index.js'))).to.equal(true)
-      expect(await fs.pathExists(path.join(srcPath, 'serve.js'))).to.equal(true)
+      expect(await fs.pathExists(path.join(srcPath, 'routes.js'))).to.equal(true)
+      expect(await fs.pathExists(path.join(srcPath, 'request-handlers/serve.js'))).to.equal(true)
 
       const testPath = path.join(appPath, 'test/my-output')
       expect(await fs.pathExists(path.join(testPath, 'index.test.js'))).to.equal(true)
-      expect(await fs.pathExists(path.join(testPath, 'serve.test.js'))).to.equal(true)
+      expect(await fs.pathExists(path.join(testPath, 'routes.test.js'))).to.equal(true)
+      expect(await fs.pathExists(path.join(testPath, 'request-handlers/serve.test.js'))).to.equal(true)
     })
   })
 })

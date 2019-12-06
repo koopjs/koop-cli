@@ -12,7 +12,11 @@ plugins.forEach((plugin) => {
 })
 
 // add additional routes
-routes.forEach((route) => koop.server[route.method.toLowerCase()](route.path, route.controller))
+routes.forEach((route) => {
+  route.methods.forEach((method) => {
+    koop.server[method](route.path, route.handler)
+  })
+})
 
 // start the server
 koop.server.listen(config.port, () => koop.log.info(`Koop server listening at ${config.port}`))

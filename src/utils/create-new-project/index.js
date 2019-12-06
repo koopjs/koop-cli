@@ -1,13 +1,12 @@
 const path = require('path')
 const fs = require('fs-extra')
-const execa = require('execa')
-const addConfig = require('../add-config')
+const updateProjectConfig = require('../update-project-config')
 const setupGit = require('./setup-git')
 const log = require('../log')
-const scripts = require('../scripts')
+const { installDependencies } = require('../manage-dependencies')
 const addComponents = require('./add-components')
 const updatePackage = require('./update-package')
-const updateConfig = require('./update-config')
+const updateKoopConfig = require('./update-koop-config')
 
 /**
  * Creat a new koop project.
@@ -16,6 +15,7 @@ const updateConfig = require('./update-config')
  * @param  {string}  name         project name
  * @param  {Object}  [options={}] options
  * @param  {Object}  [options.config] configuration
+ * @param  {string}  [options.npmClient]    an executable to install packages
  * @param  {boolean} [options.skipInstall]  skip dependency installation
  * @param  {boolean} [options.skipGit]  skip Git initialization
  * @return {Promise}              a promise
@@ -37,7 +37,7 @@ module.exports = async (cwd, type, name, options = {}) => {
 
   // update package.json and koop.json
   await updatePackage(projectPath, type, name)
-  await updateConfig(projectPath, type, name)
+  await updateKoopConfig(projectPath, type, name, options)
 
   log('\u2713 created project', 'info', options)
 
@@ -54,19 +54,16 @@ module.exports = async (cwd, type, name, options = {}) => {
    * Add project configuration
    */
 
-  if (options.config) {
-    await addConfig(projectPath, options.config)
-    log(`\u2713 added ${type} configuration`, 'info', options)
-  }
+  await updateProjectConfig(projectPath, type, name, options.config)
+  log(`\u2713 added ${type} configuration`, 'info', options)
 
   /**
    * Install dependencies
    */
 
   if (!options.skipInstall) {
-    const script = scripts.NPM_INSTALL
     // install dependencies
-    await execa(script, { cwd: projectPath, shell: true })
+    await installDependencies(projectPath, options)
     log('\u2713 installed dependencies', 'info', options)
   }
 

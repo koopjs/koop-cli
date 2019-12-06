@@ -1,30 +1,14 @@
-/*
-  model.js
-
-  This file is required. It must export a class with at least one public function called `getData`
-
-  Documentation: https://koopjs.github.io/docs/usage/provider
-*/
-
 function Model (koop) {}
 
-// Public function to return data from the
-// Return: GeoJSON FeatureCollection
-//
-// Config parameters (config/default.json)
-// req.
-//
-// URL path parameters:
-// req.params.host (if index.js:hosts true)
-// req.params.id  (if index.js:disableIdParam false)
-// req.params.layer
-// req.params.method
+// each model should have a getData() function to fetch the geo data
+// and format it into a geojson
 Model.prototype.getData = function (req, callback) {
   const geojson = {
     type: 'FeatureCollection',
     features: []
   }
 
+  // the callback function expects a geojson for its second parameter
   callback(null, geojson)
 }
 
