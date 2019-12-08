@@ -64,3 +64,5 @@ typings/
 src/templates/**/yarn.lock
 src/templates/**/package-lock.json
 yarn.lock
+
+.vscode

@@ -18,7 +18,11 @@ function builder (yargs) {
     })
     .option('debug', {
       type: 'boolean',
-      description: 'enable the nodejs inspector for debugging'
+      description: 'enable nodejs inspector for debugging'
+    })
+    .option('watch', {
+      type: 'boolean',
+      description: 'enable auto-restart on file change'
     })
 }
 

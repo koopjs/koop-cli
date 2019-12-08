@@ -140,8 +140,10 @@ Positionals:
   path  server file path                                                [string]
 
 Options:
-  --port, -p  port number of the server                                 [number]
+  --port      port number of the server                                 [number]
   --data      path to a GeoJSON data file for testing Koop plugin       [string]
+  --debug     enable nodejs inspector for debugging                     [boolean]
+  --watch     enable auto-restart on file change                        [boolean]
 ```
 
 ### test
