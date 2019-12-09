@@ -11,6 +11,7 @@
 
 const proxyquire = require('proxyquire')
 const chai = require('chai')
+const path = require('path')
 
 const expect = chai.expect
 const moduleName = '../../../src/utils/serve'
@@ -20,7 +21,8 @@ describe('utils/serve', () => {
     const serve = proxyquire(moduleName, {
       execa: {
         command (command) {
-          expect(command).to.equal('node /app.js')
+          const expectedPath = path.join('/', 'app.js')
+          expect(command).to.equal(`node ${expectedPath}`)
         }
       },
       'fs-extra': {
@@ -37,7 +39,8 @@ describe('utils/serve', () => {
     const serve = proxyquire(moduleName, {
       execa: {
         command (command) {
-          expect(command).to.equal('node /src/index.js')
+          const expectedPath = path.join('/', 'src', 'index.js')
+          expect(command).to.equal(`node ${expectedPath}`)
         }
       },
       'fs-extra': {
@@ -58,7 +61,8 @@ describe('utils/serve', () => {
     const serve = proxyquire(moduleName, {
       execa: {
         command (command) {
-          expect(command).to.equal('node /serve-plugin --cwd=/')
+          const expectedPath = path.join('/', 'serve-plugin')
+          expect(command).to.equal(`node ${expectedPath} --cwd=/`)
         }
       },
       'fs-extra': {
@@ -79,7 +83,8 @@ describe('utils/serve', () => {
     const serve = proxyquire(moduleName, {
       execa: {
         command (command) {
-          expect(command).to.equal('node /serve-plugin --cwd=/ --data-path=test.geojson')
+          const expectedPath = path.join('/', 'serve-plugin')
+          expect(command).to.equal(`node ${expectedPath} --cwd=/ --data-path=test.geojson`)
         }
       },
       'fs-extra': {
@@ -103,7 +108,8 @@ describe('utils/serve', () => {
     const serve = proxyquire(moduleName, {
       execa: {
         command (command) {
-          expect(command).to.equal('node /serve-plugin --cwd=/ --data-path=test.geojson')
+          const expectedPath = path.join('/', 'serve-plugin')
+          expect(command).to.equal(`node ${expectedPath} --cwd=/ --data-path=test.geojson`)
         }
       },
       'fs-extra': {
@@ -146,7 +152,8 @@ describe('utils/serve', () => {
     const serve = proxyquire(moduleName, {
       execa: {
         command (command) {
-          expect(command).to.equal('node --inspect /app.js')
+          const expectedPath = path.join('/', 'app.js')
+          expect(command).to.equal(`node --inspect ${expectedPath}`)
         }
       },
       'fs-extra': {
