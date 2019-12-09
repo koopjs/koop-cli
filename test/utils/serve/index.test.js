@@ -165,4 +165,27 @@ describe('utils/serve', () => {
 
     return serve('/', { path: 'app.js', debug: true })
   })
+
+  it('could run in watch mode', (done) => {
+    const serve = proxyquire(moduleName, {
+      nodemon: (config) => {
+        const expectedPath = path.join('/', 'app.js')
+        expect(config.exec).to.equal(`node ${expectedPath}`)
+        expect(config.watch).to.equal('/')
+
+        return {
+          on () {
+            done()
+          }
+        }
+      },
+      'fs-extra': {
+        async readJson () {
+          return {}
+        }
+      }
+    })
+
+    serve('/', { path: 'app.js', watch: true })
+  })
 })
