@@ -7,7 +7,7 @@
     "test": "npm run test:cli && npm run test:template",
     "test:template": "cross-env SUPPRESS_NO_CONFIG_WARNING=true mocha \"src/template/components/**/test/**/*.test.js\"",
     "test:cli": "cross-env SUPPRESS_NO_CONFIG_WARNING=true mocha \"test/**/*.test.js\"",
-    "upgrade": "node scripts/ncu.js",
+    "ncu": "node scripts/ncu.js",
     "precommit": "lint-staged && npm test"
   },
   "repository": {
@@ -28,15 +28,17 @@
   },
   "homepage": "https://github.com/koopjs/koop-cli#readme",
   "dependencies": {
-    "execa": "^3.3.0",
+    "execa": "^3.4.0",
     "fs-extra": "^8.1.0",
     "klaw-sync": "^6.0.0",
-    "koop": "^3.13.0",
+    "koop": "^3.15.0",
     "latest-version": "^5.1.0",
     "lodash": "^4.17.15",
     "node-fetch": "^2.6.0",
+    "nodemon": "^2.0.1",
     "recast": "^0.18.5",
-    "yargs": "^15.0.2"
+    "yargs": "^15.0.2",
+    "yargs-parser": "^16.1.0"
   },
   "bin": {
     "koop": "src/cli.js"
@@ -47,9 +49,9 @@
     "cross-env": "^6.0.3",
     "express": "^4.17.1",
     "husky": "^3.1.0",
-    "lint-staged": "^9.4.3",
+    "lint-staged": "^9.5.0",
     "mocha": "^6.2.2",
-    "npm-check-updates": "^3.2.1",
+    "npm-check-updates": "^3.2.2",
     "proxyquire": "^2.1.3",
     "standard": "^14.3.1",
     "supertest": "^4.0.2"

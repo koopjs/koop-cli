@@ -9,157 +9,183 @@
  * (with no return) instead of the await function.
  */
 
-const os = require('os')
-const path = require('path')
 const proxyquire = require('proxyquire')
 const chai = require('chai')
-const createNewProject = require('../../../src/utils/create-new-project')
+const path = require('path')
 
-const temp = os.tmpdir()
 const expect = chai.expect
 const moduleName = '../../../src/utils/serve'
 
-const defaultOptions = {
-  skipGit: true,
-  skipInstall: true,
-  quiet: true
-}
-
-describe('utils/serve', function () {
-  this.timeout(25000)
-
-  it('should run the given server file', (done) => {
-    const appName = `serve-test-${Date.now()}`
-    const appPath = path.join(temp, appName)
+describe('utils/serve', () => {
+  it('should run the given server file', async () => {
     const serve = proxyquire(moduleName, {
-      '../exec-realtime': (command) => {
-        const expected = path.join(appPath, 'app.js')
-        expect(command).to.equal(`node ${expected}`)
-        done()
+      execa: {
+        command (command) {
+          const expectedPath = path.join('/', 'app.js')
+          expect(command).to.equal(`node ${expectedPath}`)
+        }
+      },
+      'fs-extra': {
+        async readJson () {
+          return {}
+        }
       }
     })
 
-    createNewProject(temp, 'app', appName, defaultOptions)
-      .then(() => serve(appPath, { path: 'app.js' }))
-      .catch(done)
+    return serve('/', { path: 'app.js' })
   })
 
-  it('should run an app', (done) => {
-    const appName = `serve-test-${Date.now()}`
-    const appPath = path.join(temp, appName)
+  it('should run an app', async () => {
     const serve = proxyquire(moduleName, {
-      '../exec-realtime': (command) => {
-        const expected = path.join(appPath, 'src/index.js')
-        expect(command).to.equal(`node ${expected}`)
-        done()
-      }
-    })
-
-    createNewProject(temp, 'app', appName, defaultOptions)
-      .then(() => {
-        serve(appPath)
-      })
-      .catch(done)
-  })
-
-  it('should run a provider', (done) => {
-    const appName = `serve-test-${Date.now()}`
-    const appPath = path.join(temp, appName)
-    const serve = proxyquire(moduleName, {
-      koop: class Koop {
-        constructor () {
-          this.server = {
-            listen (port) {
-              expect(port).to.equal(3000)
-              done()
-            }
+      execa: {
+        command (command) {
+          const expectedPath = path.join('/', 'src', 'index.js')
+          expect(command).to.equal(`node ${expectedPath}`)
+        }
+      },
+      'fs-extra': {
+        async readJson (path) {
+          if (path.endsWith('koop.json')) {
+            return { type: 'app' }
+          } else {
+            return { main: 'src/index.js' }
           }
         }
-
-        register (plugin) {
-          expect(plugin.type).to.equal('provider')
-        }
       }
     })
 
-    createNewProject(temp, 'provider', appName, defaultOptions)
-      .then(() => serve(appPath, { port: 3000 }))
-      .catch(done)
+    return serve('/')
   })
 
-  it('should run an output', (done) => {
-    const appName = `serve-test-${Date.now()}`
-    const appPath = path.join(temp, appName)
-    const registeredPlugins = ['output', 'provider']
+  it('should run a provider', async () => {
     const serve = proxyquire(moduleName, {
-      koop: class Koop {
-        constructor () {
-          this.server = {
-            listen () {
-              done()
-            }
+      execa: {
+        command (command) {
+          const expectedPath = path.join('/', 'serve-plugin')
+          expect(command).to.equal(`node ${expectedPath} --cwd=/`)
+        }
+      },
+      'fs-extra': {
+        async readJson (path) {
+          if (path.endsWith('koop.json')) {
+            return { type: 'provider' }
+          } else {
+            return { main: 'src/index.js' }
           }
         }
+      }
+    })
 
-        register (plugin) {
-          expect(plugin.type).to.equal(registeredPlugins.shift())
+    return serve('/', { dirname: '/' })
+  })
+
+  it('should run an output', async () => {
+    const serve = proxyquire(moduleName, {
+      execa: {
+        command (command) {
+          const expectedPath = path.join('/', 'serve-plugin')
+          expect(command).to.equal(`node ${expectedPath} --cwd=/ --data-path=test.geojson`)
+        }
+      },
+      'fs-extra': {
+        async readJson (path) {
+          if (path.endsWith('koop.json')) {
+            return { type: 'output' }
+          } else {
+            return { main: 'src/index.js' }
+          }
+        },
+        async pathExists () {
+          return true
         }
       }
     })
 
-    createNewProject(temp, 'output', appName, defaultOptions)
-      .then(() => serve(appPath, { data: 'test/data.geojson' }))
-      .then(() => {
-        expect(registeredPlugins.length).to.equal(0)
-      })
-      .catch(done)
+    return serve('/', { data: 'test.geojson', dirname: '/' })
   })
 
-  it('should run an auth', (done) => {
-    const appName = `serve-test-${Date.now()}`
-    const appPath = path.join(temp, appName)
-    const registeredPlugins = ['auth', 'provider']
+  it('should run an auth', async () => {
     const serve = proxyquire(moduleName, {
-      koop: class Koop {
-        constructor () {
-          this.server = {
-            listen () {
-              done()
-            }
+      execa: {
+        command (command) {
+          const expectedPath = path.join('/', 'serve-plugin')
+          expect(command).to.equal(`node ${expectedPath} --cwd=/ --data-path=test.geojson`)
+        }
+      },
+      'fs-extra': {
+        async readJson (path) {
+          if (path.endsWith('koop.json')) {
+            return { type: 'auth' }
+          } else {
+            return { main: 'src/index.js' }
+          }
+        },
+        async pathExists () {
+          return true
+        }
+      }
+    })
+
+    return serve('/', { data: 'test.geojson', dirname: '/' })
+  })
+
+  it('should throw an error for missing test data file', async () => {
+    const serve = proxyquire(moduleName, {
+      'fs-extra': {
+        async readJson () {
+          return { type: 'output' }
+        },
+        async pathExists () {
+          return false
+        }
+      }
+    })
+
+    try {
+      await serve('/', { data: null })
+    } catch (e) {
+      expect(e.message).to.equal('A GeoJSON file is requried to provide test data for the dev server.')
+    }
+  })
+
+  it('could run in debug mode', async () => {
+    const serve = proxyquire(moduleName, {
+      execa: {
+        command (command) {
+          const expectedPath = path.join('/', 'app.js')
+          expect(command).to.equal(`node --inspect ${expectedPath}`)
+        }
+      },
+      'fs-extra': {
+        async readJson () {
+          return {}
+        }
+      }
+    })
+
+    return serve('/', { path: 'app.js', debug: true })
+  })
+
+  it('could run in watch mode', (done) => {
+    const serve = proxyquire(moduleName, {
+      nodemon: (config) => {
+        const expectedPath = path.join('/', 'app.js')
+        expect(config.exec).to.equal(`node ${expectedPath}`)
+        expect(config.watch).to.equal('/')
+
+        return {
+          on () {
+            done()
           }
         }
-
-        register (plugin) {
-          expect(plugin.type).to.equal(registeredPlugins.shift())
+      },
+      'fs-extra': {
+        async readJson () {
+          return {}
         }
       }
     })
 
-    createNewProject(temp, 'auth', appName, defaultOptions)
-      .then(() => serve(appPath, { data: 'test/data.geojson' }))
-      .then(() => {
-        expect(registeredPlugins.length).to.equal(0)
-      })
-      .catch(done)
-  })
-
-  it('should throw an error for missing test data', (done) => {
-    const appName = `serve-test-${Date.now()}`
-    const appPath = path.join(temp, appName)
-    const registeredPlugins = ['auth', 'provider']
-    const serve = proxyquire(moduleName, {
-      koop: class Koop {
-        register (plugin) {
-          expect(plugin.type).to.equal(registeredPlugins.shift())
-        }
-      }
-    })
-
-    createNewProject(temp, 'auth', appName, defaultOptions)
-      .then(() => serve(appPath, { data: null }))
-      .catch((err) => {
-        expect(err.message).to.equal('A GeoJSON file is requried to provide test data for the dev server.')
-        done()
-      })
+    serve('/', { path: 'app.js', watch: true })
   })
 })
