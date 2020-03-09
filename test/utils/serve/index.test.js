@@ -12,24 +12,23 @@
 const proxyquire = require('proxyquire')
 const chai = require('chai')
 const path = require('path')
-
 const expect = chai.expect
 const moduleName = '../../../src/utils/serve'
 
 describe('utils/serve', () => {
   it('should run the given server file', async () => {
     const serve = proxyquire(moduleName, {
-      execa: {
-        command (command) {
-          const expectedPath = path.join('/', 'app.js')
-          expect(command).to.equal(`node ${expectedPath}`)
-        }
+      execa: (command, args, options) => {
+        expect(command).to.equal('node')
+        expect(args).to.deep.equal(['app.js'])
+        expect(options.cwd).to.equal('/')
       },
       'fs-extra': {
         async readJson () {
           return {}
         }
-      }
+      },
+      './get-path-arg': (path) => path
     })
 
     return serve('/', { path: 'app.js' })
@@ -37,11 +36,10 @@ describe('utils/serve', () => {
 
   it('should run an app', async () => {
     const serve = proxyquire(moduleName, {
-      execa: {
-        command (command) {
-          const expectedPath = path.join('/', 'src', 'index.js')
-          expect(command).to.equal(`node ${expectedPath}`)
-        }
+      execa: (command, args, options) => {
+        expect(command).to.equal('node')
+        expect(args).to.deep.equal(['src/index.js'])
+        expect(options.cwd).to.equal('/')
       },
       'fs-extra': {
         async readJson (path) {
@@ -51,7 +49,8 @@ describe('utils/serve', () => {
             return { main: 'src/index.js' }
           }
         }
-      }
+      },
+      './get-path-arg': (path) => path
     })
 
     return serve('/')
@@ -59,11 +58,10 @@ describe('utils/serve', () => {
 
   it('should run a provider', async () => {
     const serve = proxyquire(moduleName, {
-      execa: {
-        command (command) {
-          const expectedPath = path.join('/', 'serve-plugin')
-          expect(command).to.equal(`node ${expectedPath} --cwd=/`)
-        }
+      execa: (command, args, options) => {
+        expect(command).to.equal('node')
+        expect(args).to.deep.equal([path.join('test', 'serve-plugin.js'), '--cwd=/'])
+        expect(options.cwd).to.equal('/')
       },
       'fs-extra': {
         async readJson (path) {
@@ -73,19 +71,19 @@ describe('utils/serve', () => {
             return { main: 'src/index.js' }
           }
         }
-      }
+      },
+      './get-path-arg': (path) => path
     })
 
-    return serve('/', { dirname: '/' })
+    return serve('/', { dirname: 'test' })
   })
 
   it('should run an output', async () => {
     const serve = proxyquire(moduleName, {
-      execa: {
-        command (command) {
-          const expectedPath = path.join('/', 'serve-plugin')
-          expect(command).to.equal(`node ${expectedPath} --cwd=/ --data-path=test.geojson`)
-        }
+      execa: (command, args, options) => {
+        expect(command).to.equal('node')
+        expect(args).to.deep.equal([path.join('test', 'serve-plugin.js'), '--cwd=/', '--data-path=test.geojson'])
+        expect(options.cwd).to.equal('/')
       },
       'fs-extra': {
         async readJson (path) {
@@ -98,19 +96,19 @@ describe('utils/serve', () => {
         async pathExists () {
           return true
         }
-      }
+      },
+      './get-path-arg': (path) => path
     })
 
-    return serve('/', { data: 'test.geojson', dirname: '/' })
+    return serve('/', { data: 'test.geojson', dirname: 'test' })
   })
 
   it('should run an auth', async () => {
     const serve = proxyquire(moduleName, {
-      execa: {
-        command (command) {
-          const expectedPath = path.join('/', 'serve-plugin')
-          expect(command).to.equal(`node ${expectedPath} --cwd=/ --data-path=test.geojson`)
-        }
+      execa: (command, args, options) => {
+        expect(command).to.equal('node')
+        expect(args).to.deep.equal([path.join('test', 'serve-plugin.js'), '--cwd=/', '--data-path=test.geojson'])
+        expect(options.cwd).to.equal('/')
       },
       'fs-extra': {
         async readJson (path) {
@@ -123,10 +121,11 @@ describe('utils/serve', () => {
         async pathExists () {
           return true
         }
-      }
+      },
+      './get-path-arg': (path) => path
     })
 
-    return serve('/', { data: 'test.geojson', dirname: '/' })
+    return serve('/', { data: 'test.geojson', dirname: 'test' })
   })
 
   it('should throw an error for missing test data file', async () => {
@@ -138,7 +137,8 @@ describe('utils/serve', () => {
         async pathExists () {
           return false
         }
-      }
+      },
+      './get-path-arg': (path) => path
     })
 
     try {
@@ -150,17 +150,17 @@ describe('utils/serve', () => {
 
   it('could run in debug mode', async () => {
     const serve = proxyquire(moduleName, {
-      execa: {
-        command (command) {
-          const expectedPath = path.join('/', 'app.js')
-          expect(command).to.equal(`node --inspect ${expectedPath}`)
-        }
+      execa: (command, args, options) => {
+        expect(command).to.equal('node')
+        expect(args).to.deep.equal(['--inspect', 'app.js'])
+        expect(options.cwd).to.equal('/')
       },
       'fs-extra': {
         async readJson () {
           return {}
         }
-      }
+      },
+      './get-path-arg': (path) => path
     })
 
     return serve('/', { path: 'app.js', debug: true })
@@ -169,8 +169,7 @@ describe('utils/serve', () => {
   it('could run in watch mode', (done) => {
     const serve = proxyquire(moduleName, {
       nodemon: (config) => {
-        const expectedPath = path.join('/', 'app.js')
-        expect(config.exec).to.equal(`node ${expectedPath}`)
+        expect(config.exec).to.equal('node app.js')
         expect(config.watch).to.equal('/')
 
         return {
@@ -183,7 +182,8 @@ describe('utils/serve', () => {
         async readJson () {
           return {}
         }
-      }
+      },
+      './get-path-arg': (path) => path
     })
 
     serve('/', { path: 'app.js', watch: true })

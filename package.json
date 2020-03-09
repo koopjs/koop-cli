@@ -7,8 +7,7 @@
     "test": "npm run test:cli && npm run test:template",
     "test:template": "cross-env SUPPRESS_NO_CONFIG_WARNING=true mocha \"src/template/components/**/test/**/*.test.js\"",
     "test:cli": "cross-env SUPPRESS_NO_CONFIG_WARNING=true mocha \"test/**/*.test.js\"",
-    "ncu": "node scripts/ncu.js",
-    "precommit": "lint-staged && npm test"
+    "ncu": "node scripts/ncu.js"
   },
   "repository": {
     "type": "git",
@@ -28,6 +27,7 @@
   },
   "homepage": "https://github.com/koopjs/koop-cli#readme",
   "dependencies": {
+    "dargs": "^7.0.0",
     "execa": "^4.0.0",
     "fs-extra": "^8.1.0",
     "klaw-sync": "^6.0.0",
@@ -61,5 +61,10 @@
       "standard --fix",
       "git add"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged && npm test"
+    }
   }
 }
