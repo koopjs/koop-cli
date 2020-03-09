@@ -57,10 +57,7 @@
     "supertest": "^4.0.2"
   },
   "lint-staged": {
-    "*.js": [
-      "standard --fix",
-      "git add"
-    ]
+    "*.js": "standard --fix"
   },
   "husky": {
     "hooks": {
