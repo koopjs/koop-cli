@@ -11,7 +11,7 @@
 
 const proxyquire = require('proxyquire')
 const chai = require('chai')
-
+const path = require('path')
 const expect = chai.expect
 const moduleName = '../../../src/utils/serve'
 
@@ -60,7 +60,7 @@ describe('utils/serve', () => {
     const serve = proxyquire(moduleName, {
       execa: (command, args, options) => {
         expect(command).to.equal('node')
-        expect(args).to.deep.equal(['/serve-plugin.js', '--cwd=/'])
+        expect(args).to.deep.equal([path.join('test', 'serve-plugin.js'), '--cwd=/'])
         expect(options.cwd).to.equal('/')
       },
       'fs-extra': {
@@ -75,14 +75,14 @@ describe('utils/serve', () => {
       './get-path-arg': (path) => path
     })
 
-    return serve('/', { dirname: '/' })
+    return serve('/', { dirname: 'test' })
   })
 
   it('should run an output', async () => {
     const serve = proxyquire(moduleName, {
       execa: (command, args, options) => {
         expect(command).to.equal('node')
-        expect(args).to.deep.equal(['/serve-plugin.js', '--cwd=/', '--data-path=test.geojson'])
+        expect(args).to.deep.equal([path.join('test', 'serve-plugin.js'), '--cwd=/', '--data-path=test.geojson'])
         expect(options.cwd).to.equal('/')
       },
       'fs-extra': {
@@ -100,14 +100,14 @@ describe('utils/serve', () => {
       './get-path-arg': (path) => path
     })
 
-    return serve('/', { data: 'test.geojson', dirname: '/' })
+    return serve('/', { data: 'test.geojson', dirname: 'test' })
   })
 
   it('should run an auth', async () => {
     const serve = proxyquire(moduleName, {
       execa: (command, args, options) => {
         expect(command).to.equal('node')
-        expect(args).to.deep.equal(['/serve-plugin.js', '--cwd=/', '--data-path=test.geojson'])
+        expect(args).to.deep.equal([path.join('test', 'serve-plugin.js'), '--cwd=/', '--data-path=test.geojson'])
         expect(options.cwd).to.equal('/')
       },
       'fs-extra': {
@@ -125,7 +125,7 @@ describe('utils/serve', () => {
       './get-path-arg': (path) => path
     })
 
-    return serve('/', { data: 'test.geojson', dirname: '/' })
+    return serve('/', { data: 'test.geojson', dirname: 'test' })
   })
 
   it('should throw an error for missing test data file', async () => {

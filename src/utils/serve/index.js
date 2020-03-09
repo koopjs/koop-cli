@@ -43,7 +43,7 @@ module.exports = async (cwd, options = {}) => {
       throw new Error('A GeoJSON file is requried to provide test data for the dev server.')
     }
 
-    const serverPath = getPathArg(path.join(dirname, './serve-plugin.js'), options.watch)
+    const serverPath = getPathArg(path.join(dirname, 'serve-plugin.js'), options.watch)
     const cwdPath = getPathArg(cwd, options.watch)
     nodeArgs._.push(serverPath)
     serveArgs.cwd = cwdPath
