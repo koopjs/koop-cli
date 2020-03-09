@@ -3,20 +3,31 @@ const fs = require('fs-extra')
 const execa = require('execa')
 const nodemon = require('nodemon')
 const os = require('os')
+const dargs = require('dargs')
+const getPathArg = require('./get-path-arg')
 
 module.exports = async (cwd, options = {}) => {
   const koopConfig = await fs.readJson(path.join(cwd, 'koop.json'))
   // for test mocking
   const dirname = options.dirname || __dirname
-  let command = ''
+  const nodeArgs = {
+    _: []
+  }
+  const serveArgs = {}
+
+  if (options.debug) {
+    nodeArgs.inspect = true
+  }
 
   if (options.path) {
     // run the test server file if provided
-    command = path.join(cwd, options.path)
+    const filePath = getPathArg(options.path, options.watch)
+    nodeArgs._.push(filePath)
   } else if (koopConfig.type === 'app') {
     // if it is an app, run it directly
     const packageInfo = await fs.readJson(path.join(cwd, 'package.json'))
-    command = path.join(cwd, packageInfo.main)
+    const appPath = getPathArg(packageInfo.main, options.watch)
+    nodeArgs._.push(appPath)
   } else {
     // otherwise, this is a plugin and we should run a Koop server for it
 
@@ -32,40 +43,43 @@ module.exports = async (cwd, options = {}) => {
       throw new Error('A GeoJSON file is requried to provide test data for the dev server.')
     }
 
-    command = `${path.join(dirname, './serve-plugin')} --cwd=${cwd}`
+    const serverPath = getPathArg(path.join(dirname, 'serve-plugin.js'), options.watch)
+    const cwdPath = getPathArg(cwd, options.watch)
+    nodeArgs._.push(serverPath)
+    serveArgs.cwd = cwdPath
 
     if (options.data) {
-      command += ` --data-path=${options.data}`
+      const dataPath = getPathArg(options.data, options.watch)
+      serveArgs.dataPath = dataPath
     }
 
     if (options.port) {
-      command += ` --port=${options.port}`
+      serveArgs.port = options.port
     }
   }
 
-  if (options.debug) {
-    command = `--inspect ${command}`
-  }
-
-  command = `node ${command}`
+  const args = [
+    ...dargs(nodeArgs),
+    ...dargs(serveArgs)
+  ]
 
   if (options.watch) {
-    startsWithNodemon(cwd, command)
+    startsWithNodemon(cwd, args)
   } else {
-    startsWithNode(cwd, command)
+    startsWithNode(cwd, args)
   }
 }
 
-function startsWithNode (cwd, command) {
-  execa.command(command, {
+function startsWithNode (cwd, args) {
+  execa('node', args, {
     cwd,
     stdio: 'inherit'
   })
 }
 
-function startsWithNodemon (cwd, command) {
+function startsWithNodemon (cwd, args) {
   nodemon({
-    exec: command,
+    exec: `node ${args.join(' ')}`,
     watch: cwd,
     ignore: ['node_modules', '.git']
   })
