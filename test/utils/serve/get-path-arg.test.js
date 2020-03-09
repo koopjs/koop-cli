@@ -9,12 +9,20 @@ const expect = chai.expect
 const getPathArg = require('../../../src/utils/serve/get-path-arg')
 
 describe('utils/serve/get-path-arg', () => {
-  it('should quote the path in Linux/Max', function () {
+  it('should not quote the path in Linux/Max without watch mode', function () {
     if (os.platform() === 'win32') {
       this.skip()
     }
 
-    expect(getPathArg('some path')).to.equal('"some path"')
+    expect(getPathArg('some path')).to.equal('some path')
+  })
+
+  it('should quote the path in Linux/Max in watch mode', function () {
+    if (os.platform() === 'win32') {
+      this.skip()
+    }
+
+    expect(getPathArg('some path', true)).to.equal('"some path"')
   })
 
   it('should return a DOS short path with no space in Windows', async function () {
