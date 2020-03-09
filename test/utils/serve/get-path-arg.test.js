@@ -22,7 +22,7 @@ describe('utils/serve/get-path-arg', () => {
       this.skip()
     }
 
-    const originPath = path.join(os.tmpdir, 'space space', 'secret.txt')
+    const originPath = path.join(os.tmpdir(), 'space space', 'secret.txt')
     const secretText = 'my secret'
     await fs.outputFile(originPath, secretText)
 
