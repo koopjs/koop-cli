@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Fixed
+* A path with spaces can crash the `serve` command (#42)
 
 ## 0.6.0 - 2019-12-09
 

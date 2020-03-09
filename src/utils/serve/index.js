@@ -3,6 +3,7 @@ const fs = require('fs-extra')
 const execa = require('execa')
 const nodemon = require('nodemon')
 const os = require('os')
+const getPathArg = require('./get-path-arg')
 
 module.exports = async (cwd, options = {}) => {
   const koopConfig = await fs.readJson(path.join(cwd, 'koop.json'))
@@ -12,11 +13,13 @@ module.exports = async (cwd, options = {}) => {
 
   if (options.path) {
     // run the test server file if provided
-    command = path.join(cwd, options.path)
+    const filePath = getPathArg(path.join(cwd, options.path))
+    command = filePath
   } else if (koopConfig.type === 'app') {
     // if it is an app, run it directly
     const packageInfo = await fs.readJson(path.join(cwd, 'package.json'))
-    command = path.join(cwd, packageInfo.main)
+    const appPath = getPathArg(path.join(cwd, packageInfo.main))
+    command = appPath
   } else {
     // otherwise, this is a plugin and we should run a Koop server for it
 
@@ -32,10 +35,13 @@ module.exports = async (cwd, options = {}) => {
       throw new Error('A GeoJSON file is requried to provide test data for the dev server.')
     }
 
-    command = `${path.join(dirname, './serve-plugin')} --cwd=${cwd}`
+    const serverPath = getPathArg(path.join(dirname, './serve-plugin'))
+    const cwdPath = getPathArg(cwd)
+    command = `${serverPath} --cwd=${cwdPath}`
 
     if (options.data) {
-      command += ` --data-path=${options.data}`
+      const dataPath = getPathArg(options.data)
+      command += ` --data-path=${dataPath}`
     }
 
     if (options.port) {

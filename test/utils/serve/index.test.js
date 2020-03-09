@@ -29,7 +29,8 @@ describe('utils/serve', () => {
         async readJson () {
           return {}
         }
-      }
+      },
+      './get-path-arg': (path) => path
     })
 
     return serve('/', { path: 'app.js' })
@@ -51,7 +52,8 @@ describe('utils/serve', () => {
             return { main: 'src/index.js' }
           }
         }
-      }
+      },
+      './get-path-arg': (path) => path
     })
 
     return serve('/')
@@ -73,7 +75,8 @@ describe('utils/serve', () => {
             return { main: 'src/index.js' }
           }
         }
-      }
+      },
+      './get-path-arg': (path) => path
     })
 
     return serve('/', { dirname: '/' })
@@ -98,7 +101,8 @@ describe('utils/serve', () => {
         async pathExists () {
           return true
         }
-      }
+      },
+      './get-path-arg': (path) => path
     })
 
     return serve('/', { data: 'test.geojson', dirname: '/' })
@@ -123,7 +127,8 @@ describe('utils/serve', () => {
         async pathExists () {
           return true
         }
-      }
+      },
+      './get-path-arg': (path) => path
     })
 
     return serve('/', { data: 'test.geojson', dirname: '/' })
@@ -138,7 +143,8 @@ describe('utils/serve', () => {
         async pathExists () {
           return false
         }
-      }
+      },
+      './get-path-arg': (path) => path
     })
 
     try {
@@ -160,7 +166,8 @@ describe('utils/serve', () => {
         async readJson () {
           return {}
         }
-      }
+      },
+      './get-path-arg': (path) => path
     })
 
     return serve('/', { path: 'app.js', debug: true })
@@ -183,7 +190,8 @@ describe('utils/serve', () => {
         async readJson () {
           return {}
         }
-      }
+      },
+      './get-path-arg': (path) => path
     })
 
     serve('/', { path: 'app.js', watch: true })
