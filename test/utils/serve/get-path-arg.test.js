@@ -10,7 +10,7 @@ const getPathArg = require('../../../src/utils/serve/get-path-arg')
 
 describe('utils/serve/get-path-arg', () => {
   it('should quote the path in Linux/Max', function () {
-    if (os.platform === 'win32') {
+    if (os.platform() === 'win32') {
       this.skip()
     }
 
@@ -18,7 +18,7 @@ describe('utils/serve/get-path-arg', () => {
   })
 
   it('should return a DOS short path with no space in Windows', async function () {
-    if (os.platform !== 'win32') {
+    if (os.platform() !== 'win32') {
       this.skip()
     }
 
