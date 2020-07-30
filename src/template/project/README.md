@@ -6,7 +6,7 @@ See the [specification](https://koopjs.github.io/docs/usage/koop-core) for more 
 
 ## Configuration
 
-This project is configured with [config](https://www.npmjs.com/package/config). As a community practice, it is recommanded to namespace the configuration for plugins in order to avoid any potential key conflict.
+This project is configured with [config](https://www.npmjs.com/package/config). As a community practice, it is recommended to namespace the configuration for plugins in order to avoid any potential key conflict.
 
 ## Development
 
@@ -20,7 +20,7 @@ $ npm test
 
 ### Dev Server
 
-This project by default uses the [Koop CLI](https://github.com/koopjs/koop-cli) to set up the dev server. It can be invoded via
+This project by default uses the [Koop CLI](https://github.com/koopjs/koop-cli) to set up the dev server. It can be invoked via
 
 ```
 $ npm start
