@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## 0.6.3 - 2020-07-30
+### Changed
+* Update dependencies for Koop v4
+
 ## 0.6.2 - 2020-05-08
 ### Fixed
 * A security vulnerability cause by a dependency (#44)
