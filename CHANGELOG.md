@@ -4,10 +4,12 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Change
+* adjust the project template to better handle plugin initialization
 
 ## 0.6.2 - 2020-05-08
 ### Fixed
-* A security vulnerability cause by a dependency (#44)
+* A security vulnerability caused by a dependency (#44)
 
 ## 0.6.1 - 2020-03-09
 ### Fixed
