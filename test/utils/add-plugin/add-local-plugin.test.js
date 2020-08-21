@@ -46,13 +46,11 @@ describe('utils/add-plugin', function () {
 
       const plugins = await fs.readFile(path.join(appPath, 'src', 'plugins.js'), 'utf-8')
       const expected = [
-        "const testProvider = require('./plugins/test-provider');",
+        "const testProvider = require('./plugins/test-provider/initialize')();",
         'const outputs = [];',
         'const auths = [];',
         'const caches = [];',
-        'const plugins = [{',
-        '  instance: testProvider',
-        '}];',
+        'const plugins = [testProvider];',
         'module.exports = [...outputs, ...auths, ...caches, ...plugins];'
       ].join(os.EOL)
       expect(plugins).to.equal(expected)
@@ -60,6 +58,7 @@ describe('utils/add-plugin', function () {
       const srcPath = path.join(appPath, 'src/plugins/test-provider')
       expect(await fs.pathExists(path.join(srcPath, 'index.js'))).to.equal(true)
       expect(await fs.pathExists(path.join(srcPath, 'model.js'))).to.equal(true)
+      expect(await fs.pathExists(path.join(srcPath, 'initialize.js'))).to.equal(true)
 
       const testPath = path.join(appPath, 'test/plugins/test-provider')
       expect(await fs.pathExists(path.join(testPath, 'index.test.js'))).to.equal(true)
@@ -73,11 +72,9 @@ describe('utils/add-plugin', function () {
 
       const plugins = await fs.readFile(path.join(appPath, 'src', 'plugins.js'), 'utf-8')
       const expected = [
-        "const myAuth = require('./my-auth');",
+        "const myAuth = require('./my-auth/initialize')();",
         'const outputs = [];',
-        'const auths = [{',
-        '  instance: myAuth',
-        '}];',
+        'const auths = [myAuth];',
         'const caches = [];',
         'const plugins = [];',
         'module.exports = [...outputs, ...auths, ...caches, ...plugins];'
@@ -88,6 +85,7 @@ describe('utils/add-plugin', function () {
       expect(await fs.pathExists(path.join(srcPath, 'index.js'))).to.equal(true)
       expect(await fs.pathExists(path.join(srcPath, 'authenticate.js'))).to.equal(true)
       expect(await fs.pathExists(path.join(srcPath, 'authorize.js'))).to.equal(true)
+      expect(await fs.pathExists(path.join(srcPath, 'initialize.js'))).to.equal(true)
       expect(await fs.pathExists(path.join(srcPath, 'authentication-specification.js'))).to.equal(true)
 
       const testPath = path.join(appPath, 'test/my-auth')
@@ -103,10 +101,8 @@ describe('utils/add-plugin', function () {
 
       const plugins = await fs.readFile(path.join(appPath, 'src', 'plugins.js'), 'utf-8')
       const expected = [
-        "const myOutput = require('./my-output');",
-        'const outputs = [{',
-        '  instance: myOutput',
-        '}];',
+        "const myOutput = require('./my-output/initialize')();",
+        'const outputs = [myOutput];',
         'const auths = [];',
         'const caches = [];',
         'const plugins = [];',
@@ -117,6 +113,7 @@ describe('utils/add-plugin', function () {
       const srcPath = path.join(appPath, 'src/my-output')
       expect(await fs.pathExists(path.join(srcPath, 'index.js'))).to.equal(true)
       expect(await fs.pathExists(path.join(srcPath, 'routes.js'))).to.equal(true)
+      expect(await fs.pathExists(path.join(srcPath, 'initialize.js'))).to.equal(true)
       expect(await fs.pathExists(path.join(srcPath, 'request-handlers/serve.js'))).to.equal(true)
 
       const testPath = path.join(appPath, 'test/my-output')

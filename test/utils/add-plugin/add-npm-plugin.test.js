@@ -42,19 +42,19 @@ describe('utils/add-plugin', function () {
 
       const plugins = await fs.readFile(path.join(appPath, 'src', 'plugins.js'), 'utf-8')
       const expected = [
-        "const testProvider = require('test-provider');",
+        "const testProvider = require('./test-provider/initialize')();",
         'const outputs = [];',
         'const auths = [];',
         'const caches = [];',
-        'const plugins = [{',
-        '  instance: testProvider',
-        '}];',
+        'const plugins = [testProvider];',
         'module.exports = [...outputs, ...auths, ...caches, ...plugins];'
       ].join(os.EOL)
       expect(plugins).to.equal(expected)
 
       const packageInfo = await fs.readJson(path.join(appPath, 'package.json'))
       expect(packageInfo.dependencies['test-provider']).to.equal('^1.0.0')
+
+      expect(await fs.pathExists(path.join(appPath, 'src', 'test-provider', 'initialize.js'))).to.equal(true)
     })
 
     it('should add a npm plugin published as a scoped module', async () => {
@@ -69,19 +69,19 @@ describe('utils/add-plugin', function () {
 
       const plugins = await fs.readFile(path.join(appPath, 'src', 'plugins.js'), 'utf-8')
       const expected = [
-        "const testProvider = require('@koop/test-provider');",
+        "const testProvider = require('./test-provider/initialize')();",
         'const outputs = [];',
         'const auths = [];',
         'const caches = [];',
-        'const plugins = [{',
-        '  instance: testProvider',
-        '}];',
+        'const plugins = [testProvider];',
         'module.exports = [...outputs, ...auths, ...caches, ...plugins];'
       ].join(os.EOL)
       expect(plugins).to.equal(expected)
 
       const packageInfo = await fs.readJson(path.join(appPath, 'package.json'))
       expect(packageInfo.dependencies['@koop/test-provider']).to.equal('^1.0.0')
+
+      expect(await fs.pathExists(path.join(appPath, 'src', 'test-provider', 'initialize.js'))).to.equal(true)
     })
 
     it('should add a npm plugin published with a version number', async () => {
@@ -95,19 +95,19 @@ describe('utils/add-plugin', function () {
 
       const plugins = await fs.readFile(path.join(appPath, 'src', 'plugins.js'), 'utf-8')
       const expected = [
-        "const testProvider = require('@koop/test-provider');",
+        "const testProvider = require('./test-provider/initialize')();",
         'const outputs = [];',
         'const auths = [];',
         'const caches = [];',
-        'const plugins = [{',
-        '  instance: testProvider',
-        '}];',
+        'const plugins = [testProvider];',
         'module.exports = [...outputs, ...auths, ...caches, ...plugins];'
       ].join(os.EOL)
       expect(plugins).to.equal(expected)
 
       const packageInfo = await fs.readJson(path.join(appPath, 'package.json'))
       expect(packageInfo.dependencies['@koop/test-provider']).to.equal('^3.2.1')
+
+      expect(await fs.pathExists(path.join(appPath, 'src', 'test-provider', 'initialize.js'))).to.equal(true)
     })
 
     it('should install a npm plugin with the full module name', async () => {

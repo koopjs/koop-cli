@@ -64,10 +64,8 @@ describe('utils/add-plugin', function () {
 
     const plugins = await fs.readFile(path.join(appPath, 'src', 'plugins.js'), 'utf-8')
     const expected = [
-      "const outputTile = require('@koop/output-tile');",
-      'const outputs = [{',
-      '  instance: outputTile',
-      '}];',
+      "const outputTile = require('./output-tile/initialize')();",
+      'const outputs = [outputTile];',
       'const auths = [];',
       'const caches = [];',
       'const plugins = [];',
@@ -87,11 +85,9 @@ describe('utils/add-plugin', function () {
 
     const plugins = await fs.readFile(path.join(appPath, 'src', 'plugins.js'), 'utf-8')
     const expected = [
-      "const myAuth = require('@koop/my-auth');",
+      "const myAuth = require('./my-auth/initialize')();",
       'const outputs = [];',
-      'const auths = [{',
-      '  instance: myAuth',
-      '}];',
+      'const auths = [myAuth];',
       'const caches = [];',
       'const plugins = [];',
       'module.exports = [...outputs, ...auths, ...caches, ...plugins];'
@@ -110,48 +106,11 @@ describe('utils/add-plugin', function () {
 
     const plugins = await fs.readFile(path.join(appPath, 'src', 'plugins.js'), 'utf-8')
     const expected = [
-      "const myCache = require('@koop/my-cache');",
+      "const myCache = require('./my-cache/initialize')();",
       'const outputs = [];',
       'const auths = [];',
-      'const caches = [{',
-      '  instance: myCache',
-      '}];',
+      'const caches = [myCache];',
       'const plugins = [];',
-      'module.exports = [...outputs, ...auths, ...caches, ...plugins];'
-    ].join(os.EOL)
-    expect(plugins).to.equal(expected)
-  })
-
-  it('should add the plugin options to the plugin list', async () => {
-    const addNpmPlugin = proxyquire(addNpmPluginModulePath, {
-      'latest-version': async () => '3.2.1'
-    })
-    const addPlugin = proxyquire(modulePath, {
-      './add-npm-plugin': addNpmPlugin
-    })
-    await addPlugin(
-      appPath,
-      'provider',
-      'test-provider',
-      {
-        routePrefix: '/my-route/',
-        addToRoot: true,
-        ...defaultOptions
-      }
-    )
-
-    const plugins = await fs.readFile(path.join(appPath, 'src', 'plugins.js'), 'utf-8')
-    const expected = [
-      "const testProvider = require('test-provider');",
-      'const outputs = [];',
-      'const auths = [];',
-      'const caches = [];',
-      'const plugins = [{',
-      '  instance: testProvider,',
-      '  options: {',
-      "    routePrefix: '/my-route/'",
-      '  }',
-      '}];',
       'module.exports = [...outputs, ...auths, ...caches, ...plugins];'
     ].join(os.EOL)
     expect(plugins).to.equal(expected)
