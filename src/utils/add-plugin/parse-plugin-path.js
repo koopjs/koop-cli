@@ -11,7 +11,7 @@ function parsePluginPath (pluginPath) {
   return {
     moduleName,
     fullModuleName: moduleName,
-    srcPath: path.normalize(pluginPath)
+    srcPath: pluginPath
   }
 }
 
