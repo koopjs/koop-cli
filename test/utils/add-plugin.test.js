@@ -115,4 +115,60 @@ describe('utils/add-plugin', function () {
     ].join(os.EOL)
     expect(plugins).to.equal(expected)
   })
+
+  it('should create the plugin initializer', async () => {
+    const addNpmPlugin = proxyquire(addNpmPluginModulePath, {
+      'latest-version': async () => '3.2.1'
+    })
+    const addPlugin = proxyquire(modulePath, {
+      './add-npm-plugin': addNpmPlugin
+    })
+    await addPlugin(appPath, 'cache', '@koop/my-cache', defaultOptions)
+
+    const plugins = await fs.readFile(path.join(appPath, 'src', 'my-cache', 'initialize.js'), 'utf-8')
+    const expected = [
+      "const myCache = require('@koop/my-cache');",
+      'function initialize() {',
+      '  return {',
+      '    instance: myCache',
+      '  };',
+      '}',
+      'module.exports = initialize;'
+    ].join(os.EOL)
+    expect(plugins).to.equal(expected)
+  })
+
+  it('should create the plugin initializer with options', async () => {
+    const addNpmPlugin = proxyquire(addNpmPluginModulePath, {
+      'latest-version': async () => '3.2.1'
+    })
+    const addPlugin = proxyquire(modulePath, {
+      './add-npm-plugin': addNpmPlugin
+    })
+    await addPlugin(
+      appPath,
+      'provider',
+      'test-provider',
+      {
+        routePrefix: '/my-route/',
+        addToRoot: true,
+        ...defaultOptions
+      }
+    )
+
+    const plugins = await fs.readFile(path.join(appPath, 'src', 'test-provider', 'initialize.js'), 'utf-8')
+    const expected = [
+      "const testProvider = require('test-provider');",
+      'function initialize() {',
+      '  return {',
+      '    instance: testProvider,',
+      '    options: {',
+      "      routePrefix: '/my-route/'",
+      '    }',
+      '  };',
+      '}',
+      'module.exports = initialize;'
+    ].join(os.EOL)
+    expect(plugins).to.equal(expected)
+  })
 })
