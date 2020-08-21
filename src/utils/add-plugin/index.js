@@ -5,7 +5,7 @@ const addNpmPlugin = require('./add-npm-plugin')
 const registerPlugin = require('./register-plugin')
 const updateProjectConfig = require('../update-project-config')
 const log = require('../log')
-const parsePluginName = require('./parser-plugin-name')
+const parsePluginName = require('./parse-plugin-name')
 const parsePluginPath = require('./parse-plugin-path')
 
 /**
