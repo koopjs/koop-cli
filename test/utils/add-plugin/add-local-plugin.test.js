@@ -42,7 +42,8 @@ describe('utils/add-plugin', function () {
 
     it('should add a provider plugin from a local path', async () => {
       const addPlugin = require(modulePath)
-      await addPlugin(appPath, 'provider', 'plugins/test-provider', defaultOptions)
+      const pluginPath = path.join('plugins', 'test-provider')
+      await addPlugin(appPath, 'provider', pluginPath, defaultOptions)
 
       const plugins = await fs.readFile(path.join(appPath, 'src', 'plugins.js'), 'utf-8')
       const initializerPath = ['.', 'plugins', 'test-provider', 'initialize'].join(path.sep)
@@ -54,7 +55,7 @@ describe('utils/add-plugin', function () {
         'const plugins = [testProvider];',
         'module.exports = [...outputs, ...auths, ...caches, ...plugins];'
       ].join(os.EOL)
-      expect(plugins).to.equal(expected)
+      expect(plugins).to.equal(expected.replace('\\\\', '\\'))
 
       const srcPath = path.join(appPath, 'src/plugins/test-provider')
       expect(await fs.pathExists(path.join(srcPath, 'index.js'))).to.equal(true)
@@ -81,7 +82,7 @@ describe('utils/add-plugin', function () {
         'const plugins = [];',
         'module.exports = [...outputs, ...auths, ...caches, ...plugins];'
       ].join(os.EOL)
-      expect(plugins).to.equal(expected)
+      expect(plugins).to.equal(expected.replace('\\\\', '\\'))
 
       const srcPath = path.join(appPath, 'src/my-auth')
       expect(await fs.pathExists(path.join(srcPath, 'index.js'))).to.equal(true)
@@ -101,7 +102,7 @@ describe('utils/add-plugin', function () {
 
       await addPlugin(appPath, 'output', 'my-output', defaultOptions)
 
-      const plugins = await fs.readFile(path.join(appPath, 'src', 'plugins.js'), 'utf-8')
+      const plugins = await (await fs.readFile(path.join(appPath, 'src', 'plugins.js'), 'utf-8'))
       const initializerPath = ['.', 'my-output', 'initialize'].join(path.sep)
       const expected = [
         `const myOutput = require('${initializerPath}')();`,
@@ -111,7 +112,7 @@ describe('utils/add-plugin', function () {
         'const plugins = [];',
         'module.exports = [...outputs, ...auths, ...caches, ...plugins];'
       ].join(os.EOL)
-      expect(plugins).to.equal(expected)
+      expect(plugins).to.equal(expected.replace('\\\\', '\\'))
 
       const srcPath = path.join(appPath, 'src/my-output')
       expect(await fs.pathExists(path.join(srcPath, 'index.js'))).to.equal(true)

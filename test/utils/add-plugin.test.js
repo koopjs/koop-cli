@@ -72,7 +72,7 @@ describe('utils/add-plugin', function () {
       'const plugins = [];',
       'module.exports = [...outputs, ...auths, ...caches, ...plugins];'
     ].join(os.EOL)
-    expect(plugins).to.equal(expected)
+    expect(plugins).to.equal(expected.replace('\\\\', '\\'))
   })
 
   it('should add the auth plugin to the auth list in the project', async () => {
@@ -94,7 +94,7 @@ describe('utils/add-plugin', function () {
       'const plugins = [];',
       'module.exports = [...outputs, ...auths, ...caches, ...plugins];'
     ].join(os.EOL)
-    expect(plugins).to.equal(expected)
+    expect(plugins).to.equal(expected.replace('\\\\', '\\'))
   })
 
   it('should add the cache plugin to the cache list in the project', async () => {
@@ -116,7 +116,7 @@ describe('utils/add-plugin', function () {
       'const plugins = [];',
       'module.exports = [...outputs, ...auths, ...caches, ...plugins];'
     ].join(os.EOL)
-    expect(plugins).to.equal(expected)
+    expect(plugins).to.equal(expected.replace('\\\\', '\\'))
   })
 
   it('should create the plugin initializer', async () => {

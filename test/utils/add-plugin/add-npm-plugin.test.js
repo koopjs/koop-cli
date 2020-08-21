@@ -50,7 +50,7 @@ describe('utils/add-plugin', function () {
         'const plugins = [testProvider];',
         'module.exports = [...outputs, ...auths, ...caches, ...plugins];'
       ].join(os.EOL)
-      expect(plugins).to.equal(expected)
+      expect(plugins).to.equal(expected.replace('\\\\', '\\'))
 
       const packageInfo = await fs.readJson(path.join(appPath, 'package.json'))
       expect(packageInfo.dependencies['test-provider']).to.equal('^1.0.0')
@@ -78,7 +78,7 @@ describe('utils/add-plugin', function () {
         'const plugins = [testProvider];',
         'module.exports = [...outputs, ...auths, ...caches, ...plugins];'
       ].join(os.EOL)
-      expect(plugins).to.equal(expected)
+      expect(plugins).to.equal(expected.replace('\\\\', '\\'))
 
       const packageInfo = await fs.readJson(path.join(appPath, 'package.json'))
       expect(packageInfo.dependencies['@koop/test-provider']).to.equal('^1.0.0')
@@ -105,7 +105,7 @@ describe('utils/add-plugin', function () {
         'const plugins = [testProvider];',
         'module.exports = [...outputs, ...auths, ...caches, ...plugins];'
       ].join(os.EOL)
-      expect(plugins).to.equal(expected)
+      expect(plugins).to.equal(expected.replace('\\\\', '\\'))
 
       const packageInfo = await fs.readJson(path.join(appPath, 'package.json'))
       expect(packageInfo.dependencies['@koop/test-provider']).to.equal('^3.2.1')
