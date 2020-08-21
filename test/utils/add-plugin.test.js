@@ -63,8 +63,9 @@ describe('utils/add-plugin', function () {
     await addPlugin(appPath, 'output', '@koop/output-tile', defaultOptions)
 
     const plugins = await fs.readFile(path.join(appPath, 'src', 'plugins.js'), 'utf-8')
+    const initializerPath = ['.', 'output-tile', 'initialize'].join(path.sep)
     const expected = [
-      "const outputTile = require('./output-tile/initialize')();",
+      `const outputTile = require('${initializerPath}')();`,
       'const outputs = [outputTile];',
       'const auths = [];',
       'const caches = [];',
@@ -84,8 +85,9 @@ describe('utils/add-plugin', function () {
     await addPlugin(appPath, 'auth', '@koop/my-auth', defaultOptions)
 
     const plugins = await fs.readFile(path.join(appPath, 'src', 'plugins.js'), 'utf-8')
+    const initializerPath = ['.', 'my-auth', 'initialize'].join(path.sep)
     const expected = [
-      "const myAuth = require('./my-auth/initialize')();",
+      `const myAuth = require('${initializerPath}')();`,
       'const outputs = [];',
       'const auths = [myAuth];',
       'const caches = [];',
@@ -105,8 +107,9 @@ describe('utils/add-plugin', function () {
     await addPlugin(appPath, 'cache', '@koop/my-cache', defaultOptions)
 
     const plugins = await fs.readFile(path.join(appPath, 'src', 'plugins.js'), 'utf-8')
+    const initializerPath = ['.', 'my-cache', 'initialize'].join(path.sep)
     const expected = [
-      "const myCache = require('./my-cache/initialize')();",
+      `const myCache = require('${initializerPath}')();`,
       'const outputs = [];',
       'const auths = [];',
       'const caches = [myCache];',

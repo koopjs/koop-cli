@@ -45,8 +45,9 @@ describe('utils/add-plugin', function () {
       await addPlugin(appPath, 'provider', 'plugins/test-provider', defaultOptions)
 
       const plugins = await fs.readFile(path.join(appPath, 'src', 'plugins.js'), 'utf-8')
+      const initializerPath = ['.', 'plugins', 'test-provider', 'initialize'].join(path.sep)
       const expected = [
-        "const testProvider = require('./plugins/test-provider/initialize')();",
+        `const testProvider = require('${initializerPath}')();`,
         'const outputs = [];',
         'const auths = [];',
         'const caches = [];',
@@ -71,8 +72,9 @@ describe('utils/add-plugin', function () {
       await addPlugin(appPath, 'auth', 'my-auth', defaultOptions)
 
       const plugins = await fs.readFile(path.join(appPath, 'src', 'plugins.js'), 'utf-8')
+      const initializerPath = ['.', 'my-auth', 'initialize'].join(path.sep)
       const expected = [
-        "const myAuth = require('./my-auth/initialize')();",
+        `const myAuth = require('${initializerPath}')();`,
         'const outputs = [];',
         'const auths = [myAuth];',
         'const caches = [];',
@@ -100,8 +102,9 @@ describe('utils/add-plugin', function () {
       await addPlugin(appPath, 'output', 'my-output', defaultOptions)
 
       const plugins = await fs.readFile(path.join(appPath, 'src', 'plugins.js'), 'utf-8')
+      const initializerPath = ['.', 'my-output', 'initialize'].join(path.sep)
       const expected = [
-        "const myOutput = require('./my-output/initialize')();",
+        `const myOutput = require('${initializerPath}')();`,
         'const outputs = [myOutput];',
         'const auths = [];',
         'const caches = [];',
