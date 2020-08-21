@@ -24,7 +24,7 @@ const pluginLists = {
  */
 async function registerPlugin (cwd, type, plugin) {
   const pluginsFilePath = path.join(cwd, 'src', 'plugins.js')
-  const pluginInitalizerPath = ['.', plugin.srcPath, 'initialize'].join(path.sep)
+  const pluginInitalizerPath = `./${plugin.srcPath}/initialize`
 
   const pluginsFile = await fs.readFile(pluginsFilePath, 'utf-8')
   const ast = recast.parse(pluginsFile)
