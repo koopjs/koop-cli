@@ -61,9 +61,8 @@ async function registerPlugin (cwd, type, plugin) {
 
   /**
    * Update the AST to add the imported plugin to a plugin list:
-   * 1. create a plugin object with the plugin instance and options
-   * 2. traverse the AST and find the correct plugin list
-   * 3. push the plugin object to the plugin list
+   * 1. traverse the AST and find the correct plugin list
+   * 2. push the plugin to the plugin list
    */
 
   // pick the correct plugin list name based on the plugin type

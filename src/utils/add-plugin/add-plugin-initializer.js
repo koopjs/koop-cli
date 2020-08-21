@@ -88,10 +88,9 @@ async function addPluginInitializer (cwd, type, plugin, options = {}) {
   const shortName = _.camelCase(plugin.moduleName)
 
   /**
- * Update the AST to import the plugin library:
- * 1. create an AST representation of "const plugin = require('plugin-package')"
- * 2. push it to the first line of the source code
- */
+   * Update the AST to import the plugin library:
+   * create an AST representation of "const plugin = require('plugin-package')"
+   */
 
   // use "const" to declare a variable
   const requirePath = options.local ? ['.', 'index'].join(path.sep) : plugin.fullModuleName
@@ -111,7 +110,7 @@ async function addPluginInitializer (cwd, type, plugin, options = {}) {
 
   ast.program.body.push(importPlugin)
 
-  // create init function
+  // create init function that returns the plugin object
   const createInitFunc = astBuilders.functionDeclaration(
     astBuilders.identifier('initialize'),
     [],
@@ -122,7 +121,7 @@ async function addPluginInitializer (cwd, type, plugin, options = {}) {
 
   ast.program.body.push(createInitFunc)
 
-  // create exports
+  // create module.exports for the init function
   const exportInitFunc = astBuilders.expressionStatement(
     astBuilders.assignmentExpression(
       '=',
