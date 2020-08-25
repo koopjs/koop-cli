@@ -26,8 +26,9 @@ function builder (yargs) {
       default: false
     })
     .option('local', {
-      description: 'add a plugin from a local path',
-      type: 'boolean'
+      description: 'add a local private plugin',
+      type: 'boolean',
+      default: false
     })
 }
 

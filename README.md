@@ -116,10 +116,11 @@ Provider Options:
 
 Options:
   --config        specify the plugin configuration in JSON              [string]
-  --add-to-root   add the given configuration to the app root configuration
-                                                      [boolean] [default: false]
   --skip-install  skip plugin installation            [boolean] [default: false]
+  --local         add a local private plugin          [boolean] [default: false]
 ```
+
+Then you can add options to customize the plugin. Take a look at the [Plugin Initialization](/docs/plugin-initialization.md) documentation for more details.
 
 ### serve
 
