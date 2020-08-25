@@ -30,6 +30,20 @@ describe('utils/add-plugin', function () {
     await createNewProject(temp, 'app', appName, defaultOptions)
   })
 
+  it('should throw an error if the plugin directory already exists', async () => {
+    const addPlugin = require(modulePath)
+    const pluginSrcPath = path.join(appPath, 'src', 'test-provider')
+
+    await fs.ensureDir(pluginSrcPath)
+
+    try {
+      await addPlugin(appPath, 'provider', 'test-provider')
+      expect(false).to.equal(true)
+    } catch (err) {
+      expect(err).to.be.an('error')
+    }
+  })
+
   it('should add plugin config if provided', async () => {
     const addNpmPlugin = proxyquire(addNpmPluginModulePath, {
       'latest-version': async () => '3.2.1'
@@ -64,10 +78,8 @@ describe('utils/add-plugin', function () {
 
     const plugins = await fs.readFile(path.join(appPath, 'src', 'plugins.js'), 'utf-8')
     const expected = [
-      "const outputTile = require('@koop/output-tile');",
-      'const outputs = [{',
-      '  instance: outputTile',
-      '}];',
+      "const outputTile = require('./output-tile/initialize')();",
+      'const outputs = [outputTile];',
       'const auths = [];',
       'const caches = [];',
       'const plugins = [];',
@@ -87,11 +99,9 @@ describe('utils/add-plugin', function () {
 
     const plugins = await fs.readFile(path.join(appPath, 'src', 'plugins.js'), 'utf-8')
     const expected = [
-      "const myAuth = require('@koop/my-auth');",
+      "const myAuth = require('./my-auth/initialize')();",
       'const outputs = [];',
-      'const auths = [{',
-      '  instance: myAuth',
-      '}];',
+      'const auths = [myAuth];',
       'const caches = [];',
       'const plugins = [];',
       'module.exports = [...outputs, ...auths, ...caches, ...plugins];'
@@ -110,19 +120,39 @@ describe('utils/add-plugin', function () {
 
     const plugins = await fs.readFile(path.join(appPath, 'src', 'plugins.js'), 'utf-8')
     const expected = [
-      "const myCache = require('@koop/my-cache');",
+      "const myCache = require('./my-cache/initialize')();",
       'const outputs = [];',
       'const auths = [];',
-      'const caches = [{',
-      '  instance: myCache',
-      '}];',
+      'const caches = [myCache];',
       'const plugins = [];',
       'module.exports = [...outputs, ...auths, ...caches, ...plugins];'
     ].join(os.EOL)
     expect(plugins).to.equal(expected)
   })
 
-  it('should add the plugin options to the plugin list', async () => {
+  it('should create the plugin initializer', async () => {
+    const addNpmPlugin = proxyquire(addNpmPluginModulePath, {
+      'latest-version': async () => '3.2.1'
+    })
+    const addPlugin = proxyquire(modulePath, {
+      './add-npm-plugin': addNpmPlugin
+    })
+    await addPlugin(appPath, 'cache', '@koop/my-cache', defaultOptions)
+
+    const plugins = await fs.readFile(path.join(appPath, 'src', 'my-cache', 'initialize.js'), 'utf-8')
+    const expected = [
+      "const myCache = require('@koop/my-cache');",
+      'function initialize() {',
+      '  return {',
+      '    instance: myCache',
+      '  };',
+      '}',
+      'module.exports = initialize;'
+    ].join(os.EOL)
+    expect(plugins).to.equal(expected)
+  })
+
+  it('should create the plugin initializer with options', async () => {
     const addNpmPlugin = proxyquire(addNpmPluginModulePath, {
       'latest-version': async () => '3.2.1'
     })
@@ -140,19 +170,18 @@ describe('utils/add-plugin', function () {
       }
     )
 
-    const plugins = await fs.readFile(path.join(appPath, 'src', 'plugins.js'), 'utf-8')
+    const plugins = await fs.readFile(path.join(appPath, 'src', 'test-provider', 'initialize.js'), 'utf-8')
     const expected = [
       "const testProvider = require('test-provider');",
-      'const outputs = [];',
-      'const auths = [];',
-      'const caches = [];',
-      'const plugins = [{',
-      '  instance: testProvider,',
-      '  options: {',
-      "    routePrefix: '/my-route/'",
-      '  }',
-      '}];',
-      'module.exports = [...outputs, ...auths, ...caches, ...plugins];'
+      'function initialize() {',
+      '  return {',
+      '    instance: testProvider,',
+      '    options: {',
+      "      routePrefix: '/my-route/'",
+      '    }',
+      '  };',
+      '}',
+      'module.exports = initialize;'
     ].join(os.EOL)
     expect(plugins).to.equal(expected)
   })

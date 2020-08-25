@@ -4,7 +4,10 @@ const addLocalPlugin = require('./add-local-plugin')
 const addNpmPlugin = require('./add-npm-plugin')
 const registerPlugin = require('./register-plugin')
 const updateProjectConfig = require('../update-project-config')
+const addPluginInitializer = require('./add-plugin-initializer')
 const log = require('../log')
+const parsePluginName = require('./parse-plugin-name')
+const parsePluginPath = require('./parse-plugin-path')
 
 /**
  * Add a plugin to the current koop project.
@@ -27,77 +30,52 @@ module.exports = async (cwd, type, nameOrPath, options = {}) => {
 
   options.npmClient = options.npmClient || koopConfig.npmClient
 
+  const plugin = options.local ? parsePluginPath(nameOrPath) : parsePluginName(nameOrPath)
+
+  /**
+   * Check if the plugin directory has been occupied
+   */
+
+  const pluginSrcPath = path.join(cwd, 'src', plugin.srcPath)
+
+  if (await fs.pathExists(pluginSrcPath)) {
+    throw new Error(`Directory already exists: ${path.normalize(pluginSrcPath)}`)
+  }
+
   /**
    * Install plugin
    */
 
-  let pluginInfo
-
   if (options.local) {
-    pluginInfo = parsePluginPath(nameOrPath)
-    await addLocalPlugin(cwd, type, pluginInfo, options)
+    await addLocalPlugin(cwd, type, plugin, options)
   } else {
-    pluginInfo = parsePluginName(nameOrPath)
-    await addNpmPlugin(cwd, type, pluginInfo, options)
+    await addNpmPlugin(cwd, type, plugin, options)
   }
 
-  log(`\u2713 added ${pluginInfo.moduleName}`, 'info', options)
+  log(`\u2713 added ${plugin.moduleName}`, 'info', options)
 
   /**
    * Add plugin config
    */
 
-  await updateProjectConfig(cwd, type, pluginInfo.configName, options.config)
+  await updateProjectConfig(cwd, type, plugin.fullModuleName, options.config)
   log('\u2713 added plugin configuration', 'info', options)
+
+  /**
+   * Add the initializer.js for the plugin
+   */
+  await addPluginInitializer(cwd, type, plugin, options)
 
   /**
    * Register plugin to the app
    */
 
-  await registerPlugin(cwd, type, pluginInfo, options)
-  log(`\u2713 registered ${pluginInfo.moduleName}`, 'info', options)
+  await registerPlugin(cwd, type, plugin, options)
+  log(`\u2713 registered ${plugin.moduleName}`, 'info', options)
 
   /**
    * Done
    */
 
   log('\u2713 done', 'info', options)
-}
-
-/**
- * Parse the given plugin name and return name components.
- * @param  {string} name module name
- * @return {Object}      name components
- */
-function parsePluginName (pluginName) {
-  const matches = pluginName.match(/^((@.+\/)?([a-zA-Z0-9._-]+))(@(.+))?$/)
-  const components = {
-    requireName: matches[1],
-    fullName: matches[1],
-    configName: matches[1],
-    moduleName: matches[3]
-  }
-
-  if (matches[5]) {
-    components.versionedFullName = matches[0]
-    components.version = matches[5]
-  }
-
-  return components
-}
-
-/**
- * Parse plugin path.
- * @param  {string} pluginPath plugin file path
- * @return {Object}            name components
- */
-function parsePluginPath (pluginPath) {
-  const components = {
-    requireName: pluginPath.startsWith('./') ? pluginPath : `./${pluginPath}`,
-    configName: path.basename(pluginPath),
-    fullName: pluginPath,
-    moduleName: path.basename(pluginPath)
-  }
-
-  return components
 }

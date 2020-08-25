@@ -24,12 +24,11 @@ module.exports = async function addNpmPlugin (cwd, type, plugin, options = {}) {
       }
     }
 
-    const pluginVersion = await latestVersion(plugin.fullName, options)
-    packageInfo.dependencies[plugin.fullName] = `^${pluginVersion}`
+    const pluginVersion = await latestVersion(plugin.fullModuleName, options)
+    packageInfo.dependencies[plugin.fullModuleName] = `^${pluginVersion}`
 
     await writeJson(packageInfoPath, packageInfo)
   } else {
-    const moduleName = plugin.versionedFullName || plugin.fullName
-    await addDependency(cwd, moduleName, options)
+    await addDependency(cwd, plugin.installationName, options)
   }
 }

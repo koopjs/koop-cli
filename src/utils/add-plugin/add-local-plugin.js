@@ -9,15 +9,6 @@ const fs = require('fs-extra')
  * @param {Object} options options
  */
 module.exports = async function addLocalPlugin (cwd, type, plugin, options = {}) {
-  const pluginSrcPath = path.join(cwd, 'src', plugin.fullName)
-
-  if (
-    await fs.pathExists(pluginSrcPath) ||
-    await fs.pathExists(`${pluginSrcPath}.js`)
-  ) {
-    return
-  }
-
   if (
     options.local &&
     !['auth', 'provider', 'output'].includes(type)
@@ -26,7 +17,8 @@ module.exports = async function addLocalPlugin (cwd, type, plugin, options = {})
   }
 
   const componentPath = path.join(__dirname, '../../template/components', type)
-  const pluginTestPath = path.join(cwd, 'test', plugin.fullName)
+  const pluginSrcPath = path.join(cwd, 'src', plugin.srcPath)
+  const pluginTestPath = path.join(cwd, 'test', plugin.srcPath)
 
   // copy components
   await fs.copy(path.join(componentPath, 'src'), pluginSrcPath)
