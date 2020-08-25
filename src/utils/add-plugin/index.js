@@ -4,6 +4,7 @@ const addLocalPlugin = require('./add-local-plugin')
 const addNpmPlugin = require('./add-npm-plugin')
 const registerPlugin = require('./register-plugin')
 const updateProjectConfig = require('../update-project-config')
+const addPluginInitializer = require('./add-plugin-initializer')
 const log = require('../log')
 const parsePluginName = require('./parse-plugin-name')
 const parsePluginPath = require('./parse-plugin-path')
@@ -29,17 +30,25 @@ module.exports = async (cwd, type, nameOrPath, options = {}) => {
 
   options.npmClient = options.npmClient || koopConfig.npmClient
 
+  const plugin = options.local ? parsePluginPath(nameOrPath) : parsePluginName(nameOrPath)
+
+  /**
+   * Check if the plugin directory has been occupied
+   */
+
+  const pluginSrcPath = path.join(cwd, 'src', plugin.srcPath)
+
+  if (await fs.pathExists(pluginSrcPath)) {
+    throw new Error(`Directory already exists: ${path.normalize(pluginSrcPath)}`)
+  }
+
   /**
    * Install plugin
    */
 
-  let plugin
-
   if (options.local) {
-    plugin = parsePluginPath(nameOrPath)
     await addLocalPlugin(cwd, type, plugin, options)
   } else {
-    plugin = parsePluginName(nameOrPath)
     await addNpmPlugin(cwd, type, plugin, options)
   }
 
@@ -51,6 +60,11 @@ module.exports = async (cwd, type, nameOrPath, options = {}) => {
 
   await updateProjectConfig(cwd, type, plugin.fullModuleName, options.config)
   log('\u2713 added plugin configuration', 'info', options)
+
+  /**
+   * Add the initializer.js for the plugin
+   */
+  await addPluginInitializer(cwd, type, plugin, options)
 
   /**
    * Register plugin to the app

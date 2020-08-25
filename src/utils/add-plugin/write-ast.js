@@ -11,7 +11,7 @@ module.exports = async (filePath, ast) => {
     .prettyPrint(ast, { tabWidth: 2, quote: 'single' })
     .code
     // recast has an issue(?) to add extra line breaks when printing the code:
-    // https://githuastBuilders.com/benjamn/recast/issues/534
+    // https://github.com/benjamn/recast/issues/534
     .replace(/\r?\n\r?\n/g, os.EOL)
 
   // ensure the directory exists

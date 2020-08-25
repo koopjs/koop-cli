@@ -3,7 +3,6 @@ const _ = require('lodash')
 const recast = require('recast')
 const fs = require('fs-extra')
 const writeAST = require('./write-ast')
-const addPluginInitializer = require('./add-plugin-initializer')
 
 // AST builders
 const astBuilders = recast.types.builders
@@ -82,7 +81,4 @@ async function registerPlugin (cwd, type, plugin) {
   return writeAST(pluginsFilePath, ast)
 }
 
-module.exports = async (cwd, type, plugin, options) => {
-  await addPluginInitializer(cwd, type, plugin, options)
-  await registerPlugin(cwd, type, plugin)
-}
+module.exports = registerPlugin

@@ -81,6 +81,17 @@ function createPluginOptions (type, options = {}) {
   return astBuilders.objectExpression(astProperties)
 }
 
+/**
+ * This function uses AST to generate a js file with the following content:
+ *
+ * const plugin = require('plugin-name')
+ * function initialize () {
+ *    return {
+ *      instance: plugin
+ *    }
+ * }
+ * module.exports = initialize
+ */
 async function addPluginInitializer (cwd, type, plugin, options = {}) {
   const ast = recast.parse('')
 
