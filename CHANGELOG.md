@@ -3,9 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## 0.6.3 - 2020-08-28
 ### Change
-* adjust the project template to better handle plugin initialization
+* Adjust the project template to better handle plugin initialization
 
 ## 0.6.3 - 2020-07-30
 ### Changed
