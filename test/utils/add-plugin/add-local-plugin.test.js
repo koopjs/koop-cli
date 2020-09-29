@@ -81,7 +81,8 @@ describe('utils/add-plugin', function () {
 
       // the initializer can require the correct file
       const initializerContent = await fs.readFile(initializerPath, 'utf-8')
-      expect(initializerContent).to.include(`require('../../../${providerName}')`)
+      const requirePath = path.join('..', '..', '..', providerName)
+      expect(initializerContent).to.include(`require('${requirePath}')`)
     })
 
     it('should add a provider plugin from a local path', async () => {
