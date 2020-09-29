@@ -30,20 +30,6 @@ describe('utils/add-plugin', function () {
     await createNewProject(temp, 'app', appName, defaultOptions)
   })
 
-  it('should throw an error if the plugin directory already exists', async () => {
-    const addPlugin = require(modulePath)
-    const pluginSrcPath = path.join(appPath, 'src', 'test-provider')
-
-    await fs.ensureDir(pluginSrcPath)
-
-    try {
-      await addPlugin(appPath, 'provider', 'test-provider')
-      expect(false).to.equal(true)
-    } catch (err) {
-      expect(err).to.be.an('error')
-    }
-  })
-
   it('should add plugin config if provided', async () => {
     const addNpmPlugin = proxyquire(addNpmPluginModulePath, {
       'latest-version': async () => '3.2.1'

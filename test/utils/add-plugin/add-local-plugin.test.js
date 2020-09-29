@@ -34,9 +34,57 @@ describe('utils/add-plugin', function () {
       const addPlugin = require(modulePath)
 
       try {
-        await addPlugin(appPath, 'output', 'plugins/test-provider', defaultOptions)
+        await addPlugin(appPath, 'not-a-plugin', 'plugins/test-provider', defaultOptions)
       } catch (err) {
         expect(err).to.be.an('error')
+      }
+    })
+
+    it('should add an existing plugin directory within the current repo', async () => {
+      const addPlugin = require(modulePath)
+
+      // add a dummy provider
+      const providerName = `test-provider-${Date.now()}`
+      const providerPath = path.join(appPath, 'src', 'plugins', providerName)
+      const indexPath = path.join(providerPath, 'index.js')
+      await fs.outputFile(indexPath, 'modlue.exports = () => {}')
+
+      // add the provider
+      await addPlugin(appPath, 'provider', `plugins/${providerName}`, defaultOptions)
+      expect(await fs.pathExists(path.join(appPath, 'test', 'plugins', providerName))).to.equal(false)
+
+      // the initalizer is added into the existing provider path
+      const initializerPath = path.join(providerPath, 'initialize.js')
+      expect(await fs.pathExists(initializerPath)).to.equal(true)
+
+      // the initializer can require the correct file
+      const initializerContent = await fs.readFile(initializerPath, 'utf-8')
+      expect(initializerContent).to.include("require('.')")
+    })
+
+    it('should add an existing plugin directory out of the current repo', async () => {
+      const addPlugin = require(modulePath)
+
+      // add a dummy provider
+      const providerName = `test-provider-${Date.now()}`
+      const providerPath = path.join(temp, providerName)
+      const indexPath = path.join(providerPath, 'index.js')
+      await fs.outputFile(indexPath, 'modlue.exports = () => {}')
+
+      // add the provider
+      await addPlugin(appPath, 'provider', `../../${providerName}`, defaultOptions)
+      expect(await fs.pathExists(path.join(appPath, 'test', providerName))).to.equal(false)
+
+      // the initalizer is added into the existing provider path
+      const initializerPath = path.join(appPath, 'src', providerName, 'initialize.js')
+      expect(await fs.pathExists(initializerPath)).to.equal(true)
+
+      // TODO: windows sucks in "\" string
+      if (os.platform() !== 'win32') {
+        // the initializer can require the correct file
+        const initializerContent = await fs.readFile(initializerPath, 'utf-8')
+        const requirePath = path.join('..', '..', '..', providerName)
+        expect(initializerContent).to.include(`require('${requirePath}')`)
       }
     })
 
