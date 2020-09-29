@@ -20,7 +20,12 @@ module.exports = async function addLocalPlugin (cwd, type, plugin, options = {})
   const pluginSrcPath = path.join(cwd, 'src', plugin.srcPath)
   const pluginTestPath = path.join(cwd, 'test', plugin.srcPath)
 
-  // copy components
+  if (await fs.pathExists(pluginSrcPath)) {
+    // do nothing if the plugin files already exists
+    return
+  }
+
+  // copy plugin files
   await fs.copy(path.join(componentPath, 'src'), pluginSrcPath)
   await fs.copy(path.join(componentPath, 'test'), pluginTestPath)
 }

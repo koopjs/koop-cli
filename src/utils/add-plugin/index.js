@@ -33,16 +33,6 @@ module.exports = async (cwd, type, nameOrPath, options = {}) => {
   const plugin = options.local ? parsePluginPath(nameOrPath) : parsePluginName(nameOrPath)
 
   /**
-   * Check if the plugin directory has been occupied
-   */
-
-  const pluginSrcPath = path.join(cwd, 'src', plugin.srcPath)
-
-  if (await fs.pathExists(pluginSrcPath)) {
-    throw new Error(`Directory already exists: ${path.normalize(pluginSrcPath)}`)
-  }
-
-  /**
    * Install plugin
    */
 
