@@ -6,7 +6,13 @@ See the [specification](https://koopjs.github.io/docs/usage/koop-core) for more 
 
 ## Configuration
 
-This project is configured with [config](https://www.npmjs.com/package/config). As a community practice, it is recommended to namespace the configuration for plugins in order to avoid any potential key conflict.
+### App Configuration
+
+The Koop application is configured with the [config](https://www.npmjs.com/package/config) package. By default the configurations are stored as JSON files in the `config` folder. It is recommended to namespace the configuration for plugins in order to avoid any potential key conflict.
+
+### Koop Configuration
+
+The Koop project configuration `koop.json` is the configuration for the app/plugin code. It is part of the code and used to store internal properties of the app/plugin. It should not be changed with the deployment.
 
 ## Development
 

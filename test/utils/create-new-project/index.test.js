@@ -48,6 +48,8 @@ describe('utils/create-new-project', () => {
 
     const koopConfig = await fs.readJson(path.join(appPath, 'koop.json'))
     expect(koopConfig.type).to.equal('provider')
+    expect(koopConfig.name).to.be.a('string')
+    expect(koopConfig.allowedParams).to.be.an('object')
 
     expect(await fs.pathExists(path.join(appPath, 'src/index.js'))).to.equal(true)
     expect(await fs.pathExists(path.join(appPath, 'src/model.js'))).to.equal(true)
