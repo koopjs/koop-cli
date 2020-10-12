@@ -174,5 +174,23 @@ describe('utils/add-plugin', function () {
         npmClient: 'yarn'
       })
     })
+
+    it('should update the plugin list in koop.json', async () => {
+      const addNpmPlugin = proxyquire(addNpmPluginModulePath, {
+        'latest-version': async () => '1.0.0'
+      })
+      const addPlugin = proxyquire(modulePath, {
+        './add-npm-plugin': addNpmPlugin
+      })
+      await addPlugin(appPath, 'provider', 'test-provider', defaultOptions)
+
+      const koopConfig = await fs.readJson(path.join(appPath, 'koop.json'))
+      const pluginInfo = koopConfig.plugins[0]
+
+      expect(pluginInfo.name).to.equal('test-provider')
+      expect(pluginInfo.type).to.equal('provider')
+      expect(pluginInfo.srcPath).to.equal('test-provider')
+      expect(pluginInfo.local).to.equal(false)
+    })
   })
 })

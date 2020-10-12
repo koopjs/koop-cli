@@ -5,6 +5,7 @@ const addNpmPlugin = require('./add-npm-plugin')
 const registerPlugin = require('./register-plugin')
 const updateProjectConfig = require('../update-project-config')
 const addPluginInitializer = require('./add-plugin-initializer')
+const updatePluginList = require('./update-koop-plugin-list')
 const log = require('../log')
 const parsePluginName = require('./parse-plugin-name')
 const parsePluginPath = require('./parse-plugin-path')
@@ -48,8 +49,10 @@ module.exports = async (cwd, type, nameOrPath, options = {}) => {
    * Add plugin config
    */
 
-  await updateProjectConfig(cwd, type, plugin.fullModuleName, options.config)
-  log('\u2713 added plugin configuration', 'info', options)
+  if (options.config) {
+    await updateProjectConfig(cwd, type, plugin.fullModuleName, options.config)
+    log('\u2713 added plugin configuration', 'info', options)
+  }
 
   /**
    * Add the initializer.js for the plugin
@@ -62,6 +65,12 @@ module.exports = async (cwd, type, nameOrPath, options = {}) => {
 
   await registerPlugin(cwd, type, plugin, options)
   log(`\u2713 registered ${plugin.moduleName}`, 'info', options)
+
+  /**
+   * Update plugin list
+   */
+
+  await updatePluginList(cwd, type, plugin, options)
 
   /**
    * Done

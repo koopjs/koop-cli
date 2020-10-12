@@ -169,5 +169,18 @@ describe('utils/add-plugin', function () {
       expect(await fs.pathExists(path.join(testPath, 'routes.test.js'))).to.equal(true)
       expect(await fs.pathExists(path.join(testPath, 'request-handlers/serve.test.js'))).to.equal(true)
     })
+
+    it('should update the plugin list in koop.json', async () => {
+      const addPlugin = require(modulePath)
+      await addPlugin(appPath, 'provider', 'plugins/test-provider', defaultOptions)
+
+      const koopConfig = await fs.readJson(path.join(appPath, 'koop.json'))
+      const pluginInfo = koopConfig.plugins[0]
+
+      expect(pluginInfo.name).to.equal('test-provider')
+      expect(pluginInfo.type).to.equal('provider')
+      expect(pluginInfo.srcPath).to.equal('plugins/test-provider')
+      expect(pluginInfo.local).to.equal(true)
+    })
   })
 })
