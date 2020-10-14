@@ -1,7 +1,7 @@
 const path = require('path')
 const _ = require('lodash')
 const recast = require('recast')
-const writeAST = require('./write-ast')
+const writeAST = require('../write-ast')
 
 // AST builders
 const astBuilders = recast.types.builders

@@ -2,17 +2,12 @@ const path = require('path')
 const _ = require('lodash')
 const recast = require('recast')
 const fs = require('fs-extra')
-const writeAST = require('./write-ast')
+const writeAST = require('../write-ast')
+const getPluginListName = require('../get-plugin-list-name')
 
 // AST builders
 const astBuilders = recast.types.builders
 
-// Different plugins should be registered in ordered lists based on their type
-const pluginLists = {
-  output: 'outputs',
-  auth: 'auths',
-  cache: 'caches'
-}
 /**
  * Register the plugin into the app.
  * @param  {string} cwd          project directory
@@ -65,7 +60,7 @@ async function registerPlugin (cwd, type, plugin) {
    */
 
   // pick the correct plugin list name based on the plugin type
-  const listName = type in pluginLists ? pluginLists[type] : 'plugins'
+  const listName = getPluginListName(type)
 
   // find the plugin list from the AST (using the simple logic because we know
   // the plugin list is declared at the top-most level)

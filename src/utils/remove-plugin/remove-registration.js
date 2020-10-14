@@ -1,0 +1,46 @@
+const path = require('path')
+const fs = require('fs-extra')
+const recast = require('recast')
+const writeAST = require('../write-ast')
+const getPluginListName = require('../get-plugin-list-name')
+
+module.exports = async (cwd, plugin) => {
+  const pluginsFilePath = path.join(cwd, 'src/plugins.js')
+  const pluginsFile = await fs.readFile(pluginsFilePath, 'utf-8')
+  const ast = recast.parse(pluginsFile)
+
+  const requireStatementIndex = ast.program.body.findIndex((statement) => {
+    if (statement.type !== 'VariableDeclaration') {
+      return
+    }
+
+    if (statement.declarations[0].init.type !== 'CallExpression') {
+      return
+    }
+
+    const initializeFunc = statement.declarations[0].init
+    const requireFunc = initializeFunc.callee
+    const requirePath = requireFunc.arguments[0].value
+
+    return requirePath.includes(plugin.srcPath)
+  })
+
+  const pluginInstance = ast.program.body[requireStatementIndex].declarations[0].id.name
+  ast.program.body.splice(requireStatementIndex, 1)
+
+  const pluginListName = getPluginListName(plugin.type)
+  const pluginList = ast
+    .program
+    .body
+    .find((statement) => {
+      return statement.declarations[0].id.name === pluginListName
+    })
+    .declarations[0]
+    .init
+    .elements
+
+  const instanceIndex = pluginList.findIndex((plugin) => plugin.name === pluginInstance)
+  pluginList.splice(instanceIndex, 1)
+
+  await writeAST(pluginsFilePath, ast)
+}
