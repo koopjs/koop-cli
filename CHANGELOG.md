@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Unrelease
 ### Added
 * Plugin list in the `koop.json`
+* New `remove` command and API
 
 ### Changed
 * Support adding a plugin that already exists locally
