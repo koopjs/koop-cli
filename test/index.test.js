@@ -48,4 +48,35 @@ describe('Node.js APIs', () => {
       }
     })
   })
+
+  describe('remove()', () => {
+    let appName, appPath
+
+    beforeEach(async () => {
+      appName = `remove-api-test-${Date.now()}`
+      appPath = path.join(temp, appName)
+
+      await createNewProject(temp, 'app', appName, {
+        skipGit: true,
+        skipInstall: true,
+        quiet: true
+      })
+
+      await api.add(appPath, 'provider', 'my-provider', {
+        skipInstall: true,
+        // add a local plugin to avoid external requests
+        local: true
+      })
+    })
+
+    it('should work', async () => {
+      try {
+        await api.remove(appPath, 'my-provider', {
+          skipInstall: true
+        })
+      } catch (e) {
+        expect.fail(e.message)
+      }
+    })
+  })
 })
