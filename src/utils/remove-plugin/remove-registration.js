@@ -9,6 +9,10 @@ module.exports = async (cwd, plugin) => {
   const pluginsFile = await fs.readFile(pluginsFilePath, 'utf-8')
   const ast = recast.parse(pluginsFile)
 
+  /**
+   * find out the line "const pluginObject = require('path')()" and remove it
+   */
+
   const requireStatementIndex = ast.program.body.findIndex((statement) => {
     if (statement.type !== 'VariableDeclaration') {
       return
@@ -27,6 +31,10 @@ module.exports = async (cwd, plugin) => {
 
   const pluginInstance = ast.program.body[requireStatementIndex].declarations[0].id.name
   ast.program.body.splice(requireStatementIndex, 1)
+
+  /**
+   * find out the pluginObject in the plugin list and remove it
+   */
 
   const pluginListName = getPluginListName(plugin.type)
   const pluginList = ast
