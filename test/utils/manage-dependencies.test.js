@@ -26,6 +26,16 @@ describe('utils/manage-dependencies', function () {
     await installDependencies('.')
   })
 
+  it('should use npm to remove dependency by default', async () => {
+    const { removeDependency } = proxyquire(modulePath, {
+      execa: (command, options) => {
+        expect(command).to.equal('npm uninstall --quiet my-module')
+        expect(options.cwd).to.equal('.')
+      }
+    })
+    await removeDependency('.', 'my-module')
+  })
+
   it('should use yarn to add dependency if specified', async () => {
     const { addDependency } = proxyquire(modulePath, {
       execa: (command, options) => {
@@ -46,6 +56,18 @@ describe('utils/manage-dependencies', function () {
       }
     })
     await installDependencies('.', {
+      npmClient: 'yarn'
+    })
+  })
+
+  it('should use yarn to remove dependency if specified', async () => {
+    const { removeDependency } = proxyquire(modulePath, {
+      execa: (command, options) => {
+        expect(command).to.equal('yarn remove --silent my-module')
+        expect(options.cwd).to.equal('.')
+      }
+    })
+    await removeDependency('.', 'my-module', {
       npmClient: 'yarn'
     })
   })
