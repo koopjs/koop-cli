@@ -80,11 +80,11 @@ describe('Node.js APIs', () => {
     })
   })
 
-  describe('remove()', () => {
+  describe('list()', () => {
     let appName, appPath
 
     beforeEach(async () => {
-      appName = `remove-api-test-${Date.now()}`
+      appName = `list-api-test-${Date.now()}`
       appPath = path.join(temp, appName)
 
       await createNewProject(temp, 'app', appName, {
