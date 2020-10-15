@@ -41,9 +41,11 @@ describe('utils/list-plugins', function () {
     expect(plugins[0].local).to.equal(true)
 
     await addPlugin(appPath, 'output', 'test-output', defaultOptions)
-    plugins = await listPlugins(appPath, 'provider')
+    plugins = await listPlugins(appPath, 'output')
 
     expect(plugins).to.have.lengthOf(1)
-    expect(plugins[0].name).to.equal('test-provider')
+    expect(plugins[0].name).to.equal('test-output')
+    expect(plugins[0].type).to.equal('output')
+    expect(plugins[0].local).to.equal(true)
   })
 })
