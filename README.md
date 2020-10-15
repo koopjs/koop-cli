@@ -71,6 +71,7 @@ Commands:
   koop new <type> <name>  create a new koop project
   koop add <type> <name>  add a new plugin to the current app
   koop remove <name>      remove an existing plugin from the current app
+  koop list [type]        list plugins added to the current app
   koop test               run tests in the current project
   koop serve [path]       run a Koop server for the current project
 

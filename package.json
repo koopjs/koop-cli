@@ -28,6 +28,7 @@
   "homepage": "https://github.com/koopjs/koop-cli#readme",
   "dependencies": {
     "dargs": "^7.0.0",
+    "easy-table": "^1.1.1",
     "execa": "^4.0.3",
     "fs-extra": "^9.0.1",
     "klaw-sync": "^6.0.0",
