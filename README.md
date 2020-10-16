@@ -74,6 +74,7 @@ Commands:
   koop list [type]        list plugins added to the current app
   koop test               run tests in the current project
   koop serve [path]       run a Koop server for the current project
+  koop validate           validte the current plugin
 
 Options:
   --quiet    supress all console messages except errors

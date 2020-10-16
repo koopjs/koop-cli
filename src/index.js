@@ -3,6 +3,7 @@ const createNewProject = require('./utils/create-new-project')
 const addPlugin = require('./utils/add-plugin')
 const removePlugin = require('./utils/remove-plugin')
 const listPlugins = require('./utils/list-plugins')
+const validatePlugin = require('./utils/validate-plugin')
 
 // set "quiet" option to true to avoid additional log messages
 module.exports = {
@@ -15,5 +16,6 @@ module.exports = {
   remove: (cwd, name, options) => {
     return removePlugin(cwd, name, _.assign({ quiet: true }, options))
   },
-  list: listPlugins
+  list: listPlugins,
+  validate: validatePlugin
 }
