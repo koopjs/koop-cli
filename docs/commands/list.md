@@ -15,6 +15,8 @@ Positionals:
 The command will list plugins in a table in the terminal, for example
 
 ```
+2 plugins are found.
+
 #  Name           Type      Is local plugin?
 -  -------------  --------  ----------------
 1  test-output    output    true

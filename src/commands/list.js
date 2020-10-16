@@ -18,10 +18,10 @@ async function handler (argv) {
 
   if (plugins.length === 0) {
     // TODO replace it with new logger
-    console.log('No plugin is found')
+    console.log('No plugin is found.')
   } else {
     // TODO replace it with new logger
-    console.log(`${plugins.length} plugins are found\n`)
+    console.log(`${plugins.length} plugins are found.\n`)
 
     const table = new Table()
 

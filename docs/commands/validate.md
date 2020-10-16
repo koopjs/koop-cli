@@ -13,14 +13,14 @@ validte the current plugin exports
 The command will print the result of validation. If the validation passes,
 
 ```
-The plugin is valid
+The plugin is valid.
 ```
 
 or if there is any error,
 
 
 ```
-The plugin is not valid
+The plugin is not valid.
 
 #  Property       Error
 -  -------------  -----------------------------------

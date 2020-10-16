@@ -8,10 +8,10 @@ async function handler (argv) {
 
   if (result.valid) {
     // TODO use a new logger
-    console.log('The plugin is valid')
+    console.log('The plugin is valid.')
   } else {
     // TODO use a new logger
-    console.log('The plugin is not valid\n')
+    console.log('The plugin is not valid.\n')
 
     const table = new Table()
 
