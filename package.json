@@ -32,14 +32,14 @@
     "execa": "^4.0.3",
     "fs-extra": "^9.0.1",
     "klaw-sync": "^6.0.0",
-    "koop": "^4.0.1",
+    "koop": "^4.0.2",
     "latest-version": "^5.1.0",
     "lodash": "^4.17.20",
     "node-fetch": "^2.6.1",
-    "nodemon": "^2.0.4",
-    "recast": "^0.20.3",
-    "yargs": "^16.0.3",
-    "yargs-parser": "^20.2.0"
+    "nodemon": "^2.0.6",
+    "recast": "^0.20.4",
+    "yargs": "^16.1.0",
+    "yargs-parser": "^20.2.3"
   },
   "bin": {
     "koop": "src/cli.js"
@@ -50,9 +50,9 @@
     "cross-env": "^7.0.2",
     "express": "^4.17.1",
     "husky": "^4.3.0",
-    "lint-staged": "^10.4.0",
-    "mocha": "^8.1.3",
-    "npm-check-updates": "^9.0.2",
+    "lint-staged": "^10.4.2",
+    "mocha": "^8.2.0",
+    "npm-check-updates": "^9.1.0",
     "proxyquire": "^2.1.3",
     "standard": "^14.3.4",
     "supertest": "^5.0.0"
