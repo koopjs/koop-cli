@@ -106,4 +106,29 @@ describe('Node.js APIs', () => {
       }
     })
   })
+
+  describe('validate()', () => {
+    let pluginName, pluginPath
+
+    beforeEach(async () => {
+      pluginName = `validate-api-test-${Date.now()}`
+      pluginPath = path.join(temp, pluginName)
+
+      await createNewProject(temp, 'provider', pluginName, {
+        skipGit: true,
+        skipInstall: true,
+        quiet: true
+      })
+    })
+
+    it('should work', async () => {
+      try {
+        const result = await api.validate(pluginPath)
+        expect(result.valid).to.equal(true)
+        expect(result.errors).to.equal(undefined)
+      } catch (e) {
+        expect.fail(e.message)
+      }
+    })
+  })
 })
