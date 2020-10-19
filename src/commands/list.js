@@ -17,22 +17,26 @@ async function handler (argv) {
   const plugins = await listPlugins(cwd, type, argv)
 
   if (plugins.length === 0) {
-    return
+    // TODO replace it with new logger
+    console.log('No plugin is found.')
+  } else {
+    // TODO replace it with new logger
+    console.log(`${plugins.length} plugins are found.\n`)
+
+    const table = new Table()
+
+    _
+      .sortBy(plugins, 'type')
+      .forEach((plugin, index) => {
+        table.cell('#', index + 1)
+        table.cell('Name', plugin.name)
+        table.cell('Type', plugin.type)
+        table.cell('Is local plugin?', plugin.local)
+        table.newRow()
+      })
+
+    console.log(table.toString())
   }
-
-  const table = new Table()
-
-  _
-    .sortBy(plugins, 'type')
-    .forEach((plugin, index) => {
-      table.cell('#', index + 1)
-      table.cell('Name', plugin.name)
-      table.cell('Type', plugin.type)
-      table.cell('Is local plugin?', plugin.local)
-      table.newRow()
-    })
-
-  console.log(table.toString())
 }
 
 module.exports = {
