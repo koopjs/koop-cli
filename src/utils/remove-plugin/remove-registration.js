@@ -29,6 +29,11 @@ module.exports = async (cwd, plugin) => {
     return requirePath.includes(plugin.srcPath)
   })
 
+  // skip if not found (happens in plugins.js created by older CLI version <0.7.0)
+  if (requireStatementIndex === -1) {
+    return
+  }
+
   const pluginInstance = ast.program.body[requireStatementIndex].declarations[0].id.name
   ast.program.body.splice(requireStatementIndex, 1)
 
