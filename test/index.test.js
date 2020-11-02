@@ -5,18 +5,24 @@ const path = require('path')
 const chai = require('chai')
 const api = require('../src/index.js')
 const createNewProject = require('../src/utils/create-new-project')
+const Logger = require('../src/utils/logger')
 
 const expect = chai.expect
 const temp = os.tmpdir()
+
+const defaultOptions = {
+  skipGit: true,
+  skipInstall: true,
+  quiet: true,
+  local: true,
+  logger: new Logger({ quiet: true })
+}
 
 describe('Node.js APIs', () => {
   describe('new()', () => {
     it('should work', async () => {
       try {
-        await api.new(temp, 'app', 'my-app', {
-          skipInstall: true,
-          skipGit: true
-        })
+        await api.new(temp, 'app', 'my-app', defaultOptions)
       } catch (e) {
         expect.fail(e.message)
       }
@@ -29,20 +35,12 @@ describe('Node.js APIs', () => {
     beforeEach(async () => {
       appName = `add-api-test-${Date.now()}`
       appPath = path.join(temp, appName)
-      await createNewProject(temp, 'app', appName, {
-        skipGit: true,
-        skipInstall: true,
-        quiet: true
-      })
+      await createNewProject(temp, 'app', appName, defaultOptions)
     })
 
     it('should work', async () => {
       try {
-        await api.add(appPath, 'provider', 'my-provider', {
-          skipInstall: true,
-          // add a local plugin to avoid external requests
-          local: true
-        })
+        await api.add(appPath, 'provider', 'my-provider', defaultOptions)
       } catch (e) {
         expect.fail(e.message)
       }
@@ -56,24 +54,14 @@ describe('Node.js APIs', () => {
       appName = `remove-api-test-${Date.now()}`
       appPath = path.join(temp, appName)
 
-      await createNewProject(temp, 'app', appName, {
-        skipGit: true,
-        skipInstall: true,
-        quiet: true
-      })
+      await createNewProject(temp, 'app', appName, defaultOptions)
 
-      await api.add(appPath, 'provider', 'my-provider', {
-        skipInstall: true,
-        // add a local plugin to avoid external requests
-        local: true
-      })
+      await api.add(appPath, 'provider', 'my-provider', defaultOptions)
     })
 
     it('should work', async () => {
       try {
-        await api.remove(appPath, 'my-provider', {
-          skipInstall: true
-        })
+        await api.remove(appPath, 'my-provider', defaultOptions)
       } catch (e) {
         expect.fail(e.message)
       }
@@ -87,17 +75,13 @@ describe('Node.js APIs', () => {
       appName = `list-api-test-${Date.now()}`
       appPath = path.join(temp, appName)
 
-      await createNewProject(temp, 'app', appName, {
-        skipGit: true,
-        skipInstall: true,
-        quiet: true
-      })
+      await createNewProject(temp, 'app', appName, defaultOptions)
     })
 
     it('should work', async () => {
       try {
-        await api.add(appPath, 'provider', 'my-provider', { local: true })
-        await api.add(appPath, 'output', 'my-output', { local: true })
+        await api.add(appPath, 'provider', 'my-provider', defaultOptions)
+        await api.add(appPath, 'output', 'my-output', defaultOptions)
 
         const plugins = await api.list(appPath, 'output')
         expect(plugins).to.have.lengthOf(1)
@@ -114,11 +98,7 @@ describe('Node.js APIs', () => {
       pluginName = `validate-api-test-${Date.now()}`
       pluginPath = path.join(temp, pluginName)
 
-      await createNewProject(temp, 'provider', pluginName, {
-        skipGit: true,
-        skipInstall: true,
-        quiet: true
-      })
+      await createNewProject(temp, 'provider', pluginName, defaultOptions)
     })
 
     it('should work', async () => {

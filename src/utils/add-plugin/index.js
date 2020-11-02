@@ -6,7 +6,6 @@ const registerPlugin = require('./register-plugin')
 const updateProjectConfig = require('../update-project-config')
 const addPluginInitializer = require('./add-plugin-initializer')
 const updatePluginList = require('./update-koop-plugin-list')
-const log = require('../log')
 const parsePluginName = require('./parse-plugin-name')
 const parsePluginPath = require('./parse-plugin-path')
 
@@ -22,7 +21,8 @@ const parsePluginPath = require('./parse-plugin-path')
  * @param  {boolean} [options.routePrefix]  URL prefix for register routes
  * @return {Promise}              a promise
  */
-module.exports = async (cwd, type, nameOrPath, options = {}) => {
+module.exports = async (cwd, type, nameOrPath, options) => {
+  const { logger } = options
   const koopConfig = await fs.readJson(path.join(cwd, 'koop.json'))
 
   if (koopConfig.type !== 'app') {
@@ -43,7 +43,7 @@ module.exports = async (cwd, type, nameOrPath, options = {}) => {
     await addNpmPlugin(cwd, type, plugin, options)
   }
 
-  log(`\u2713 added ${plugin.moduleName}`, 'info', options)
+  logger.info(`\u2713 added ${plugin.moduleName}`)
 
   /**
    * Add plugin config
@@ -51,7 +51,7 @@ module.exports = async (cwd, type, nameOrPath, options = {}) => {
 
   if (options.config) {
     await updateProjectConfig(cwd, type, plugin.fullModuleName, options.config)
-    log('\u2713 added plugin configuration', 'info', options)
+    logger.info('\u2713 added plugin configuration')
   }
 
   /**
@@ -64,7 +64,7 @@ module.exports = async (cwd, type, nameOrPath, options = {}) => {
    */
 
   await registerPlugin(cwd, type, plugin, options)
-  log(`\u2713 registered ${plugin.moduleName}`, 'info', options)
+  logger.info(`\u2713 registered ${plugin.moduleName}`)
 
   /**
    * Update plugin list
@@ -76,5 +76,5 @@ module.exports = async (cwd, type, nameOrPath, options = {}) => {
    * Done
    */
 
-  log('\u2713 done', 'info', options)
+  logger.info('\u2713 done')
 }

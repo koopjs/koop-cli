@@ -6,6 +6,7 @@ const chai = require('chai')
 const createNewProject = require('../../src/utils/create-new-project')
 const listPlugins = require('../../src/utils/list-plugins')
 const addPlugin = require('../../src/utils/add-plugin')
+const Logger = require('../../src/utils/logger')
 
 const expect = chai.expect
 const temp = os.tmpdir()
@@ -14,7 +15,8 @@ const defaultOptions = {
   skipGit: true,
   skipInstall: true,
   quiet: true,
-  local: true
+  local: true,
+  logger: new Logger({ quiet: true })
 }
 
 let appName, appPath

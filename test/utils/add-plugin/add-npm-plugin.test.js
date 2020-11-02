@@ -6,6 +6,7 @@ const chai = require('chai')
 const fs = require('fs-extra')
 const proxyquire = require('proxyquire')
 const createNewProject = require('../../../src/utils/create-new-project')
+const Logger = require('../../../src/utils/logger')
 
 const modulePath = '../../../src/utils/add-plugin'
 const addNpmPluginModulePath = path.join(modulePath, 'add-npm-plugin')
@@ -16,7 +17,8 @@ const temp = os.tmpdir()
 const defaultOptions = {
   skipGit: true,
   skipInstall: true,
-  quiet: true
+  quiet: true,
+  logger: new Logger({ quiet: true })
 }
 
 let appName, appPath
@@ -122,7 +124,8 @@ describe('utils/add-plugin', function () {
         './add-npm-plugin': addNpmPlugin
       })
       await addPlugin(appPath, 'provider', '@koopjs/test-provider', {
-        quiet: true
+        quiet: true,
+        logger: new Logger({ quiet: true })
       })
     })
 
@@ -138,7 +141,8 @@ describe('utils/add-plugin', function () {
         './add-npm-plugin': addNpmPlugin
       })
       await addPlugin(appPath, 'provider', '@koopjs/test-provider@^3.0.0', {
-        quiet: true
+        quiet: true,
+        logger: new Logger({ quiet: true })
       })
     })
 
@@ -154,7 +158,8 @@ describe('utils/add-plugin', function () {
         './add-npm-plugin': addNpmPlugin
       })
       await addPlugin(appPath, 'provider', '@koopjs/test-provider@latest', {
-        quiet: true
+        quiet: true,
+        logger: new Logger({ quiet: true })
       })
     })
 
@@ -171,6 +176,7 @@ describe('utils/add-plugin', function () {
       })
       await addPlugin(appPath, 'provider', '@koopjs/test-provider@latest', {
         quiet: true,
+        logger: new Logger({ quiet: true }),
         npmClient: 'yarn'
       })
     })

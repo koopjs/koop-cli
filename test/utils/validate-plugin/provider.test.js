@@ -5,6 +5,7 @@ const path = require('path')
 const chai = require('chai')
 const proxyquire = require('proxyquire')
 const createNewProject = require('../../../src/utils/create-new-project')
+const Logger = require('../../../src/utils/logger')
 
 const modulePath = '../../../src/utils/validate-plugin'
 const validatePropertyPath = '../../../src/utils/validate-plugin/validate-provider'
@@ -14,7 +15,8 @@ const temp = os.tmpdir()
 const defaultOptions = {
   skipGit: true,
   skipInstall: true,
-  quiet: true
+  quiet: true,
+  logger: new Logger({ quiet: true })
 }
 
 let pluginName, pluginPath

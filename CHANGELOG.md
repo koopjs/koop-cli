@@ -13,6 +13,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 * Support adding a plugin that already exists locally
 * Use `koop.json` to configure provider properties
+* Use new logger
 
 ## 0.6.3 - 2020-08-28
 ### Change

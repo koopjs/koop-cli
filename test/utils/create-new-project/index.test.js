@@ -5,6 +5,7 @@ const path = require('path')
 const fs = require('fs-extra')
 const os = require('os')
 const createNewProject = require('../../../src/utils/create-new-project')
+const Logger = require('../../../src/utils/logger')
 
 const expect = chai.expect
 const temp = os.tmpdir()
@@ -12,7 +13,8 @@ const temp = os.tmpdir()
 const defaultOptions = {
   skipGit: true,
   skipInstall: true,
-  quiet: true
+  quiet: true,
+  logger: new Logger({ quiet: true })
 }
 
 let appName, appPath
