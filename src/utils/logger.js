@@ -17,6 +17,7 @@ module.exports = class Logger {
 
   log (data, level = 'log') {
     if (this.options.quiet && level !== 'error') {
+      // don't log at the quite mode unless it is an error
 
     } else if (typeof data === 'string') {
       console[level](data)
