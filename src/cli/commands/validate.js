@@ -5,13 +5,12 @@ const validatePlugin = require('../utils/validate-plugin')
 async function handler (argv) {
   const cwd = process.cwd()
   const result = await validatePlugin(cwd, argv)
+  const logger = argv.logger
 
   if (result.valid) {
-    // TODO use a new logger
-    console.log('The plugin is valid.')
+    logger.info('The plugin is valid.')
   } else {
-    // TODO use a new logger
-    console.log('The plugin is not valid.\n')
+    logger.info('The plugin is not valid.\n')
 
     const table = new Table()
 

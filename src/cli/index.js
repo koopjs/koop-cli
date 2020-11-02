@@ -3,11 +3,11 @@
 process.env.SUPPRESS_NO_CONFIG_WARNING = true
 
 const yargs = require('yargs')
-const parseConfig = require('./utils/parse-config')
+const middleware = require('./middleware')
 
 module.exports = yargs
   .commandDir('commands')
-  .middleware([parseConfig])
+  .middleware(middleware)
   .demandCommand()
   .showHelpOnFail(false)
   .help('help')

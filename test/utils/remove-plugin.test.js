@@ -7,6 +7,7 @@ const fs = require('fs-extra')
 const proxyquire = require('proxyquire')
 const removePlugin = require('../../src/utils/remove-plugin')
 const createNewProject = require('../../src/utils/create-new-project')
+const Logger = require('../../src/utils/logger')
 
 const modulePath = '../../src/utils/add-plugin'
 const addNpmPluginModulePath = path.join(modulePath, 'add-npm-plugin')
@@ -20,7 +21,8 @@ const defaultOptions = {
   quiet: true,
   config: {
     test: 'value'
-  }
+  },
+  logger: new Logger({ quiet: true })
 }
 
 let appName, appPath

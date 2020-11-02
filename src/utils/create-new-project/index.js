@@ -2,7 +2,6 @@ const path = require('path')
 const fs = require('fs-extra')
 const updateProjectConfig = require('../update-project-config')
 const setupGit = require('./setup-git')
-const log = require('../log')
 const { installDependencies } = require('../manage-dependencies')
 const addComponents = require('./add-components')
 const updatePackage = require('./update-package')
@@ -22,6 +21,7 @@ const updateKoopConfig = require('./update-koop-config')
  */
 module.exports = async (cwd, type, name, options = {}) => {
   const projectPath = path.join(cwd, name)
+  const { logger } = options
 
   /**
    * Create project directory and copy project template
@@ -39,7 +39,7 @@ module.exports = async (cwd, type, name, options = {}) => {
   await updatePackage(projectPath, type, name)
   await updateKoopConfig(projectPath, type, name, options)
 
-  log('\u2713 created project', 'info', options)
+  logger.info('\u2713 created project')
 
   /**
    * Initialize Git
@@ -47,7 +47,7 @@ module.exports = async (cwd, type, name, options = {}) => {
 
   if (!options.skipGit) {
     await setupGit(projectPath)
-    log('\u2713 initialized Git', 'info', options)
+    logger.info('\u2713 initialized Git')
   }
 
   /**
@@ -55,7 +55,7 @@ module.exports = async (cwd, type, name, options = {}) => {
    */
 
   await updateProjectConfig(projectPath, type, name, options.config)
-  log(`\u2713 added ${type} configuration`, 'info', options)
+  logger.info(`\u2713 added ${type} configuration`)
 
   /**
    * Install dependencies
@@ -64,12 +64,12 @@ module.exports = async (cwd, type, name, options = {}) => {
   if (!options.skipInstall) {
     // install dependencies
     await installDependencies(projectPath, options)
-    log('\u2713 installed dependencies', 'info', options)
+    logger.info('\u2713 installed dependencies')
   }
 
   /**
    * Done
    */
 
-  log('\u2713 done', 'info', options)
+  logger.info('\u2713 done')
 }

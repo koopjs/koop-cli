@@ -15,13 +15,12 @@ async function handler (argv) {
   const type = argv.type
   const cwd = process.cwd()
   const plugins = await listPlugins(cwd, type, argv)
+  const logger = argv.logger
 
   if (plugins.length === 0) {
-    // TODO replace it with new logger
-    console.log('No plugin is found.')
+    logger.info('No plugin is found.')
   } else {
-    // TODO replace it with new logger
-    console.log(`${plugins.length} plugins are found.\n`)
+    logger.info(`${plugins.length} plugins are found.\n`)
 
     const table = new Table()
 

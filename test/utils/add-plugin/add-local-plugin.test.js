@@ -5,6 +5,7 @@ const path = require('path')
 const chai = require('chai')
 const fs = require('fs-extra')
 const createNewProject = require('../../../src/utils/create-new-project')
+const Logger = require('../../../src/utils/logger')
 
 const modulePath = '../../../src/utils/add-plugin'
 
@@ -15,7 +16,8 @@ const defaultOptions = {
   skipGit: true,
   skipInstall: true,
   quiet: true,
-  local: true
+  local: true,
+  logger: new Logger({ quiet: true })
 }
 
 let appName, appPath
