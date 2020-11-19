@@ -2,7 +2,7 @@
   "type": "provider",
   "name": "koop-cli-new-provider",
   "allowedParams": {
-    "host": true,
-    "id": false
+    "host": false,
+    "id": true
   }
 }
