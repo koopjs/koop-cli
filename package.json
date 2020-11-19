@@ -42,7 +42,7 @@
     "yargs-parser": "^20.2.4"
   },
   "bin": {
-    "koop": "src/cli.js"
+    "koop": "src/cli/index.js"
   },
   "devDependencies": {
     "chai": "^4.2.0",
