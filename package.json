@@ -29,17 +29,17 @@
   "dependencies": {
     "dargs": "^7.0.0",
     "easy-table": "^1.1.1",
-    "execa": "^4.0.3",
+    "execa": "^4.1.0",
     "fs-extra": "^9.0.1",
     "klaw-sync": "^6.0.0",
-    "koop": "^4.0.2",
+    "koop": "^4.0.5",
     "latest-version": "^5.1.0",
     "lodash": "^4.17.20",
     "node-fetch": "^2.6.1",
     "nodemon": "^2.0.6",
     "recast": "^0.20.4",
-    "yargs": "^16.1.0",
-    "yargs-parser": "^20.2.3"
+    "yargs": "^16.1.1",
+    "yargs-parser": "^20.2.4"
   },
   "bin": {
     "koop": "src/cli.js"
@@ -50,12 +50,12 @@
     "cross-env": "^7.0.2",
     "express": "^4.17.1",
     "husky": "^4.3.0",
-    "lint-staged": "^10.4.2",
-    "mocha": "^8.2.0",
-    "npm-check-updates": "^9.1.0",
+    "lint-staged": "^10.5.1",
+    "mocha": "^8.2.1",
+    "npm-check-updates": "^10.2.1",
     "proxyquire": "^2.1.3",
-    "standard": "^14.3.4",
-    "supertest": "^5.0.0"
+    "standard": "^16.0.3",
+    "supertest": "^6.0.1"
   },
   "lint-staged": {
     "*.js": "standard --fix"
