@@ -14,6 +14,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Support adding a plugin that already exists locally
 * Use `koop.json` to configure provider properties
 * Use new logger
+* Prefer using the `:id` parameter in the Koop provider requestURL
 
 ## 0.6.3 - 2020-08-28
 ### Change
