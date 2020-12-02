@@ -1,4 +1,4 @@
-const removePlugin = require('../utils/remove-plugin')
+const removePlugin = require('../../utils/remove-plugin')
 
 function builder (yargs) {
   yargs

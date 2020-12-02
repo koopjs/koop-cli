@@ -6,6 +6,7 @@ const { installDependencies } = require('../manage-dependencies')
 const addComponents = require('./add-components')
 const updatePackage = require('./update-package')
 const updateKoopConfig = require('./update-koop-config')
+const addDeploymentTarget = require('./add-deployment-target')
 
 /**
  * Creat a new koop project.
@@ -65,6 +66,11 @@ module.exports = async (cwd, type, name, options = {}) => {
     // install dependencies
     await installDependencies(projectPath, options)
     logger.info('\u2713 installed dependencies')
+  }
+
+  if (options.addDeploymentTarget) {
+    // add deployment target addon files
+    await addDeploymentTarget(projectPath, options)
   }
 
   /**

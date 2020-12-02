@@ -8,13 +8,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Plugin list in the `koop.json`
 * New `remove` command and API
 * New `list` command and API
-* New `Validate` command and API
+* New `validate` command and API
+* New `--deployment-target` option for the `new` command
 
 ### Changed
 * Support adding a plugin that already exists locally
 * Use `koop.json` to configure provider properties
 * Use new logger
-* Prefer using the `:id` parameter in the Koop provider requestURL
+* Prefer using the `:id` parameter in the Koop provider request URL
 
 ## 0.6.3 - 2020-08-28
 ### Change
