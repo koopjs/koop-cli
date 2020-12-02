@@ -16,6 +16,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Use new logger
 * Prefer using the `:id` parameter in the Koop provider requestURL
 
+### Removed
+* `test` command
+
 ## 0.6.3 - 2020-08-28
 ### Change
 * Adjust the project template to better handle plugin initialization
