@@ -4,11 +4,14 @@ const chai = require('chai')
 const path = require('path')
 const fs = require('fs-extra')
 const os = require('os')
-const createNewProject = require('../../../src/utils/create-new-project')
+const proxyquire = require('proxyquire')
 const Logger = require('../../../src/utils/logger')
 
 const expect = chai.expect
 const temp = os.tmpdir()
+
+const modulePath = '../../../src/utils/create-new-project'
+const createNewProject = require(modulePath)
 
 const defaultOptions = {
   skipGit: true,
@@ -134,5 +137,23 @@ describe('utils/create-new-project', () => {
     const configPath = path.join(appPath, 'koop.json')
     const config = await fs.readJson(configPath)
     expect(config.npmClient).to.equal('yarn')
+  })
+
+  it('should set the deployment addon files if the deployment targe is specified', async () => {
+    const createMock = proxyquire(modulePath, {
+      './add-deployment-target': (cwd, options) => {
+        expect(options.deploymentTarget).to.equal('docker')
+      }
+    })
+
+    await createMock(
+      temp,
+      'app',
+      appName,
+      {
+        ...defaultOptions,
+        deploymentTarget: 'docker'
+      }
+    )
   })
 })

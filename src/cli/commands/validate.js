@@ -1,6 +1,6 @@
 const Table = require('easy-table')
 const _ = require('lodash')
-const validatePlugin = require('../utils/validate-plugin')
+const validatePlugin = require('../../utils/validate-plugin')
 
 async function handler (argv) {
   const cwd = process.cwd()
