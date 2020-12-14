@@ -1,6 +1,6 @@
 const Table = require('easy-table')
 const _ = require('lodash')
-const listPlugins = require('../utils/list-plugins')
+const listPlugins = require('../../utils/list-plugins')
 
 function builder (yargs) {
   yargs

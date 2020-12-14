@@ -1,4 +1,4 @@
-const addPlugin = require('../utils/add-plugin')
+const addPlugin = require('../../utils/add-plugin')
 
 function builder (yargs) {
   yargs

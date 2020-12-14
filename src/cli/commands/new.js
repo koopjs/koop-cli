@@ -1,4 +1,5 @@
-const createNewProject = require('../utils/create-new-project')
+const createNewProject = require('../../utils/create-new-project')
+const deploymentTargets = require('../../utils/create-new-project/add-deployment-target/targets')
 
 function builder (yargs) {
   yargs
@@ -30,6 +31,12 @@ function builder (yargs) {
       type: 'string',
       default: 'npm',
       choices: ['npm', 'yarn']
+    })
+    .option('deployment-target', {
+      description: 'specify the app deployment target to add addon files',
+      type: 'string',
+      choices: deploymentTargets,
+      group: 'App Options:'
     })
 }
 
