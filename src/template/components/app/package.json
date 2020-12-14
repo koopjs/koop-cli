@@ -2,7 +2,7 @@
   "name": "koop-cli-new-app",
   "private": true,
   "dependencies": {
-    "koop": "^4.0.5"
+    "koop": "^4.1.0"
   },
   "keywords": [
     "koop",
