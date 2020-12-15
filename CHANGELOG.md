@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unrelease
+## 1.0.0 - 2020-12-15
 ### Added
 * Plugin list in the `koop.json`
 * New `remove` command and API
