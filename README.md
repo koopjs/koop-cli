@@ -70,47 +70,15 @@ koop <command>
 Commands:
   koop new <type> <name>  create a new koop project
   koop add <type> <name>  add a new plugin to the current app
+  koop remove <name>      remove an existing plugin from the current app
+  koop list [type]        list plugins added to the current app
   koop test               run tests in the current project
   koop serve [path]       run a Koop server for the current project
+  koop validate           validte the current plugin
 
 Options:
   --quiet    supress all console messages except errors
                                                       [boolean] [default: false]
 ```
 
-For detailed information, please read the [command documentations](/docs/commands).
-
-## APIs
-
-This tool can be also used as a library.
-
-``` javascript
-const cli = require('@koopjs/cli')
-
-// create a koop app project at /Documents
-cli.new('/Documents', 'app', 'my-app', {
-  config: {
-    port: 8080
-  }
-})
-```
-
-### new(cwd, type, name, \[options\])
-
-Create a Koop project at the given directory.
-
-* `cwd`: current work directory
-* `type`: project type
-* `name`: project name
-
-Return a promise.
-
-### add(cwd, type, name, \[options\])
-
-Add a plugin to the given Koop app
-
-* `cwd`: Koop app directory
-* `type`: project type
-* `name`: Koop plugin name
-
-Return a promise.
+Each command comes with the corresponding node.js API and this CLI can be used as a library. For detail information, please read the [command documentations](/docs/commands).

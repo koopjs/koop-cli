@@ -4,15 +4,20 @@ const chai = require('chai')
 const path = require('path')
 const fs = require('fs-extra')
 const os = require('os')
-const createNewProject = require('../../../src/utils/create-new-project')
+const proxyquire = require('proxyquire')
+const Logger = require('../../../src/utils/logger')
 
 const expect = chai.expect
 const temp = os.tmpdir()
 
+const modulePath = '../../../src/utils/create-new-project'
+const createNewProject = require(modulePath)
+
 const defaultOptions = {
   skipGit: true,
   skipInstall: true,
-  quiet: true
+  quiet: true,
+  logger: new Logger({ quiet: true })
 }
 
 let appName, appPath
@@ -32,6 +37,7 @@ describe('utils/create-new-project', () => {
 
     const koopConfig = await fs.readJson(path.join(appPath, 'koop.json'))
     expect(koopConfig.type).to.equal('app')
+    expect(koopConfig.plugins).to.be.an('Array')
 
     expect(await fs.pathExists(path.join(appPath, 'src/index.js'))).to.equal(true)
     expect(await fs.pathExists(path.join(appPath, 'src/routes.js'))).to.equal(true)
@@ -48,6 +54,8 @@ describe('utils/create-new-project', () => {
 
     const koopConfig = await fs.readJson(path.join(appPath, 'koop.json'))
     expect(koopConfig.type).to.equal('provider')
+    expect(koopConfig.name).to.be.a('string')
+    expect(koopConfig.allowedParams).to.be.an('object')
 
     expect(await fs.pathExists(path.join(appPath, 'src/index.js'))).to.equal(true)
     expect(await fs.pathExists(path.join(appPath, 'src/model.js'))).to.equal(true)
@@ -129,5 +137,23 @@ describe('utils/create-new-project', () => {
     const configPath = path.join(appPath, 'koop.json')
     const config = await fs.readJson(configPath)
     expect(config.npmClient).to.equal('yarn')
+  })
+
+  it('should set the deployment addon files if the deployment targe is specified', async () => {
+    const createMock = proxyquire(modulePath, {
+      './add-deployment-target': (cwd, options) => {
+        expect(options.deploymentTarget).to.equal('docker')
+      }
+    })
+
+    await createMock(
+      temp,
+      'app',
+      appName,
+      {
+        ...defaultOptions,
+        deploymentTarget: 'docker'
+      }
+    )
   })
 })

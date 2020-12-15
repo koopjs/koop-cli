@@ -6,6 +6,7 @@ const chai = require('chai')
 const fs = require('fs-extra')
 const proxyquire = require('proxyquire')
 const createNewProject = require('../../../src/utils/create-new-project')
+const Logger = require('../../../src/utils/logger')
 
 const modulePath = '../../../src/utils/add-plugin'
 const addNpmPluginModulePath = path.join(modulePath, 'add-npm-plugin')
@@ -16,7 +17,8 @@ const temp = os.tmpdir()
 const defaultOptions = {
   skipGit: true,
   skipInstall: true,
-  quiet: true
+  quiet: true,
+  logger: new Logger({ quiet: true })
 }
 
 let appName, appPath
@@ -122,7 +124,8 @@ describe('utils/add-plugin', function () {
         './add-npm-plugin': addNpmPlugin
       })
       await addPlugin(appPath, 'provider', '@koopjs/test-provider', {
-        quiet: true
+        quiet: true,
+        logger: new Logger({ quiet: true })
       })
     })
 
@@ -138,7 +141,8 @@ describe('utils/add-plugin', function () {
         './add-npm-plugin': addNpmPlugin
       })
       await addPlugin(appPath, 'provider', '@koopjs/test-provider@^3.0.0', {
-        quiet: true
+        quiet: true,
+        logger: new Logger({ quiet: true })
       })
     })
 
@@ -154,7 +158,8 @@ describe('utils/add-plugin', function () {
         './add-npm-plugin': addNpmPlugin
       })
       await addPlugin(appPath, 'provider', '@koopjs/test-provider@latest', {
-        quiet: true
+        quiet: true,
+        logger: new Logger({ quiet: true })
       })
     })
 
@@ -171,8 +176,27 @@ describe('utils/add-plugin', function () {
       })
       await addPlugin(appPath, 'provider', '@koopjs/test-provider@latest', {
         quiet: true,
+        logger: new Logger({ quiet: true }),
         npmClient: 'yarn'
       })
+    })
+
+    it('should update the plugin list in koop.json', async () => {
+      const addNpmPlugin = proxyquire(addNpmPluginModulePath, {
+        'latest-version': async () => '1.0.0'
+      })
+      const addPlugin = proxyquire(modulePath, {
+        './add-npm-plugin': addNpmPlugin
+      })
+      await addPlugin(appPath, 'provider', 'test-provider', defaultOptions)
+
+      const koopConfig = await fs.readJson(path.join(appPath, 'koop.json'))
+      const pluginInfo = koopConfig.plugins[0]
+
+      expect(pluginInfo.name).to.equal('test-provider')
+      expect(pluginInfo.type).to.equal('provider')
+      expect(pluginInfo.srcPath).to.equal('test-provider')
+      expect(pluginInfo.local).to.equal(false)
     })
   })
 })

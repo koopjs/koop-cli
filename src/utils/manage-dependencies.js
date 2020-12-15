@@ -25,7 +25,20 @@ async function addDependency (cwd, dependency, options = {}) {
   await execa(`${installScript} ${dependency}`, { cwd, shell: true })
 }
 
+async function removeDependency (cwd, dependency, options = {}) {
+  let removeCommand
+
+  if (options.npmClient === 'yarn') {
+    removeCommand = scripts.YARN_REMOVE
+  } else {
+    removeCommand = scripts.NPM_UNINSTALL
+  }
+
+  await execa(`${removeCommand} ${dependency}`, { cwd, shell: true })
+}
+
 module.exports = {
   installDependencies,
-  addDependency
+  addDependency,
+  removeDependency
 }

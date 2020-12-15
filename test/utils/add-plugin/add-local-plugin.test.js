@@ -5,6 +5,7 @@ const path = require('path')
 const chai = require('chai')
 const fs = require('fs-extra')
 const createNewProject = require('../../../src/utils/create-new-project')
+const Logger = require('../../../src/utils/logger')
 
 const modulePath = '../../../src/utils/add-plugin'
 
@@ -15,7 +16,8 @@ const defaultOptions = {
   skipGit: true,
   skipInstall: true,
   quiet: true,
-  local: true
+  local: true,
+  logger: new Logger({ quiet: true })
 }
 
 let appName, appPath
@@ -34,9 +36,57 @@ describe('utils/add-plugin', function () {
       const addPlugin = require(modulePath)
 
       try {
-        await addPlugin(appPath, 'output', 'plugins/test-provider', defaultOptions)
+        await addPlugin(appPath, 'not-a-plugin', 'plugins/test-provider', defaultOptions)
       } catch (err) {
         expect(err).to.be.an('error')
+      }
+    })
+
+    it('should add an existing plugin directory within the current repo', async () => {
+      const addPlugin = require(modulePath)
+
+      // add a dummy provider
+      const providerName = `test-provider-${Date.now()}`
+      const providerPath = path.join(appPath, 'src', 'plugins', providerName)
+      const indexPath = path.join(providerPath, 'index.js')
+      await fs.outputFile(indexPath, 'modlue.exports = () => {}')
+
+      // add the provider
+      await addPlugin(appPath, 'provider', `plugins/${providerName}`, defaultOptions)
+      expect(await fs.pathExists(path.join(appPath, 'test', 'plugins', providerName))).to.equal(false)
+
+      // the initalizer is added into the existing provider path
+      const initializerPath = path.join(providerPath, 'initialize.js')
+      expect(await fs.pathExists(initializerPath)).to.equal(true)
+
+      // the initializer can require the correct file
+      const initializerContent = await fs.readFile(initializerPath, 'utf-8')
+      expect(initializerContent).to.include("require('.')")
+    })
+
+    it('should add an existing plugin directory out of the current repo', async () => {
+      const addPlugin = require(modulePath)
+
+      // add a dummy provider
+      const providerName = `test-provider-${Date.now()}`
+      const providerPath = path.join(temp, providerName)
+      const indexPath = path.join(providerPath, 'index.js')
+      await fs.outputFile(indexPath, 'modlue.exports = () => {}')
+
+      // add the provider
+      await addPlugin(appPath, 'provider', `../../${providerName}`, defaultOptions)
+      expect(await fs.pathExists(path.join(appPath, 'test', providerName))).to.equal(false)
+
+      // the initalizer is added into the existing provider path
+      const initializerPath = path.join(appPath, 'src', providerName, 'initialize.js')
+      expect(await fs.pathExists(initializerPath)).to.equal(true)
+
+      // TODO: windows sucks in "\" string
+      if (os.platform() !== 'win32') {
+        // the initializer can require the correct file
+        const initializerContent = await fs.readFile(initializerPath, 'utf-8')
+        const requirePath = path.join('..', '..', '..', providerName)
+        expect(initializerContent).to.include(`require('${requirePath}')`)
       }
     })
 
@@ -120,6 +170,19 @@ describe('utils/add-plugin', function () {
       expect(await fs.pathExists(path.join(testPath, 'index.test.js'))).to.equal(true)
       expect(await fs.pathExists(path.join(testPath, 'routes.test.js'))).to.equal(true)
       expect(await fs.pathExists(path.join(testPath, 'request-handlers/serve.test.js'))).to.equal(true)
+    })
+
+    it('should update the plugin list in koop.json', async () => {
+      const addPlugin = require(modulePath)
+      await addPlugin(appPath, 'provider', 'plugins/test-provider', defaultOptions)
+
+      const koopConfig = await fs.readJson(path.join(appPath, 'koop.json'))
+      const pluginInfo = koopConfig.plugins[0]
+
+      expect(pluginInfo.name).to.equal('test-provider')
+      expect(pluginInfo.type).to.equal('provider')
+      expect(pluginInfo.srcPath).to.equal('plugins/test-provider')
+      expect(pluginInfo.local).to.equal(true)
     })
   })
 })

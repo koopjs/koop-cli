@@ -5,7 +5,7 @@ const addNpmPlugin = require('./add-npm-plugin')
 const registerPlugin = require('./register-plugin')
 const updateProjectConfig = require('../update-project-config')
 const addPluginInitializer = require('./add-plugin-initializer')
-const log = require('../log')
+const updatePluginList = require('./update-koop-plugin-list')
 const parsePluginName = require('./parse-plugin-name')
 const parsePluginPath = require('./parse-plugin-path')
 
@@ -21,7 +21,8 @@ const parsePluginPath = require('./parse-plugin-path')
  * @param  {boolean} [options.routePrefix]  URL prefix for register routes
  * @return {Promise}              a promise
  */
-module.exports = async (cwd, type, nameOrPath, options = {}) => {
+module.exports = async (cwd, type, nameOrPath, options) => {
+  const { logger } = options
   const koopConfig = await fs.readJson(path.join(cwd, 'koop.json'))
 
   if (koopConfig.type !== 'app') {
@@ -33,16 +34,6 @@ module.exports = async (cwd, type, nameOrPath, options = {}) => {
   const plugin = options.local ? parsePluginPath(nameOrPath) : parsePluginName(nameOrPath)
 
   /**
-   * Check if the plugin directory has been occupied
-   */
-
-  const pluginSrcPath = path.join(cwd, 'src', plugin.srcPath)
-
-  if (await fs.pathExists(pluginSrcPath)) {
-    throw new Error(`Directory already exists: ${path.normalize(pluginSrcPath)}`)
-  }
-
-  /**
    * Install plugin
    */
 
@@ -52,14 +43,16 @@ module.exports = async (cwd, type, nameOrPath, options = {}) => {
     await addNpmPlugin(cwd, type, plugin, options)
   }
 
-  log(`\u2713 added ${plugin.moduleName}`, 'info', options)
+  logger.info(`\u2713 added ${plugin.moduleName}`)
 
   /**
    * Add plugin config
    */
 
-  await updateProjectConfig(cwd, type, plugin.fullModuleName, options.config)
-  log('\u2713 added plugin configuration', 'info', options)
+  if (options.config) {
+    await updateProjectConfig(cwd, type, plugin.fullModuleName, options.config)
+    logger.info('\u2713 added plugin configuration')
+  }
 
   /**
    * Add the initializer.js for the plugin
@@ -71,11 +64,17 @@ module.exports = async (cwd, type, nameOrPath, options = {}) => {
    */
 
   await registerPlugin(cwd, type, plugin, options)
-  log(`\u2713 registered ${plugin.moduleName}`, 'info', options)
+  logger.info(`\u2713 registered ${plugin.moduleName}`)
+
+  /**
+   * Update plugin list
+   */
+
+  await updatePluginList(cwd, type, plugin, options)
 
   /**
    * Done
    */
 
-  log('\u2713 done', 'info', options)
+  logger.info('\u2713 done')
 }

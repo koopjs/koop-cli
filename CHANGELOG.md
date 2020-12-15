@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unrelease
+### Added
+* Plugin list in the `koop.json`
+* New `remove` command and API
+* New `list` command and API
+* New `validate` command and API
+* New `--deployment-target` option for the `new` command
+
+### Changed
+* Support adding a plugin that already exists locally
+* Use `koop.json` to configure provider properties
+* Use new logger
+* Prefer using the `:id` parameter in the Koop provider request URL
+
 ## 0.6.3 - 2020-08-28
 ### Change
 * Adjust the project template to better handle plugin initialization

@@ -1,3 +1,4 @@
 {
-  "type": "app"
+  "type": "app",
+  "plugins": []
 }

@@ -1,7 +1,7 @@
 const path = require('path')
 const _ = require('lodash')
 const recast = require('recast')
-const writeAST = require('./write-ast')
+const writeAST = require('../write-ast')
 
 // AST builders
 const astBuilders = recast.types.builders
@@ -93,6 +93,7 @@ function createPluginOptions (type, options = {}) {
  * module.exports = initialize
  */
 async function addPluginInitializer (cwd, type, plugin, options = {}) {
+  const initializerDirPath = getInitializerDirPath(cwd, plugin)
   const ast = recast.parse('')
 
   // module name with no scope
@@ -104,7 +105,7 @@ async function addPluginInitializer (cwd, type, plugin, options = {}) {
    */
 
   // use "const" to declare a variable
-  const requirePath = options.local ? ['.', 'index'].join(path.sep) : plugin.fullModuleName
+  const requirePath = getInitializerRequirePath(cwd, plugin, options)
   const importPlugin = astBuilders.variableDeclaration('const', [
     astBuilders.variableDeclarator(
       // the variable name is the module name without any scope
@@ -146,8 +147,29 @@ async function addPluginInitializer (cwd, type, plugin, options = {}) {
 
   ast.program.body.push(exportInitFunc)
 
-  const initializerPath = path.join(cwd, 'src', plugin.srcPath, 'initialize.js')
+  const initializerPath = path.join(cwd, 'src', initializerDirPath, 'initialize.js')
   return writeAST(initializerPath, ast)
+}
+
+function isOutsideCwd (cwd, plugin) {
+  const absolutePluginPath = path.join(cwd, 'src', plugin.srcPath)
+  return path.relative(cwd, absolutePluginPath).includes('..')
+}
+
+function getInitializerDirPath (cwd, plugin) {
+  // if the given plugin path is within the app cwd, add the initializer
+  // into the given path, otherwise create a new dir with the module name
+  return isOutsideCwd(cwd, plugin) ? plugin.moduleName : plugin.srcPath
+}
+
+function getInitializerRequirePath (cwd, plugin, options) {
+  if (options.local) {
+    // if the given plugin path is outside the app cwd, require that dir,
+    // otherwise, require the current dir
+    return isOutsideCwd(cwd, plugin) ? path.join('..', plugin.srcPath) : '.'
+  } else {
+    return plugin.fullModuleName
+  }
 }
 
 module.exports = addPluginInitializer

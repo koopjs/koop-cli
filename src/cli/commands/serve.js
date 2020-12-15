@@ -1,4 +1,4 @@
-const serve = require('../utils/serve')
+const serve = require('../../utils/serve')
 
 function builder (yargs) {
   yargs

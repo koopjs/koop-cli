@@ -6,6 +6,7 @@ const chai = require('chai')
 const fs = require('fs-extra')
 const proxyquire = require('proxyquire')
 const createNewProject = require('../../src/utils/create-new-project')
+const Logger = require('../../src/utils/logger')
 
 const modulePath = '../../src/utils/add-plugin'
 const addNpmPluginModulePath = path.join(modulePath, 'add-npm-plugin')
@@ -16,7 +17,8 @@ const temp = os.tmpdir()
 const defaultOptions = {
   skipGit: true,
   skipInstall: true,
-  quiet: true
+  quiet: true,
+  logger: new Logger({ quiet: true })
 }
 
 let appName, appPath
@@ -28,20 +30,6 @@ describe('utils/add-plugin', function () {
     appName = `add-command-test-${Date.now()}`
     appPath = path.join(temp, appName)
     await createNewProject(temp, 'app', appName, defaultOptions)
-  })
-
-  it('should throw an error if the plugin directory already exists', async () => {
-    const addPlugin = require(modulePath)
-    const pluginSrcPath = path.join(appPath, 'src', 'test-provider')
-
-    await fs.ensureDir(pluginSrcPath)
-
-    try {
-      await addPlugin(appPath, 'provider', 'test-provider')
-      expect(false).to.equal(true)
-    } catch (err) {
-      expect(err).to.be.an('error')
-    }
   })
 
   it('should add plugin config if provided', async () => {
