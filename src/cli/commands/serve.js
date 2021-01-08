@@ -24,6 +24,14 @@ function builder (yargs) {
       type: 'boolean',
       description: 'enable auto-restart on file change'
     })
+    .option('ssl-cert', {
+      type: 'string',
+      description: 'path to the SSL certificate file'
+    })
+    .option('ssl-key', {
+      type: 'string',
+      description: 'path to the SSL key file'
+    })
 }
 
 async function handler (argv = {}) {

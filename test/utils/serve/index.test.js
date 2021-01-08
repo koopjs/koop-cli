@@ -188,4 +188,30 @@ describe('utils/serve', () => {
 
     serve('/', { path: 'app.js', watch: true })
   })
+
+  it('should run a HTTPS server', async () => {
+    const serve = proxyquire(moduleName, {
+      execa: (command, args, options) => {
+        expect(command).to.equal('node')
+        expect(args).to.deep.equal([path.join('test', 'serve-plugin.js'), '--cwd=/', '--ssl-cert-path=cert.pem', '--ssl-key-path=key.pem'])
+        expect(options.cwd).to.equal('/')
+      },
+      'fs-extra': {
+        async readJson (path) {
+          if (path.endsWith('koop.json')) {
+            return { type: 'provider' }
+          } else {
+            return { main: 'src/index.js' }
+          }
+        }
+      },
+      './get-path-arg': (path) => path
+    })
+
+    return serve('/', {
+      dirname: 'test',
+      sslCert: 'cert.pem',
+      sslKey: 'key.pem'
+    })
+  })
 })
