@@ -56,6 +56,12 @@ module.exports = async (cwd, options = {}) => {
     if (options.port) {
       serveArgs.port = options.port
     }
+
+    // provide the SSH certification and key files are provided
+    if (options.sslCert && options.sslKey) {
+      serveArgs.sslCertPath = getPathArg(options.sslCert, options.watch)
+      serveArgs.sslKeyPath = getPathArg(options.sslKey, options.watch)
+    }
   }
 
   const args = [

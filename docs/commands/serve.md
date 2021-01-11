@@ -21,4 +21,14 @@ Options:
   --data      path to a GeoJSON data file for testing Koop plugin       [string]
   --debug     enable nodejs inspector for debugging                     [boolean]
   --watch     enable auto-restart on file change                        [boolean]
+  --ssl-cert  path to the SSL certificate file                          [string]
+  --ssl-key   path to the SSL key file                                  [string]
 ```
+
+## HTTPS mode
+
+You can create a HTTPS dev server for your plugin by providing both the SSL cert and key file paths.
+
+For an app project, you still need to modify the server source code or use a proxy to provide HTTPS capability.
+
+See the [Node.js HTTPS guide](https://nodejs.org/en/knowledge/HTTP/servers/how-to-create-a-HTTPS-server/) for more information.
