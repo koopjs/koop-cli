@@ -18,14 +18,14 @@ koop.register(plugin)
 // (https://github.com/koopjs/koop-output-geoservices), a provider is still
 // needed and here we provide a simple GeoJSON provider
 if (koopConfig.type !== 'provider') {
-  koop.register(getProvider(path.join(cwd, dataPath)))
+  koop.register(getProvider(getFullPath(dataPath)))
 }
 
 if (sslCertPath && sslKeyPath) {
   https.createServer(
     {
-      key: fs.readFileSync(path.join(cwd, sslKeyPath)),
-      cert: fs.readFileSync(path.join(cwd, sslCertPath))
+      key: fs.readFileSync(getFullPath(sslKeyPath)),
+      cert: fs.readFileSync(getFullPath(sslCertPath))
     },
     koop.server
   ).listen(port, () => {
@@ -35,4 +35,8 @@ if (sslCertPath && sslKeyPath) {
   koop.server.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`)
   })
+}
+
+function getFullPath (filePath) {
+  return path.isAbsolute(filePath) ? filePath : path.join(cwd, filePath)
 }
