@@ -11,7 +11,7 @@
     "config": "^3.3.3"
   },
   "devDependencies": {
-    "@koopjs/cli": "^0.7.0",
+    "@koopjs/cli": "^1.0.0",
     "chai": "^4.2.0",
     "mocha": "^8.2.1"
   },
