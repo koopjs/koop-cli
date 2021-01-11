@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+
+## 1.0.1 - 2021-01-11
 ### Added
 * HTTPS capability for the dev server ([#70](https://github.com/koopjs/koop-cli/issues/70))
 
