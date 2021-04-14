@@ -110,9 +110,10 @@ describe('utils/add-plugin', function () {
       expect(await fs.pathExists(path.join(srcPath, 'model.js'))).to.equal(true)
       expect(await fs.pathExists(path.join(srcPath, 'initialize.js'))).to.equal(true)
 
-      const testPath = path.join(appPath, 'test/plugins/test-provider')
-      expect(await fs.pathExists(path.join(testPath, 'index.test.js'))).to.equal(true)
-      expect(await fs.pathExists(path.join(testPath, 'model.test.js'))).to.equal(true)
+      // the index.js file should not refer to the packages.json and the koop.json
+      const indexFileContent = await fs.readFile(path.join(srcPath, 'index.js'), 'utf-8')
+      expect(indexFileContent.includes('package.json')).to.equal(false)
+      expect(indexFileContent.includes('koop.json')).to.equal(false)
     })
 
     it('should add an auth plugin from a local path', async () => {
@@ -137,11 +138,6 @@ describe('utils/add-plugin', function () {
       expect(await fs.pathExists(path.join(srcPath, 'authorize.js'))).to.equal(true)
       expect(await fs.pathExists(path.join(srcPath, 'initialize.js'))).to.equal(true)
       expect(await fs.pathExists(path.join(srcPath, 'authentication-specification.js'))).to.equal(true)
-
-      const testPath = path.join(appPath, 'test/my-auth')
-      expect(await fs.pathExists(path.join(testPath, 'index.test.js'))).to.equal(true)
-      expect(await fs.pathExists(path.join(testPath, 'authenticate.test.js'))).to.equal(true)
-      expect(await fs.pathExists(path.join(testPath, 'authentication-specification.test.js'))).to.equal(true)
     })
 
     it('should add an output plugin from a local path', async () => {
@@ -166,10 +162,9 @@ describe('utils/add-plugin', function () {
       expect(await fs.pathExists(path.join(srcPath, 'initialize.js'))).to.equal(true)
       expect(await fs.pathExists(path.join(srcPath, 'request-handlers/serve.js'))).to.equal(true)
 
-      const testPath = path.join(appPath, 'test/my-output')
-      expect(await fs.pathExists(path.join(testPath, 'index.test.js'))).to.equal(true)
-      expect(await fs.pathExists(path.join(testPath, 'routes.test.js'))).to.equal(true)
-      expect(await fs.pathExists(path.join(testPath, 'request-handlers/serve.test.js'))).to.equal(true)
+      // the index.js file should not refer to the packages.json
+      const indexFileContent = await fs.readFile(path.join(srcPath, 'index.js'), 'utf-8')
+      expect(indexFileContent.includes('package.json')).to.equal(false)
     })
 
     it('should update the plugin list in koop.json', async () => {

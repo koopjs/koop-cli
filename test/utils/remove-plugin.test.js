@@ -91,10 +91,8 @@ describe('utils/remove-plugin', function () {
     await addPlugin(appPath, 'provider', 'plugins/provider-test', options)
 
     const srcPath = path.join(appPath, 'src')
-    const testPath = path.join(appPath, 'test')
 
     expect(await fs.pathExists(path.join(srcPath, 'plugins/provider-test'))).to.equal(true)
-    expect(await fs.pathExists(path.join(testPath, 'plugins/provider-test'))).to.equal(true)
 
     let plugins = await fs.readFile(path.join(srcPath, 'plugins.js'), 'utf-8')
     expect(plugins.includes('provider-test')).to.equal(true)
@@ -110,7 +108,6 @@ describe('utils/remove-plugin', function () {
     await removePlugin(appPath, 'provider-test', defaultOptions)
 
     expect(await fs.pathExists(path.join(srcPath, 'plugins/provider-test'))).to.equal(false)
-    expect(await fs.pathExists(path.join(testPath, 'plugins/provider-test'))).to.equal(false)
 
     plugins = await fs.readFile(path.join(srcPath, 'plugins.js'), 'utf-8')
     expect(plugins.includes('provider-test')).to.equal(false)
