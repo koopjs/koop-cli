@@ -8,12 +8,12 @@
     "start": "koop serve"
   },
   "dependencies": {
-    "config": "^3.3.3"
+    "config": "^3.3.6"
   },
   "devDependencies": {
-    "@koopjs/cli": "^1.0.0",
-    "chai": "^4.2.0",
-    "mocha": "^8.2.1"
+    "@koopjs/cli": "^1.1.1",
+    "chai": "^4.3.4",
+    "mocha": "^8.3.2"
   },
   "repository": ""
 }
