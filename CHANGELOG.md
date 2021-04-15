@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## 1.1.1 - 2021-04-15
+### Fixed
+* The process of adding a local plugin was broken due to missing files ([#72](https://github.com/koopjs/koop-cli/issues/72))
+
 ## 1.1.0 - 2021-01-11
 ### Added
 * HTTPS capability for the dev server ([#70](https://github.com/koopjs/koop-cli/issues/70))
