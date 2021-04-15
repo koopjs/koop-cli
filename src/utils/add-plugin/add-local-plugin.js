@@ -16,16 +16,20 @@ module.exports = async function addLocalPlugin (cwd, type, plugin, options = {})
     throw new Error(`No template exists for the given plugin type "${type}".`)
   }
 
-  const componentPath = path.join(__dirname, '../../template/components', type)
+  const componentSrcPath = path.join(__dirname, '../../template/components', type, 'src')
+  const localComponentSrcPath = path.join(__dirname, '../../template/components', `${type}-local`, 'src')
   const pluginSrcPath = path.join(cwd, 'src', plugin.srcPath)
-  const pluginTestPath = path.join(cwd, 'test', plugin.srcPath)
 
   if (await fs.pathExists(pluginSrcPath)) {
     // do nothing if the plugin files already exists
     return
   }
 
-  // copy plugin files
-  await fs.copy(path.join(componentPath, 'src'), pluginSrcPath)
-  await fs.copy(path.join(componentPath, 'test'), pluginTestPath)
+  // copy plugin files from the normal directory first
+  await fs.copy(componentSrcPath, pluginSrcPath)
+
+  // then copy files from the local plugin directory
+  if (await fs.exists(localComponentSrcPath)) {
+    await fs.copy(localComponentSrcPath, pluginSrcPath)
+  }
 }
