@@ -7,7 +7,9 @@
     "test": "npm run test:cli && npm run test:template",
     "test:template": "cross-env SUPPRESS_NO_CONFIG_WARNING=true mocha \"src/template/components/**/test/**/*.test.js\"",
     "test:cli": "cross-env SUPPRESS_NO_CONFIG_WARNING=true mocha \"test/**/*.test.js\"",
-    "ncu": "node scripts/ncu.js"
+    "ncu": "node scripts/ncu.js",
+    "preversion": "npm test && npm run build",
+    "postversion": "npm publish --access public && git push origin --all; git push origin --tags"
   },
   "repository": {
     "type": "git",
