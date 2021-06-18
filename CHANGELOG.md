@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Changed
+* Show a warning when the developer tries to use SSL options for a Koop app
 
 ## 1.1.1 - 2021-04-15
 ### Fixed
