@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/koopjs/koop-cli#readme",
   "dependencies": {
-    "dargs": "^8.0.0",
+    "dargs": "^7.0.0",
     "easy-table": "^1.1.1",
     "execa": "^5.1.1",
     "fs-extra": "^10.0.0",
