@@ -5,6 +5,7 @@ const nodemon = require('nodemon')
 const os = require('os')
 const dargs = require('dargs')
 const getPathArg = require('./get-path-arg')
+const Logger = require('../logger')
 
 module.exports = async (cwd, options = {}) => {
   const koopConfig = await fs.readJson(path.join(cwd, 'koop.json'))
@@ -14,6 +15,7 @@ module.exports = async (cwd, options = {}) => {
     _: []
   }
   const serveArgs = {}
+  const logger = options.logger || new Logger(options)
 
   if (options.debug) {
     nodeArgs.inspect = true
@@ -28,6 +30,10 @@ module.exports = async (cwd, options = {}) => {
     const packageInfo = await fs.readJson(path.join(cwd, 'package.json'))
     const appPath = getPathArg(packageInfo.main, options.watch)
     nodeArgs._.push(appPath)
+
+    if (options.sslCert || options.sslKey) {
+      logger.warn('WARN: The HTTPS feature does not work on an app project. The --ssl-cert and --ssl-key values will be ignored.')
+    }
   } else {
     // otherwise, this is a plugin and we should run a Koop server for it
 

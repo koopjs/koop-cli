@@ -26,11 +26,13 @@ function builder (yargs) {
     })
     .option('ssl-cert', {
       type: 'string',
-      description: 'path to the SSL certificate file'
+      description: 'path to the SSL certificate file for the HTTPS dev server',
+      group: 'Plugin Options:'
     })
     .option('ssl-key', {
       type: 'string',
-      description: 'path to the SSL key file'
+      description: 'path to the SSL key file for the HTTPS dev server',
+      group: 'Plugin Options:'
     })
 }
 

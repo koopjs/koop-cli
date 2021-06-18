@@ -214,4 +214,35 @@ describe('utils/serve', () => {
       sslKey: 'key.pem'
     })
   })
+
+  it('should ignore SSL options for an app project and show a warnning', async () => {
+    const serve = proxyquire(moduleName, {
+      execa: (command, args, options) => {
+        expect(command).to.equal('node')
+        expect(args).to.deep.equal([path.join('src', 'index.js')])
+        expect(options.cwd).to.equal('/')
+      },
+      'fs-extra': {
+        async readJson(path) {
+          if (path.endsWith('koop.json')) {
+            return { type: 'app' }
+          } else {
+            return { main: 'src/index.js' }
+          }
+        }
+      },
+      './get-path-arg': (path) => path
+    })
+
+    return serve('/', {
+      dirname: 'test',
+      sslCert: 'cert.pem',
+      sslKey: 'key.pem',
+      logger: {
+        warn (text) {
+          expect(text).to.be.a('string')
+        }
+      }
+    })
+  })
 })
